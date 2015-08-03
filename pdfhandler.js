@@ -11,7 +11,6 @@
 // matches report names that require post PDF processing.
 // Use date and time from last entry in the Audit file to keep the query light and only consider recent PDF files not yet processed
 // by any other containers that may be running.
-//
 
 var oracledb = require('oracledb');
 
