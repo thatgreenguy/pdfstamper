@@ -1,0 +1,16 @@
+{
+  "name": "pdflogostamper",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Node app to stamp PDF docs with Dlink logo",
+  "author": "Paul Green <paul.green@dlink.com>",
+  "dependencies": {
+    "gal-icu-bidi": "0.1.3-git",
+    "hummus": "^1.0.40",
+    "icu-bidi": "^0.1.3",
+    "pdf-text-extract": "^1.1.4",
+    "pdf2json": "^0.7.1",
+    "temporary": "0.0.8",
+    "oracledb": "0.7.0"
+  }
+}
