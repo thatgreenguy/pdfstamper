@@ -57,12 +57,12 @@ oracledb.getConnection( credentials, function(err, connection)
 	connection.execute(query, [], { resultSet: true }, function(err, result) 
 	{
 		if (err) { console.log(err.message) };
-		fetchRowsFromRS( connection, result.resultSet, numRows );	
+		fetchRowsFromRS( connection, result.resultSet, numRows, audit );	
 	}); 
 });
 
 
-function fetchRowsFromRS(connection, resultSet, numRows)
+function fetchRowsFromRS(connection, resultSet, numRows, audit)
 {
   console.log('IN fetchRowsFromRS');
   resultSet.getRows( numRows, function(err, rows)
@@ -101,9 +101,19 @@ function fetchRowsFromRS(connection, resultSet, numRows)
 		});
 	} else if (rows.length > 0)
 	{
-        	console.log('>>>>>'); 
-        	console.log(rows);
-        	fetchRowsFromRS(connection, resultSet, numRows);
+		var record = rows[0];
+		var jcfndfuf2 = record[0];
+		var jcactdate = record[1];
+		var jcacttime = record[2];
+		var jcprocessid = record[3];
+		var genkey = jcactdate + ' ' + jcacttime;
+		console.log(record);
+		console.log(record[0]);
+		console.log('----------------');
+
+		audit.createAuditEntry(jcfndfuf2, genkey, hostname, 'Start Processing');
+
+        	fetchRowsFromRS(connection, resultSet, numRows, audit);
 	}
   });
 }
