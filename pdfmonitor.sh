@@ -63,8 +63,8 @@ UPDATES=""
 # For example if the container is down no logos will be stamped on Invoice Prints so when it comes 
 # back up and this script runs for first time then pass control over to the javascrip PDF handler
 # to deal with any un-processed PDF files in the Print Queue  
-DATETIMENANO=$(date +'%F %T %N')
-node ./src/pdfhandler ${DATETIMENANO}
+STARTUPFLAG="S"
+node ./src/pdfhandler ${STARTUPFLAG} ${HOSTNAME} 
 
 # POLLING 
 #
@@ -91,7 +91,7 @@ while [[ true ]] ; do
     # When changes detected in the current monitor cycle call the javascript pdf handler.
     if [[ "${UPDATES}" != "${LAST_UPDATES}" ]] ; then
 	DATETIMENANO=$(date +'%F %T %N')
-	node ./src/pdfhandler ${DATETIMENANO}
+	node ./src/pdfhandler ${STARTUPFLAG} ${HOSTNAME}
     fi
   fi
  

@@ -13,9 +13,35 @@
 // by any other containers that may be running.
 
 var oracledb = require('oracledb');
+var audit = require('./common/audit.js')
 
 var credentials = {user: 'test_user', password: 'test_user', connectString: 'jdetest'};
-var numRows = 10;
+var numRows = 1;
+var startupflag = "";
+var hostname = "";
+
+// Expect Start up Flag and Hostname to be passed
+startupflag = process.argv[2];
+hostname = process.argv[3];
+console.log('Arg 1 : ' + startupflag);
+console.log('Arg 2 : ' + hostname);
+
+// If hostname (container Id) not passed then Abort with error - something seriously wrong.
+
+if (typeof(hostname) === 'undefined' || hostname === '') {
+	console.log(' ');
+	console.log('--------- ERROR ----------');
+	console.log('pdfhandler.js needs 2 parameters: (1) StartUp flag and (2) Hostname to be passed');
+	console.log('These should always be passed by calling program pdfmonitor.sh - something is wrong!');
+	process.exit(1);
+}
+
+// If Container has just started then record fact in Audit log
+
+if (startupflag === 'S') {
+	console.log('START MONITORING PDF QUEUE');
+	audit.createAuditEntry('pdfmonitor.sh', 'pdfhandler.js', hostname, 'Start Monitoring');
+}
 
 oracledb.getConnection( credentials, function(err, connection)
 {
