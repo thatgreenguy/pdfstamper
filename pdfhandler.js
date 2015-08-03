@@ -1,67 +1,90 @@
-// pdfLogoStamper.js
+// pdfhandler.js
 //
-// Description          :
-// Author               : Paul Green
-// Dated                : 2015-07-30
+// Description		: Query JDE for recent completed jobs that require post PDF handling.
+// Author		: Paul Green
+// Dated		: 2015-08-03
 //
 // Synopsis
 // --------
-// Expects to receive Date and Time values representing Time the calling program
-// last performed a directory check
-//
-//
+// Called from pdfhandler.sh on startup and when changes are detected in the monitored JDE output queue.
+// Performs a query on the JDE Job Control file looking for recently completed PDF output files where the UBE name 
+// matches report names that require post PDF processing.
+// Use date and time from last entry in the Audit file to keep the query light and only consider recent PDF files not yet processed
+// by any other containers that may be running.
 //
 
 var oracledb = require('oracledb');
 
-var credentials = { user: 'test_user', password: 'test_user', connectString: 'jdetest'};
-var query = "";
+var credentials = {user: 'test_user', password: 'test_user', connectString: 'jdetest'};
+var numRows = 10;
 
-oracledb.getConnection( credentials, function(err, connection) {
-        if (err) throw err;
+oracledb.getConnection( credentials, function(err, connection)
+{
+	if (err) { console.log('Oracle DB Connection Failure'); return;	}
 
-	var query = "SELECT * FROM testdta.f556110 WHERE jcactdate >= 115204 and jcjobsts = 'D' and rtrim(substr(JCFNDFUF2,0,instr(JCFNDFUF2,'_') - 1), ' ') in (select rtrim(PPFBDUBE, ' ') from testdta.f559850) ORDER BY jcactdate, jcacttime, jcfndfuf2";
+	var query = "SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110 \
+                     WHERE jcjobsts = 'D' AND jcsbmdate >= 115215 \
+                     AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(ppfbdube, ' ') \
+                     FROM testdta.F559850 ) ";
+	
+	conn = connection;
+	
+	connection.execute(query, [], { resultSet: true }, function(err, result) 
+	{
+		if (err) { console.log(err.message) };
+		fetchRowsFromRS( connection, result.resultSet, numRows );	
+	}); 
+});
 
-        connection.execute( query, [], { resultSet: true }, function(err, results) {
-                var rowsProcessed = 0;
-                var startTime;
- 
-                if (err) throw err;
- 
-                startTime = Date.now();
- 
-                function processResultSet() {
-                    results.resultSet.getRow(function(err, row) {
-                        if (err) throw err;
- 
-                        if (row) {
-                            rowsProcessed += 1;
- 
-                            //do work on the row here
-			    console.log('ROW DATA:::: For row : ' + rowsProcessed);
-			    console.log(row);
-			    console.log('------------------------------------------');
-				 			    
-                            processResultSet(); //try to get another row from the result set
- 
-                            return; //exit recursive function prior to closing result set
-                        }
- 
-                        console.log('Finish processing ' + rowsProcessed + ' rows');
-                        console.log('Total time (in seconds):', ((Date.now() - startTime)/1000));
- 
-                        results.resultSet.close(function(err) {
-                            if (err) console.error(err.message);
- 
-                            connection.release(function(err) {
-                                if (err) console.error(err.message);
-                            });
-                        });
-                    });
-                }
- 
-                processResultSet();
-            }
-        );
-    }
-);
+
+function fetchRowsFromRS(connection, resultSet, numRows)
+{
+  console.log('IN fetchRowsFromRS');
+  resultSet.getRows( numRows, function(err, rows)
+  {
+   	if (err)
+	{
+        	resultSet.close(function(err)
+		{
+			if (err)
+			{
+				console.log(err.message);
+				connection.release(function(err)
+				{
+					if (err)
+					{
+						console.log(err.message);
+					}
+				});
+			}
+		}); 
+      	} else if (rows.length == 0)
+	{
+		resultSet.close(function(err)
+		{
+			if (err)
+			{
+				console.log(err.message);
+				connection.release(function(err)
+				{
+					if (err)
+					{
+						console.log(err.message);
+					}
+				});
+			}
+		});
+	} else if (rows.length > 0)
+	{
+        	console.log('>>>>>'); 
+        	console.log(rows);
+        	fetchRowsFromRS(connection, resultSet, numRows);
+	}
+  });
+}
+
+
+
+
+
+
