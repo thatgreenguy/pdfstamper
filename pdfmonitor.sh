@@ -18,8 +18,8 @@
 # It establishes an sshfs mount to the AIX remote system that requires monitoring
 
 # Establish mount to remote JDE enterprise server (AIX) system
-DYNCMD="sshfs -o cache=no ${SSHFS_USER}@${SSHFS_HOSTDIR} /home/pdfdata"  
-$DYNCMD
+DYNCMD="sshfs -o Ciphers=arcfour  -o cache=no -o password_stdin ${SSHFS_USER}@${SSHFS_HOSTDIR} /home/pdfdata"  
+echo $SSHFS_PWD | $DYNCMD
 if [ $? -ne 0 ]
 then 
 	echo
@@ -38,7 +38,7 @@ DIR="$( cd "$( dirname "$0" )" && pwd)"
 # to the actual remote AIX directory that holds the JDE PrintQueue pdf files.
 # Create a list of directories to monitor - in this case just the one.
 REMOTE_DIR="/home/pdfdata"
-
+INTERVAL_SECONDS=2
 
  
 # STARTUP / RECOVERY
@@ -53,8 +53,8 @@ node ./src/pdfhandler ${NODEARGS}
 
 # Establish unique file names for this container to hold the before and after 
 # directory snapshots
-BEFORE='/tmp/' + &HOSTNAME + '_before.txt'
-AFTER='/tmp/' + &HOSTNAME + '_after.txt'
+BEFORE="/tmp/${HOSTNAME}_before"
+AFTER="/tmp/${HOSTNAME}_after"
 
 # Take a snapshot of the remote monitored directory before starting to monitor
 ls $REMOTE_DIR > $BEFORE 
@@ -75,11 +75,11 @@ while [[ true ]] ; do
   ls $REMOTE_DIR > $AFTER
  
   # Compare the Before and After snapshots 
-  if diff -q $BEFORE $AFTER > /dev/null; then
-     echo 'No changes'
-  else
+  if ! diff -q $BEFORE $AFTER > /dev/null; then
      echo 'Changes detected.....'
-	#### node ./src/pdfhandler ${NODEARGS}
+     rm $BEFORE
+     mv $AFTER $BEFORE
+     node ./src/pdfhandler ${NODEARGS}
   fi
 
   sleep ${INTERVAL_SECONDS}
