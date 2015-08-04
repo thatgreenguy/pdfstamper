@@ -109,33 +109,38 @@ function fetchRowsFromRS(connection, resultSet, numRows, audit)
 		var jcprocessid = record[3];
 		var genkey = jcactdate + ' ' + jcacttime;
 
-		// Establish exclusive use of this PDF - Multiple containers could be running so another process may already be processing this!
-
+		// Multiple processes could be running so need to establish exclusive rights to 
+		// process this PDF file - if not simply read on and look for another PDF to process.
 		
-
-		// Copy the PDF file from the remote location to a local working directory
-
-
-		// Process the PDF file 
 		
-
-		// Copy the processed PDF file back to the remote directory (JDE printqueue)
-
-
-
-		// Release the exclusivity lock
-		console.log(record);
-		console.log(record[0]);
-		console.log('----------------');
 
 		audit.createAuditEntry(jcfndfuf2, genkey, hostname, 'Start Processing');
-
+		
+		// Read next record 
         	fetchRowsFromRS(connection, resultSet, numRows, audit);
 	}
   });
 }
 
 
+
+
+// Establish exclusivity then process PDF file
+
+function processPDF(jcfndfuf2, jcactdate, jcacttime, jcprocessid, genkey) 
+{
+
+	console.log('Lock established');
+
+	console.log('PDF file copied to work directory');
+
+	console.log('PDF file logo applied');
+
+	console.log('PDF file copied back');
+
+	console.log('Lock released.....');
+
+}
 
 
 
