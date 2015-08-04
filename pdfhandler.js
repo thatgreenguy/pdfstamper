@@ -13,7 +13,8 @@
 // by any other containers that may be running.
 
 var oracledb = require('oracledb');
-var audit = require('./common/audit.js')
+var audit = require('./common/audit.js');
+var lock = require('./common/lock.js');
 
 var credentials = {user: 'test_user', password: 'test_user', connectString: 'jdetest'};
 var numRows = 1;
@@ -103,20 +104,14 @@ function fetchRowsFromRS(connection, resultSet, numRows, audit)
 		// Query read has returned a record so we have a valid eligible PDF file to process
 
 		var record = rows[0];
-		var jcfndfuf2 = record[0];
-		var jcactdate = record[1];
-		var jcacttime = record[2];
-		var jcprocessid = record[3];
-		var genkey = jcactdate + ' ' + jcacttime;
 
 		// Multiple processes could be running so need to establish exclusive rights to 
-		// process this PDF file - if not simply read on and look for another PDF to process.
-		
-		
+		// process this PDF file - if not simply move onto next eligible PDF file to process.
 
-		audit.createAuditEntry(jcfndfuf2, genkey, hostname, 'Start Processing');
+		lock.gainExclusivity(record, hostname, processPDF);		
 		
 		// Read next record 
+
         	fetchRowsFromRS(connection, resultSet, numRows, audit);
 	}
   });
@@ -127,17 +122,29 @@ function fetchRowsFromRS(connection, resultSet, numRows, audit)
 
 // Establish exclusivity then process PDF file
 
-function processPDF(jcfndfuf2, jcactdate, jcacttime, jcprocessid, genkey) 
+function processPDF(record) 
 {
+
+	var jcfndfuf2 = record[0];
+	var jcactdate = record[1];
+	var jcacttime = record[2];
+	var jcprocessid = record[3];
+	var genkey = jcactdate + ' ' + jcacttime;
+
 
 	console.log('Lock established');
 
+	// Lock in place so go ahead and write Audit entry then process this PDF file
+	console.log(record);
+	audit.createAuditEntry(jcfndfuf2, genkey, hostname, 'Start Processing');
+		
 	console.log('PDF file copied to work directory');
 
 	console.log('PDF file logo applied');
 
 	console.log('PDF file copied back');
 
+	lock.removeLock(record, hostname);
 	console.log('Lock released.....');
 
 }
