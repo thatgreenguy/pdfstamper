@@ -18,7 +18,7 @@
 # It establishes an sshfs mount to the AIX remote system that requires monitoring
 
 # Establish mount to remote JDE enterprise server (AIX) system
-DYNCMD="sshfs ${SSHFS_USER}@${SSHFS_HOSTDIR} /home/pdfdata"  
+DYNCMD="sshfs -o cache=no ${SSHFS_USER}@${SSHFS_HOSTDIR} /home/pdfdata"  
 $DYNCMD
 if [ $? -ne 0 ]
 then 
@@ -37,25 +37,10 @@ DIR="$( cd "$( dirname "$0" )" && pwd)"
 # Container application creates /home/pdfdata directory which will be mounted using sshfs 
 # to the actual remote AIX directory that holds the JDE PrintQueue pdf files.
 # Create a list of directories to monitor - in this case just the one.
-PROJECT_DIR="/home"
-MONITOR=()
-MONITOR+=( "${PROJECT_DIR}/pdfdata" )
- 
-# This file will be used as a timestamp reference point.
-# The interval in seconds between each check on monitored files.
-# Allow margin of error on timestamp cut-off of few seconds which 
-# allows for slight differences in time between servers clocks
-TIMESTAMP_FILE="/tmp/file-monitor-ts" 
-INTERVAL_SECONDS=2
-LOOKBACK_SECONDS=5
- 
-# The last set of updates. We keep this for comparison purposes.
-# Since the lookback covers multiple cycles of monitoring for changes
-# we need to be able to update only if there are fresh changes in
-# the present cycle.
-LAST_UPDATES=""
-UPDATES=""
+REMOTE_DIR="/home/pdfdata"
 
+
+ 
 # STARTUP / RECOVERY
 #
 # If this container app crashed or the server was taken offline for a time then on startup
@@ -66,8 +51,18 @@ UPDATES=""
 NODEARGS=" 'S' '${HOSTNAME}' "
 node ./src/pdfhandler ${NODEARGS} 
 
+# Establish unique file names for this container to hold the before and after 
+# directory snapshots
+BEFORE='/tmp/' + &HOSTNAME + '_before.txt'
+AFTER='/tmp/' + &HOSTNAME + '_after.txt'
+
+# Take a snapshot of the remote monitored directory before starting to monitor
+ls $REMOTE_DIR > $BEFORE 
+
 # Ensure Startup flag is not 'S' for all subsequent calls to pdfhandler set to 'M' for Monitor Loop
 NODEARGS=" 'M' '${HOSTNAME}' "
+
+
 
 # POLLING 
 #
@@ -76,27 +71,16 @@ NODEARGS=" 'M' '${HOSTNAME}' "
 # PDF Handler progam to deal with new PDF's
 while [[ true ]] ; do
   
-  # Get time to check from adjusted by lookback seconds
-  TIMESTAMP=`date -d "-${LOOKBACK_SECONDS} sec" +%m%d%H%M.%S`
+  # Take another snapshot of the remote monitored directory for comparison
+  ls $REMOTE_DIR > $AFTER
  
-  # Create or update the reference timestamp file.
-  touch -t ${TIMESTAMP} "${TIMESTAMP_FILE}"
- 
-  # Identify updates by comparison with the reference timestamp file.
-  UPDATES=`find ${MONITOR[*]} -type f -newer ${TIMESTAMP_FILE}`
-  if [[ "${UPDATES}" ]] ; then
-
-    # Pass the updates through ls in order to add a timestamp for each result.
-    # If the same file is updated several times over several monitor cycles
-    # it will still trigger when compared to the prior set of updates
-    UPDATES=`ls --full-time ${UPDATES}`
- 
-    # When changes detected in the current monitor cycle call the javascript pdf handler.
-    if [[ "${UPDATES}" != "${LAST_UPDATES}" ]] ; then
-	node ./src/pdfhandler ${NODEARGS}
-    fi
+  # Compare the Before and After snapshots 
+  if diff -q $BEFORE $AFTER > /dev/null; then
+     echo 'No changes'
+  else
+     echo 'Changes detected.....'
+	#### node ./src/pdfhandler ${NODEARGS}
   fi
- 
-  LAST_UPDATES="${UPDATES}"
+
   sleep ${INTERVAL_SECONDS}
 done

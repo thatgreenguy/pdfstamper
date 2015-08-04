@@ -1,0 +1,6 @@
+resettest
+smit.log
+smit.script
+smit.transaction
+test
+tt1
