@@ -21,10 +21,8 @@ var startupflag = "";
 var hostname = "";
 
 // Expect Start up Flag and Hostname to be passed
-startupflag = process.argv[2];
-hostname = process.argv[3];
-console.log('Arg 1 : ' + startupflag);
-console.log('Arg 2 : ' + hostname);
+var startupflag = process.argv[2];
+var hostname = process.argv[3];
 
 // If hostname (container Id) not passed then Abort with error - something seriously wrong.
 
@@ -101,12 +99,31 @@ function fetchRowsFromRS(connection, resultSet, numRows, audit)
 		});
 	} else if (rows.length > 0)
 	{
+
+		// Query read has returned a record so we have a valid eligible PDF file to process
+
 		var record = rows[0];
 		var jcfndfuf2 = record[0];
 		var jcactdate = record[1];
 		var jcacttime = record[2];
 		var jcprocessid = record[3];
 		var genkey = jcactdate + ' ' + jcacttime;
+
+		// Establish exclusive use of this PDF - Multiple containers could be running so another process may already be processing this!
+
+		
+
+		// Copy the PDF file from the remote location to a local working directory
+
+
+		// Process the PDF file 
+		
+
+		// Copy the processed PDF file back to the remote directory (JDE printqueue)
+
+
+
+		// Release the exclusivity lock
 		console.log(record);
 		console.log(record[0]);
 		console.log('----------------');

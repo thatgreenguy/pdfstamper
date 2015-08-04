@@ -48,7 +48,7 @@ INTERVAL_SECONDS=2
 # For example if the container is down no logos will be stamped on Invoice Prints so when it comes 
 # back up and this script runs for first time then pass control over to the javascrip PDF handler
 # to deal with any un-processed PDF files in the Print Queue  
-NODEARGS=" 'S' '${HOSTNAME}' "
+NODEARGS=" S ${HOSTNAME} "
 node ./src/pdfhandler ${NODEARGS} 
 
 # Establish unique file names for this container to hold the before and after 
@@ -60,7 +60,7 @@ AFTER="/tmp/${HOSTNAME}_after"
 ls $REMOTE_DIR > $BEFORE 
 
 # Ensure Startup flag is not 'S' for all subsequent calls to pdfhandler set to 'M' for Monitor Loop
-NODEARGS=" 'M' '${HOSTNAME}' "
+NODEARGS=" M ${HOSTNAME} "
 
 
 
