@@ -17,7 +17,12 @@
 # with any PDF files sitting in the JDE PrintQueue since this program was last active.
 # It establishes an sshfs mount to the AIX remote system that requires monitoring
 
+# Initialisation
+REMOTE_DIR="/home/pdfdata"
+INTERVAL_SECONDS=2
+
 # Establish mount to remote JDE enterprise server (AIX) system
+umount $REMOTE_DIR
 DYNCMD="sshfs -o Ciphers=arcfour  -o cache=no -o password_stdin ${SSHFS_USER}@${SSHFS_HOSTDIR} /home/pdfdata"  
 echo $SSHFS_PWD | $DYNCMD
 if [ $? -ne 0 ]
@@ -31,16 +36,6 @@ then
 	exit 1
 fi
 
-# The absolute path of the directory containing this script.
-DIR="$( cd "$( dirname "$0" )" && pwd)"
-
-# Container application creates /home/pdfdata directory which will be mounted using sshfs 
-# to the actual remote AIX directory that holds the JDE PrintQueue pdf files.
-# Create a list of directories to monitor - in this case just the one.
-REMOTE_DIR="/home/pdfdata"
-INTERVAL_SECONDS=2
-
- 
 # STARTUP / RECOVERY
 #
 # If this container app crashed or the server was taken offline for a time then on startup
@@ -76,7 +71,7 @@ while [[ true ]] ; do
  
   # Compare the Before and After snapshots 
   if ! diff -q $BEFORE $AFTER > /dev/null; then
-     echo 'Changes detected.....'
+     echo `date` 'Changes detected.....'
      rm $BEFORE
      mv $AFTER $BEFORE
      node ./src/pdfhandler ${NODEARGS}
