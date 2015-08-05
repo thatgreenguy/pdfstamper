@@ -188,16 +188,56 @@ function fetchRowsFromRS(connection, resultSet, numRows, audit)
 
 		var record = rows[0];
 
-		// Multiple processes could be running so need to establish exclusive rights to 
+		// Multiple pdfhandler processes could be running so need to establish exclusive rights to 
 		// process this PDF file - if not simply move onto next eligible PDF file to process.
 
-		lock.gainExclusivity(record, hostname, processPDF);		
+		lock.gainExclusivity(record, hostname, connection, processLockedPdfFile);		
 		
 		// Read next record 
 
         	fetchRowsFromRS(connection, resultSet, numRows, audit);
 	}
   });
+}
+
+
+
+
+// Called when exclusive lock has been successfully placed to process the PDF file
+
+function processLockedPdfFile(connection, record) 
+{
+
+	console.log(record[0] + ' >>>>> Lock established');
+
+	// Check this PDF file has definitely not yet been processed by any other pdfHandler instance
+	// that may be running concurrently
+
+	var query = "SELECT COUNT(*) FROM testdta.F559859 WHERE pafndfuf2 = '";
+	query += record[0] + "'";
+
+	connection.execute(query, [], { }, function(err, result) 
+	{
+		if (err) { console.log(err.message); return; };
+
+		var countRec = result.rows[0];
+		var count = countRec[0];
+
+		if ( count > 0 ) {
+			console.log(record[0] + ' >>>>> Already Processed - ignoring.');
+		} else {
+			console.log(record[0] + ' >>>>> Processing Now.');
+			// This PDF file has not yet been processed and we have the lock so process it now.	
+
+			processPDF(record);
+		}
+
+		// Always remove lock
+		
+		lock.removeLock(record, hostname);
+		console.log(record[0] + ' >>>>> Lock released.....');
+
+	}); 
 }
 
 
@@ -215,20 +255,15 @@ function processPDF(record)
 	var genkey = jcactdate + ' ' + jcacttime;
 
 
-	console.log('Lock established');
-
 	// Lock in place so go ahead and write Audit entry then process this PDF file
-	console.log(record);
+	console.log(record[0] + ' >>>>> Write Audit record');
 	audit.createAuditEntry(jcfndfuf2, genkey, hostname, 'Start Processing');
 		
-	console.log('PDF file copied to work directory');
+	console.log(record[0] + ' >>>>> Copy PDF file from JDE PrintQueue to CENTOS for processing');
 
-	console.log('PDF file logo applied');
+	console.log(record[0] + ' >>>>> Apply Logo');
 
-	console.log('PDF file copied back');
-
-	lock.removeLock(record, hostname);
-	console.log('Lock released.....');
+	console.log(record[0] + ' >>>>> Copy PDF with Logo back to JDE PrintQueue');
 
 }
 

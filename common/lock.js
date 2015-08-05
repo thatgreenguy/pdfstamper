@@ -20,10 +20,10 @@ var credentials = {user: 'test_user', password: 'test_user', connectString: 'jde
 // --------
 // Expect valid JDE Job Control record to be passed along with callback function to process PDF if lock successful
 
-exports.gainExclusivity = function(record, hostname, processPDF) {
+exports.gainExclusivity = function(record, hostname, conn, processLockedPdfFile) {
 
 	if (typeof(record) === 'undefined') { console.log('ERROR: Valid JDE Job Control Record Expected.'); return false; }
-	if (typeof(processPDF) !== 'function') { console.log('ERROR: Callback function expected to process PDF file.'); return false; }
+	if (typeof(processLockedPdfFile) !== 'function') { console.log('ERROR: Callback function expected to process PDF file.'); return false; }
 
 	var jcfndfuf2 = record[0];
 	var jcprocessid = record[3];
@@ -58,7 +58,7 @@ exports.gainExclusivity = function(record, hostname, processPDF) {
 
 			// Inserted without error so lock in place - safe to process this PDF file
 			
-			processPDF(record);
+			processLockedPdfFile(conn, record);
 		});
   	});
 }
