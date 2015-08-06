@@ -76,7 +76,6 @@ function queryJdeAuditLog(connection)
  
 function fetchRowsFromJdeAuditLogRS(connection, resultSet, numRows, audit)
 {
-  console.log('>>>>> Start Processing results from Query of F559859 <<<<<');
   resultSet.getRows( numRows, function(err, rows)
   {
    	if (err)
@@ -107,6 +106,8 @@ function fetchRowsFromJdeAuditLogRS(connection, resultSet, numRows, audit)
 		});
 	} else if (rows.length > 0)
 	{
+		
+		 console.log('>>>>> Start Processing results from Query of F559859 <<<<<');
 
 		// Last audit entry retrieved
 		// Process continues by querying the JDE Job Control Master file for eligible PDF's to process

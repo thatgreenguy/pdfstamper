@@ -43,6 +43,10 @@ fi
 # For example if the container is down no logos will be stamped on Invoice Prints so when it comes 
 # back up and this script runs for first time then pass control over to the javascrip PDF handler
 # to deal with any un-processed PDF files in the Print Queue  
+DTSTAMP=`date`
+echo 
+echo "-------------------------------------------------------"
+echo "${HOSTNAME} : PDFMONITOR : STARTUP : ${DTSTAMP}"
 NODEARGS=" S ${HOSTNAME} "
 node ./src/pdfhandler ${NODEARGS} 
 
@@ -52,7 +56,7 @@ BEFORE="/tmp/${HOSTNAME}_before"
 AFTER="/tmp/${HOSTNAME}_after"
 
 # Take a snapshot of the remote monitored directory before starting to monitor
-ls $REMOTE_DIR > $BEFORE 
+ls -1 $REMOTE_DIR > $BEFORE 
 
 # Ensure Startup flag is not 'S' for all subsequent calls to pdfhandler set to 'M' for Monitor Loop
 NODEARGS=" M ${HOSTNAME} "
@@ -67,11 +71,12 @@ NODEARGS=" M ${HOSTNAME} "
 while [[ true ]] ; do
   
   # Take another snapshot of the remote monitored directory for comparison
-  ls $REMOTE_DIR > $AFTER
+  ls -1 $REMOTE_DIR > $AFTER
  
   # Compare the Before and After snapshots 
   if ! diff -q $BEFORE $AFTER > /dev/null; then
-     echo `date` 'Changes detected.....'
+     DTSTAMP = `date`
+     echo "${HOSTNAME} : PDFMONITOR : ${DTSTAMP} : JDE PrintQueue change detected"
      rm $BEFORE
      mv $AFTER $BEFORE
      node ./src/pdfhandler ${NODEARGS}
