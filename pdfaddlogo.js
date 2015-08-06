@@ -1,15 +1,28 @@
-// doit 
-
+// pdfaddlogo.js
+//
+// Description		: Add Dlink Logo image to each page of a PDF file
+// Author		: Paul Green
+// Dated		: 2015-08-06
+//
+// Synopsis
+// --------
+// 
+ 
 var hummus = require('hummus');
 
-var pdfWriter = hummus.createWriterToModify('/src/shareddata/R5542565_PJGTST801_181312_PDF',{modifiedFilePath:'/src/shareddata/well.pdf'});
+// Expect PDF file to process to be passed in - including path
+var pdfInput = process.argv[2];
 
-// jpg->form
+// Create pdf Writer object to manipulate the PDF file
+//var pdfWriter = hummus.createWriterToModify('/src/shareddata/R5542565_PJGTST251_179553_PDF',{modifiedFilePath:'/src/shareddata/well.pdf'});
+var pdfWriter = hummus.createWriterToModify(pdfInput, {modifiedFilePath:'/src/shareddata/well.pdf'});
+
+// Create re-usable form object to hold logo image and set image, location, scale
 var formObject = pdfWriter.createFormXObjectFromJPG('/src/data/logo/Dlink_Logo.jpg');
 var formPositionOnPage = [470,790];
 var formScaleOnPage = 0.5;
 
-// allocate an object ID for the new contents stream (for placing the form)
+// allocate an object ID for the new contents stream (for placing the form object)
 // we first create the modified page object, so that we can define a name for the new form xobject
 // that is unique
 var objCxt = pdfWriter.getObjectsContext();
@@ -18,45 +31,66 @@ var newContentObjectID = objCxt.allocateNewObjectID();
 // create a copying context, so we can copy the page dictionary, and modify its contents + resources dict
 var cpyCxt = pdfWriter.createPDFCopyingContextForModifiedFile();
 
-// get last page object, convecrt to JS object, so it's easier to traverse
+// Get maximum number of Pages we are dealing with
+var pageCount = cpyCxt.getSourceDocumentParser().getPagesCount();
+console.log("Pages : " + pageCount);
+
+for ( var i = 0; i < pageCount; i++ ) {
+
+	// Add logo (form object) to each page of PDF 
+	slapLogoOnPage(i);
+}
+
+// Finish up and write new PDF file with logos
+pdfWriter.end();
+
+
+
+
+function slapLogoOnPage(whichPage) {
+
+console.log(whichPage);
+
 //var lastPageObjectID = cpyCxt.getSourceDocumentParser().getPageObjectID(cpyCxt.getSourceDocumentParser().getPagesCount()-1);
 //var lastPageDictionaryObject = cpyCxt.getSourceDocumentParser().parsePage(cpyCxt.getSourceDocumentParser().getPagesCount()-1).getDictionary().toJSObject();
-var lastPageObjectID = cpyCxt.getSourceDocumentParser().getPageObjectID(0);
-var lastPageDictionaryObject = cpyCxt.getSourceDocumentParser().parsePage(0).getDictionary().toJSObject();
+
+// Determine which Page we are looking at
+var PageObjectID = cpyCxt.getSourceDocumentParser().getPageObjectID(whichPage);
+var PageDictionaryObject = cpyCxt.getSourceDocumentParser().parsePage(whichPage).getDictionary().toJSObject();
 
 // create modified page object
-objCxt.startModifiedIndirectObject(lastPageObjectID);
+objCxt.startModifiedIndirectObject(PageObjectID);
 var modifiedPageObject = objCxt.startDictionary();
 
 // copy all elements of the page to the new page object, but the "Contents" and "Resources" elements
- Object.getOwnPropertyNames(lastPageDictionaryObject).forEach(function(element,index,array)
+ Object.getOwnPropertyNames(PageDictionaryObject).forEach(function(element,index,array)
                                                     {
                                                         if(element != 'Resources' && element != 'Contents')
                                                         {
                                                             modifiedPageObject.writeKey(element);
-                                                            cpyCxt.copyDirectObjectAsIs(lastPageDictionaryObject[element]);
+                                                            cpyCxt.copyDirectObjectAsIs(PageDictionaryObject[element]);
                                                         }
                                                     });
 
 // Write new contents entry, joining the existing contents with the new one. take care of various scenarios of the existing Contents
 modifiedPageObject.writeKey('Contents');
-if(!lastPageDictionaryObject['Contents']) // no contents
+if(!PageDictionaryObject['Contents']) // no contents
 {
 	objCxt.writeIndirectObjectReference(newContentObjectID);
 }
 else
 {
 	objCxt.startArray();
-	if(lastPageDictionaryObject['Contents'].getType() == 'hummus.ePDFObjectArray') // contents stream array
+	if(PageDictionaryObject['Contents'].getType() == 'hummus.ePDFObjectArray') // contents stream array
 	{
-		lastPageDictionaryObject['Contents'].toPDFArray().toJSArray().forEach(function(inElement)
+		PageDictionaryObject['Contents'].toPDFArray().toJSArray().forEach(function(inElement)
 		{
 			objCxt.writeIndirectObjectReference(inElement.toPDFIndirectObjectReference().getObjectID());
 		});
 	}
 	else // single stream
 	{
-		objCxt.writeIndirectObjectReference(lastPageDictionaryObject['Contents'].toPDFIndirectObjectReference().getObjectID());
+		objCxt.writeIndirectObjectReference(PageDictionaryObject['Contents'].toPDFIndirectObjectReference().getObjectID());
 	}
 
 	objCxt.writeIndirectObjectReference(newContentObjectID);
@@ -68,7 +102,7 @@ else
 var resourcesIndirect = null;
 var imageObjectName = 'myImage';
 modifiedPageObject.writeKey('Resources');
-if(!lastPageDictionaryObject['Resources'])
+if(!PageDictionaryObject['Resources'])
 {
 	// no existing resource dictionary, so write my own
 	var dict = objCxt.startDictionary();
@@ -82,14 +116,14 @@ if(!lastPageDictionaryObject['Resources'])
 else
 {
 	// resources may be direct, or indirect. if direct, write as is, adding the new form xobject, otherwise wait till page object ends and write then
-	isResorucesIndirect =  (lastPageDictionaryObject['Resources'].getType() == hummus.ePDFObjectIndirectObjectReference);
+	isResorucesIndirect =  (PageDictionaryObject['Resources'].getType() == hummus.ePDFObjectIndirectObjectReference);
 	if(isResorucesIndirect)
 	{
-		resourcesIndirect = lastPageDictionaryObject['Resources'].toPDFIndirectObjectReference().getObjectID();
+		resourcesIndirect = PageDictionaryObject['Resources'].toPDFIndirectObjectReference().getObjectID();
 		modifiedPageObject.writeObjectReferenceValue(resourcesIndirect);
 	}
 	else
-		imageObjectName = writeModifiedResourcesDict(lastPageDictionaryObject['Resources'],objCxt,cpyCxt,formObject.getID());
+		imageObjectName = writeModifiedResourcesDict(PageDictionaryObject['Resources'],objCxt,cpyCxt,formObject.getID());
 }
 
 // end page object and writing
@@ -121,7 +155,11 @@ objCxt.writeKeyword('q')
 		.writeKeyword('Q')
 		.endPDFStream(streamCxt)
 		.endIndirectObject();
-pdfWriter.end();
+
+}
+
+
+
 
 
 function writeModifiedResourcesDict(inSourceDirect,inObjCxt,inCpyCxt,inNewXObjectID)
