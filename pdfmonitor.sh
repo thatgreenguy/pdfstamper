@@ -18,18 +18,35 @@
 # It establishes an sshfs mount to the AIX remote system that requires monitoring
 
 # Initialisation
-REMOTE_DIR="/home/pdfdata"
 INTERVAL_SECONDS=2
+REMOTE_DIR="/home/pdfdata"
+REMOTE_DIR_SHAREDDATA="/home/shareddata"
 
-# Establish mount to remote JDE enterprise server (AIX) system
+# Establish mount to remote JDE enterprise server (AIX) system for JDE Print Queue access/monitoring 
 umount $REMOTE_DIR
-DYNCMD="sshfs -o Ciphers=arcfour  -o cache=no -o password_stdin ${SSHFS_USER}@${SSHFS_HOSTDIR} /home/pdfdata"  
+DYNCMD="sshfs -o Ciphers=arcfour  -o cache=no -o password_stdin ${SSHFS_USER}@${SSHFS_HOST}${DIR_JDEPDF} ${REMOTE_DIR}"  
 echo $SSHFS_PWD | $DYNCMD
 if [ $? -ne 0 ]
 then 
 	echo
 	echo "--------- ERROR ------------"
-	echo "Problem mounting remote directory to monitor"
+	echo "Problem mounting remote JDE PDF (Print Queue) directory to monitor"
+	echo "Expecting 3 docker -e arguments for User, Pwd and Target Host:Directory"
+	echo "Re-run Docker command and provide remote SSHFS User, Pwd and Host:Directory values"
+	echo "Tried this command: '${DYNCMD}' but it failed!"
+	exit 1
+fi
+
+# Establish mount to remote JDE enterprise server (AIX) system to use a common (between Docker containers)
+# work area for original (pre-process) PDF file backups and for inter container communication 
+umount $REMOTE_DIR_SHAREDDATA
+DYNCMD="sshfs -o Ciphers=arcfour  -o cache=no -o password_stdin ${SSHFS_USER}@${SSHFS_HOST}${DIR_SHAREDDATA} ${REMOTE_DIR_SHAREDDATA}"  
+echo $SSHFS_PWD | $DYNCMD
+if [ $? -ne 0 ]
+then 
+	echo
+	echo "--------- ERROR ------------"
+	echo "Problem mounting common (between docker containers) remote AIX shareddata working directory"
 	echo "Expecting 3 docker -e arguments for User, Pwd and Target Host:Directory"
 	echo "Re-run Docker command and provide remote SSHFS User, Pwd and Host:Directory values"
 	echo "Tried this command: '${DYNCMD}' but it failed!"
@@ -46,7 +63,12 @@ fi
 DTSTAMP=`date`
 echo 
 echo "-------------------------------------------------------"
-echo "${HOSTNAME} : PDFMONITOR : STARTUP : ${DTSTAMP}"
+echo "${HOSTNAME} : PDFMONITOR : STARTING UP : ${DTSTAMP}"
+echo
+echo "${HOSTNAME} : PDFMONITOR : Now Monitoring ${DIR_JDEPDF} on AIX Host ${SSHFS_HOST}"
+echo "${HOSTNAME} : PDFMONITOR : Docker Containers utilising ${DIR_SHAREDDATA} on AIX Host ${SSHFS_HOST} as common work area"
+echo
+
 NODEARGS=" S ${HOSTNAME} "
 node ./src/pdfhandler ${NODEARGS} 
 
@@ -76,7 +98,7 @@ while [[ true ]] ; do
   # Compare the Before and After snapshots 
   if ! diff -q $BEFORE $AFTER > /dev/null; then
      DTSTAMP = `date`
-     echo "${HOSTNAME} : PDFMONITOR : ${DTSTAMP} : JDE PrintQueue change detected"
+     echo "${HOSTNAME} : PDFMONITOR : ${DTSTAMP} : Change detected in ${DIR_JDEPDF}"
      rm $BEFORE
      mv $AFTER $BEFORE
      node ./src/pdfhandler ${NODEARGS}

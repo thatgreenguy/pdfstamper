@@ -12,10 +12,12 @@ var hummus = require('hummus');
 
 // Expect PDF file to process to be passed in - including path
 var pdfInput = process.argv[2];
+var pdfOutput = process.argv[3];
+var pdfInput = process.argv[2];
 
 // Create pdf Writer object to manipulate the PDF file
-//var pdfWriter = hummus.createWriterToModify('/src/shareddata/R5542565_PJGTST251_179553_PDF',{modifiedFilePath:'/src/shareddata/well.pdf'});
-var pdfWriter = hummus.createWriterToModify(pdfInput, {modifiedFilePath:'/src/shareddata/well.pdf'});
+////var pdfWriter = hummus.createWriterToModify('/src/shareddata/R5542565_PJGTST251_179553_PDF',{modifiedFilePath:'/src/shareddata/well.pdf'});
+var pdfWriter = hummus.createWriterToModify(pdfInput, {modifiedFilePath:pdfOutput});
 
 // Create re-usable form object to hold logo image and set image, location, scale
 var formObject = pdfWriter.createFormXObjectFromJPG('/src/data/logo/Dlink_Logo.jpg');

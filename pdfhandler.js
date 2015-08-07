@@ -244,7 +244,7 @@ function processLockedPdfFile(connection, record)
 
 
 
-// Establish exclusivity then process PDF file
+// Exclusive use / lock of PDF file established so free to process the file here.
 
 function processPDF(record) 
 {
