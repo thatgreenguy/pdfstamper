@@ -15,6 +15,7 @@
 var oracledb = require('oracledb');
 var audit = require('./common/audit.js');
 var lock = require('./common/lock.js');
+var async = require('async');
 
 var credentials = {user: 'test_user', password: 'test_user', connectString: 'jdetest'};
 var numRows = 1;
@@ -244,6 +245,57 @@ function processLockedPdfFile(connection, record)
 
 
 
+function createBackupDir(jcfndfuf2, cb) {
+
+	console.log('Processing PDF ' + jcfndfuf2 + ' - Create Backup Directory');
+	cb(null, 'Back Up Dir created or there');
+
+}
+
+function backupPdfFile(jcfndfuf2, cb) {
+
+	console.log('Processing PDF ' + jcfndfuf2 + ' - Copy JDE PDF file to Backup Directory');
+	cb(null, 'PDF Backed up');
+
+}
+
+function copyPdfToWorkDir(jcfndfuf2, cb) {
+
+	console.log('Processing PDF ' + jcfndfuf2 + ' - Copy JDE PDF file to work Directory');
+	cb(null, 'PDF copied to Work Dir');
+
+}
+
+function applyLogo(jcfndfuf2, cb) {
+
+	console.log('Processing PDF ' + jcfndfuf2 + ' - Apply Logo to JDE PDF in Work Directory');
+	cb(null, 'Logo Applied');
+
+}
+
+function replaceJdePdfWithLogoVersion(jcfndfuf2, cb) {
+
+	console.log('Processing PDF ' + jcfndfuf2 + ' - Replace JDE PDF with modified Logo version');
+	cb(null, 'New PDF with LOGO now in JDE');
+
+}
+
+function cb(err, results) 
+{
+	console.log('It came back with this ' + results);
+	
+}
+
+function allDone(err, results) {
+
+	console.log('ALL DONE');
+
+}
+
+
+
+
+
 // Exclusive use / lock of PDF file established so free to process the file here.
 
 function processPDF(record) 
@@ -258,16 +310,16 @@ function processPDF(record)
 
 	// Lock in place so go ahead and write Audit entry then process this PDF file
 	console.log(record[0] + ' >>>>> Write Audit record');
-	audit.createAuditEntry(jcfndfuf2, genkey, hostname, 'Start Processing');
-		
-	console.log(record[0] + ' >>>>> Copy PDF file from JDE PrintQueue to CENTOS for processing');
-
-	console.log(record[0] + ' >>>>> Apply Logo');
-
-	console.log(record[0] + ' >>>>> Copy PDF with Logo back to JDE PrintQueue');
+	audit.createAuditEntry(jcfndfuf2, genkey, hostname, 'START Processing');
+	
+	async.series([
+			function (cb) { createBackupDir(jcfndfuf2, cb)}, 
+			function (cb) { backupPdfFile(jcfndfuf2, cb)}, 	
+			function (cb) { copyPdfToWorkDir(jcfndfuf2, cb)}, 
+			function (cb) { applyLogo(jcfndfuf2, cb)}, 
+			function (cb) { replaceJdePdfWithLogoVersion(jcfndfuf2, cb)}
+			], allDone
+	);
 
 }
-
-
-
 
