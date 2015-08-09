@@ -16,6 +16,7 @@ var oracledb = require('oracledb');
 var audit = require('./common/audit.js');
 var lock = require('./common/lock.js');
 var async = require('async');
+var exec = require('child_process').exec;
 
 var credentials = {user: 'test_user', password: 'test_user', connectString: 'jdetest'};
 var numRows = 1;
@@ -61,9 +62,8 @@ oracledb.getConnection( credentials, function(err, connection)
 
 function queryJdeAuditLog(connection) 
 {
-	console.log('>>>>> Query the F559859 <<<<<');
 
-	var query = "SELECT paupmj, paupmt FROM testdta.F559859 ORDER BY pasawlatm DESC";
+	var query = "SELECT paupmj, paupmt, pasawlatm FROM testdta.F559859 ORDER BY pasawlatm DESC";
 
 	connection.execute(query, [], { resultSet: true }, function(err, result) 
 	{
@@ -108,14 +108,10 @@ function fetchRowsFromJdeAuditLogRS(connection, resultSet, numRows, audit)
 	} else if (rows.length > 0)
 	{
 		
-		 console.log('>>>>> Start Processing results from Query of F559859 <<<<<');
-
 		// Last audit entry retrieved
 		// Process continues by querying the JDE Job Control Master file for eligible PDF's to process
 
 		var record = rows[0];
-		console.log('##########Only want 1st record so here it is');
-		console.log ('##########' + record);
 		queryJdeJobControl(connection, record);
 		
 	}
@@ -129,14 +125,23 @@ function fetchRowsFromJdeAuditLogRS(connection, resultSet, numRows, audit)
 
 function queryJdeJobControl(connection, record) 
 {
-	console.log('>>>>> Query the F556110 <<<<<');
-	console.log('Use this date and time to restrict:' + record);
+
+	// Issue with server clocks JDE and Linux being slightly out - approx 2.5 minutes.
+	// This will be rectified but in case it happens again or times drift slightly in future 
+	// Adjust query search date and time backwards by 5 minutes to allow for slightly different clock times
+	// and to ensure a PDF completing on JDE when this query runs is still included
+
+	var auditTimestamp = record[2];
+	var result = audit.adjustTimestampByMinutes(auditTimestamp, -45);
+	console.log(result);
+	var jdedate = result.jdeDate;
+	var jdetime = result.jdeTime;
 
 	var query = "SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110 WHERE jcjobsts = 'D'";
 	query += " AND jcactdate >= ";
-	query += record[0];
+	query += jdedate;
 	query += " AND jcacttime >= ";
-	query += record[1];
+	query += jdetime;
 	query += " AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(ppfbdube, ' ') FROM testdta.F559850 ) ";
 
 	console.log(query);
@@ -226,7 +231,9 @@ function processLockedPdfFile(connection, record)
 		var count = countRec[0];
 
 		if ( count > 0 ) {
-			console.log(record[0] + ' >>>>> Already Processed - ignoring.');
+			console.log(record[0] + ' >>>>> Already Processed - Releasing Lock.');
+			lock.removeLock(record, hostname);
+
 		} else {
 			console.log(record[0] + ' >>>>> Processing Now.');
 			// This PDF file has not yet been processed and we have the lock so process it now.	
@@ -234,64 +241,8 @@ function processLockedPdfFile(connection, record)
 			processPDF(record);
 		}
 
-		// Always remove lock
-		
-		lock.removeLock(record, hostname);
-		console.log(record[0] + ' >>>>> Lock released.....');
-
 	}); 
 }
-
-
-
-
-function createBackupDir(jcfndfuf2, cb) {
-
-	console.log('Processing PDF ' + jcfndfuf2 + ' - Create Backup Directory');
-	cb(null, 'Back Up Dir created or there');
-
-}
-
-function backupPdfFile(jcfndfuf2, cb) {
-
-	console.log('Processing PDF ' + jcfndfuf2 + ' - Copy JDE PDF file to Backup Directory');
-	cb(null, 'PDF Backed up');
-
-}
-
-function copyPdfToWorkDir(jcfndfuf2, cb) {
-
-	console.log('Processing PDF ' + jcfndfuf2 + ' - Copy JDE PDF file to work Directory');
-	cb(null, 'PDF copied to Work Dir');
-
-}
-
-function applyLogo(jcfndfuf2, cb) {
-
-	console.log('Processing PDF ' + jcfndfuf2 + ' - Apply Logo to JDE PDF in Work Directory');
-	cb(null, 'Logo Applied');
-
-}
-
-function replaceJdePdfWithLogoVersion(jcfndfuf2, cb) {
-
-	console.log('Processing PDF ' + jcfndfuf2 + ' - Replace JDE PDF with modified Logo version');
-	cb(null, 'New PDF with LOGO now in JDE');
-
-}
-
-function cb(err, results) 
-{
-	console.log('It came back with this ' + results);
-	
-}
-
-function allDone(err, results) {
-
-	console.log('ALL DONE');
-
-}
-
 
 
 
@@ -306,20 +257,172 @@ function processPDF(record)
 	var jcacttime = record[2];
 	var jcprocessid = record[3];
 	var genkey = jcactdate + ' ' + jcacttime;
+	var parms = null;
 
+	// Make parameters available to any function in series
+	parms = {'jcfndfuf2': jcfndfuf2, 'record': record, 'genkey': genkey, 'hostname': hostname};
 
-	// Lock in place so go ahead and write Audit entry then process this PDF file
-	console.log(record[0] + ' >>>>> Write Audit record');
-	audit.createAuditEntry(jcfndfuf2, genkey, hostname, 'START Processing');
-	
 	async.series([
-			function (cb) { createBackupDir(jcfndfuf2, cb)}, 
-			function (cb) { backupPdfFile(jcfndfuf2, cb)}, 	
-			function (cb) { copyPdfToWorkDir(jcfndfuf2, cb)}, 
-			function (cb) { applyLogo(jcfndfuf2, cb)}, 
-			function (cb) { replaceJdePdfWithLogoVersion(jcfndfuf2, cb)}
-			], allDone
+			function (cb) { createBackupDir(parms, cb) }, 
+			function (cb) { backupPdfFile(parms, cb) }, 	
+			function (cb) { copyPdfToWorkDir(parms, cb) }, 
+			function (cb) { applyLogo(parms, cb) }, 
+			function (cb) { replaceJdePdfWithLogoVersion(parms, cb) },
+			function (cb) { createAuditEntry(parms, cb) },
+			function (cb) { removeLock(parms, cb) }
+			], function (cb) { allDone(parms, cb) }
+	);
+
+
+}
+
+
+
+
+function createBackupDir(parms, cb) {
+
+	var cmd = 'mkdir -p /home/shareddata/backup';
+
+	console.log('Processing PDF ' + parms.jcfndfuf2 + ' - Create Backup Directory');
+	console.log(cmd);
+	exec(cmd, function(error, stdout, stderr) {
+		if (error !== null) {
+				cb(error, cmd + ' - Failed');
+			} else {
+				cb(null, cmd + ' - Done');
+			}
+		}
 	);
 
 }
+
+
+
+// Make a backup copy of the original JDE PDF file - just in case we need the untouched original
+// These can be purged inline with the normal JDE PrintQueue - currentlt PDF's older than approx 2 months
+
+function backupPdfFile(parms, cb) {
+
+	var cmd = 'cp /home/pdfdata/' + parms.jcfndfuf2 + ' /home/shareddata/backup/' + parms.jcfndfuf2;
+
+	console.log('Processing PDF ' + parms.jcfndfuf2 + ' - Copy JDE PDF file to Backup Directory');
+	console.log(cmd);
+	exec(cmd, function(error, stdout, stderr) {
+		if (error !== null) {
+				cb(error, cmd + ' - Failed');
+			} else {
+				cb(null, cmd + ' - Done');
+			}
+		}
+	);
+
+}
+
+
+
+// Make a working copy of the original JDE PDF file - this will have logos added to each page
+ 
+function copyPdfToWorkDir(parms, cb) {
+
+	var cmd = 'cp /home/pdfdata/' + parms.jcfndfuf2 + ' /home/shareddata/' + parms.jcfndfuf2.trim() + '_ORIGINAL';
+
+	console.log('Processing PDF ' + parms.jcfndfuf2 + ' - Copy JDE PDF file to work Directory');
+	console.log(cmd);
+	exec(cmd, function(error, stdout, stderr) {
+		if (error !== null) {
+				cb(error, cmd + ' - Failed');
+			} else {
+				cb(null, cmd + ' - Done');
+			}
+		}
+	);
+}
+
+
+
+// Apply logo to working copy of JDE PDF file
+
+function applyLogo(parms, cb) {
+
+	var pdfInput = '/home/shareddata/' + parms.jcfndfuf2.trim() + '_ORIGINAL';
+	var pdfOutput = '/home/shareddata/' + parms.jcfndfuf2;
+	var cmd = 'node ./src/pdfaddlogo.js ' + pdfInput + ' ' + pdfOutput ;
+
+	console.log('Processing PDF ' + parms.jcfndfuf2 + ' - Apply Logo to JDE PDF in Work Directory');
+	console.log(cmd);
+	exec(cmd, function(error, stdout, stderr) {
+		if (error !== null) {
+				cb(error, cmd + ' - Failed');
+			} else {
+				cb(null, cmd + ' - Done');
+			}
+		}
+	);
+}
+
+
+
+// Replace original JDE PDF File in PrintQueue with amended PDF incuding logos
+
+function replaceJdePdfWithLogoVersion(parms, cb) {
+
+	var pdfWithLogos = '/home/shareddata/' + parms.jcfndfuf2;
+	var jdePrintQueue = '/home/pdfdata/' + parms.jcfndfuf2;
+	var cmd = 'mv ' + pdfWithLogos + ' ' + jdePrintQueue;
+
+	console.log('Processing PDF ' + parms.jcfndfuf2 + ' - Replace JDE PDF with modified Logo version');
+	console.log(cmd);
+ 	exec(cmd, function(error, stdout, stderr) {
+		if (error !== null) {
+				cb(error, cmd + ' - Failed');
+			} else {
+				cb(null, cmd + ' - Done');
+			}
+		}
+	);
+}
+
+
+
+
+function createAuditEntry(parms, cb) {
+
+	console.log('Processing PDF ' + parms.jcfndfuf2 + ' - Write Audit Record');
+
+	// Cretae Audit entry for this Processed record
+	audit.createAuditEntry(parms.jcfndfuf2, parms.genkey, parms.hostname, 'PROCESSED - LOGO');
+
+	cb(null, 'Lock Released');
+
+}
+
+
+function removeLock(parms, cb) {
+
+	console.log('Processing PDF ' + parms.jcfndfuf2 + ' - Release Lock');
+	lock.removeLock(parms.record, parms.hostname);
+	console.log('Processing PDF ' + parms.jcfndfuf2 + ' - Lock Released');
+
+	cb(null, 'Lock Released');
+
+}
+
+
+
+
+//function cb(err, results) 
+//{
+//	console.log('It came back with this ' + results);
+//	
+//}
+
+
+
+
+function allDone(err, results) {
+
+	console.log('ALL DONE');
+
+}
+
 
