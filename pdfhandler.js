@@ -132,7 +132,7 @@ function queryJdeJobControl(connection, record)
 	// and to ensure a PDF completing on JDE when this query runs is still included
 
 	var auditTimestamp = record[2];
-	var result = audit.adjustTimestampByMinutes(auditTimestamp, -45);
+	var result = audit.adjustTimestampByMinutes(auditTimestamp, -5);
 	console.log(result);
 	var jdedate = result.jdeDate;
 	var jdetime = result.jdeTime;
