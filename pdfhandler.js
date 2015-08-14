@@ -137,7 +137,7 @@ function queryJdeJobControl(connection, record)
 	var jdedate = result.jdeDate;
 	var jdetime = result.jdeTime;
 
-	var query = "SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110 WHERE jcjobsts = 'D'";
+	var query = "SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110 WHERE jcjobsts = 'D' AND jcfuno = 'UBE'";
 	query += " AND jcactdate >= ";
 	query += jdedate;
 	query += " AND jcacttime >= ";
