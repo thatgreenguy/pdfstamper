@@ -24,7 +24,7 @@ REMOTE_DIR_SHAREDDATA="/home/shareddata"
 
 # Establish mount to remote JDE enterprise server (AIX) system for JDE Print Queue access/monitoring 
 umount $REMOTE_DIR
-DYNCMD="sshfs -o reconnect -C -o workaround=all -o Ciphers=arcfour  -o cache=no -o password_stdin ${SSHFS_USER}@${SSHFS_HOST}:${DIR_JDEPDF} ${REMOTE_DIR}"  
+DYNCMD="sshfs -o reconnect -C -o workaround=all -o ServerAliveInterval=30 -o Ciphers=arcfour  -o cache=no -o password_stdin ${SSHFS_USER}@${SSHFS_HOST}:${DIR_JDEPDF} ${REMOTE_DIR}"  
 echo $SSHFS_PWD | $DYNCMD
 if [ $? -ne 0 ]
 then 
@@ -40,7 +40,7 @@ fi
 # Establish mount to remote JDE enterprise server (AIX) system to use a common (between Docker containers)
 # work area for original (pre-process) PDF file backups and for inter container communication 
 umount $REMOTE_DIR_SHAREDDATA
-DYNCMD="sshfs -o reconnect -C -o workaround=all -o Ciphers=arcfour  -o cache=no -o password_stdin ${SSHFS_USER}@${SSHFS_HOST}:${DIR_SHAREDDATA} ${REMOTE_DIR_SHAREDDATA}"  
+DYNCMD="sshfs -o reconnect -C -o workaround=all -o ServerAliveInterval=30 -o Ciphers=arcfour  -o cache=no -o password_stdin ${SSHFS_USER}@${SSHFS_HOST}:${DIR_SHAREDDATA} ${REMOTE_DIR_SHAREDDATA}"  
 echo $SSHFS_PWD | $DYNCMD
 if [ $? -ne 0 ]
 then 
