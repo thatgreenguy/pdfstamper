@@ -13,6 +13,8 @@
     "oracledb": "0.7.0",
     "pdf-text-extract": "^1.1.4",
     "pdf2json": "^0.7.1",
-    "temporary": "0.0.8"
+    "sleep": "^3.0.0",
+    "temporary": "0.0.8",
+    "winston": "^1.0.1"
   }
 }

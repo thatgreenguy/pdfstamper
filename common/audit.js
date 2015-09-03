@@ -5,6 +5,7 @@
 
   
 var oracledb = require('oracledb');
+var logger = require("./logger");
 var credentials = {user: 'test_user', password: 'test_user', connectString: 'jdetest'};
 
 
@@ -31,7 +32,7 @@ exports.createAuditEntry = function(pdfjob, genkey, ctrid, status) {
 
 	oracledb.getConnection( credentials, function(err, connection)
 	{
-		if (err) { console.log('Oracle DB Connection Failure'); return;	}
+		if (err) { logger.error('Oracle DB Connection Failure'); return;	}
 
 		var query = "INSERT INTO testdta.F559859 VALUES (:pasawlatm, :pafndfuf2, :pablkk, :paactivid, :padeltastat, :papid, :pajobn, :pauser, :paupmj, :paupmt)";
 	
@@ -39,13 +40,13 @@ exports.createAuditEntry = function(pdfjob, genkey, ctrid, status) {
 		{
 			if (err)
 			{
-				 console.log(err.message);
+				 logger.error(err.message);
 			}
 			connection.release( function(err)
 			{
 				if (err)
 				{
-					console.log(err.message);
+					logger.error(err.message);
 					return;
 				}
 			});
@@ -158,15 +159,15 @@ exports.adjustTimestampByMinutes = function(timestamp, mins)
 		dt = new Date(n);
 	}
 
-	console.log('>>>>> timestamp is: ' + timestamp);
-	console.log('>>>>> milli seconds ' + millisecs);  
-	console.log('>>>>> Date is: ' + dt);
+	logger.debug('>>>>> timestamp is: ' + timestamp);
+	logger.debug('>>>>> milli seconds ' + millisecs);  
+	logger.debug('>>>>> Date is: ' + dt);
 
 	// Get timestamp date adjusted by however minutes
 
 	var adjdt = new Date(dt.setMinutes(dt.getMinutes() + mins));
 	
-	console.log('>>>>> add minutes : ' + adjdt);
+	logger.debug('>>>>> add minutes : ' + adjdt);
 
 	// Return Jde Julian style Date and Times 
 	var newdt = module.exports.getJdeJulianDate(adjdt);
