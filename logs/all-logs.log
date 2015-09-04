@@ -1389,3 +1389,678 @@
 {"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-03T15:25:13.463Z"}
 {"level":"info","message":"Checking completed : Thu Sep 03 2015 16:25:13 GMT+0100 (BST) took 111 milliseconds","timestamp":"2015-09-03T15:25:13.568Z"}
 {"level":"info","message":">>>>  No Change detected  <<<<","timestamp":"2015-09-03T15:25:13.569Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T07:44:14.980Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T07:44:14.987Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 08:44:15 GMT+0100 (BST)","timestamp":"2015-09-04T07:44:15.097Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T07:44:15.287Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T07:44:15.288Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 08:44:15 GMT+0100 (BST) took 343 milliseconds","timestamp":"2015-09-04T07:44:15.439Z"}
+{"level":"info","message":">>>>  Change detected  <<<<","timestamp":"2015-09-04T07:44:15.440Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 08:44:18 GMT+0100 (BST)","timestamp":"2015-09-04T07:44:18.445Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T07:44:18.451Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T07:44:18.452Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 08:44:18 GMT+0100 (BST) took 126 milliseconds","timestamp":"2015-09-04T07:44:18.571Z"}
+{"level":"info","message":">>>>  No Change detected  <<<<","timestamp":"2015-09-04T07:44:18.572Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 08:44:21 GMT+0100 (BST)","timestamp":"2015-09-04T07:44:21.575Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T07:44:21.581Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T07:44:21.581Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 08:44:21 GMT+0100 (BST) took 121 milliseconds","timestamp":"2015-09-04T07:44:21.696Z"}
+{"level":"info","message":">>>>  No Change detected  <<<<","timestamp":"2015-09-04T07:44:21.697Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T07:47:18.772Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T07:47:18.780Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 08:47:18 GMT+0100 (BST)","timestamp":"2015-09-04T07:47:18.871Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T07:47:18.883Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T07:47:18.884Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 08:47:18 GMT+0100 (BST) took 125 milliseconds","timestamp":"2015-09-04T07:47:18.995Z"}
+{"level":"info","message":">>>>  Change detected  <<<<","timestamp":"2015-09-04T07:47:18.996Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 08:47:21 GMT+0100 (BST)","timestamp":"2015-09-04T07:47:22.000Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T07:47:22.006Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T07:47:22.006Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 08:47:22 GMT+0100 (BST) took 129 milliseconds","timestamp":"2015-09-04T07:47:22.128Z"}
+{"level":"info","message":">>>>  No Change detected  <<<<","timestamp":"2015-09-04T07:47:22.128Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 08:47:25 GMT+0100 (BST)","timestamp":"2015-09-04T07:47:25.132Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T07:47:25.138Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T07:47:25.139Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 08:47:25 GMT+0100 (BST) took 157 milliseconds","timestamp":"2015-09-04T07:47:25.290Z"}
+{"level":"info","message":">>>>  No Change detected  <<<<","timestamp":"2015-09-04T07:47:25.290Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 08:47:28 GMT+0100 (BST)","timestamp":"2015-09-04T07:47:28.293Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T07:47:28.299Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T07:47:28.301Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 08:47:28 GMT+0100 (BST) took 120 milliseconds","timestamp":"2015-09-04T07:47:28.414Z"}
+{"level":"info","message":">>>>  No Change detected  <<<<","timestamp":"2015-09-04T07:47:28.414Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 08:47:31 GMT+0100 (BST)","timestamp":"2015-09-04T07:47:31.418Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T07:47:31.428Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T07:47:31.429Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 08:47:31 GMT+0100 (BST) took 115 milliseconds","timestamp":"2015-09-04T07:47:31.533Z"}
+{"level":"info","message":">>>>  No Change detected  <<<<","timestamp":"2015-09-04T07:47:31.533Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 08:47:34 GMT+0100 (BST)","timestamp":"2015-09-04T07:47:34.538Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T07:47:34.545Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T07:47:34.546Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 08:47:34 GMT+0100 (BST) took 112 milliseconds","timestamp":"2015-09-04T07:47:34.650Z"}
+{"level":"info","message":">>>>  No Change detected  <<<<","timestamp":"2015-09-04T07:47:34.650Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 08:47:37 GMT+0100 (BST)","timestamp":"2015-09-04T07:47:37.654Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T07:47:37.660Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T07:47:37.660Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 08:47:37 GMT+0100 (BST) took 117 milliseconds","timestamp":"2015-09-04T07:47:37.771Z"}
+{"level":"info","message":">>>>  No Change detected  <<<<","timestamp":"2015-09-04T07:47:37.771Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 08:47:40 GMT+0100 (BST)","timestamp":"2015-09-04T07:47:40.776Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T07:47:40.783Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T07:47:40.788Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 08:47:40 GMT+0100 (BST) took 122 milliseconds","timestamp":"2015-09-04T07:47:40.898Z"}
+{"level":"info","message":">>>>  No Change detected  <<<<","timestamp":"2015-09-04T07:47:40.899Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 08:47:43 GMT+0100 (BST)","timestamp":"2015-09-04T07:47:43.902Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T07:47:43.908Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T07:47:43.908Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 08:47:44 GMT+0100 (BST) took 154 milliseconds","timestamp":"2015-09-04T07:47:44.056Z"}
+{"level":"info","message":">>>>  No Change detected  <<<<","timestamp":"2015-09-04T07:47:44.056Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 08:47:47 GMT+0100 (BST)","timestamp":"2015-09-04T07:47:47.059Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T07:47:47.064Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T07:47:47.065Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 08:47:47 GMT+0100 (BST) took 112 milliseconds","timestamp":"2015-09-04T07:47:47.171Z"}
+{"level":"info","message":">>>>  No Change detected  <<<<","timestamp":"2015-09-04T07:47:47.172Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 08:47:50 GMT+0100 (BST)","timestamp":"2015-09-04T07:47:50.177Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T07:47:50.182Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T07:47:50.183Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 08:47:50 GMT+0100 (BST) took 138 milliseconds","timestamp":"2015-09-04T07:47:50.316Z"}
+{"level":"info","message":">>>>  No Change detected  <<<<","timestamp":"2015-09-04T07:47:50.318Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 08:47:53 GMT+0100 (BST)","timestamp":"2015-09-04T07:47:53.323Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T07:47:53.328Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T07:47:53.329Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 08:47:53 GMT+0100 (BST) took 133 milliseconds","timestamp":"2015-09-04T07:47:53.456Z"}
+{"level":"info","message":">>>>  No Change detected  <<<<","timestamp":"2015-09-04T07:47:53.457Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 08:47:56 GMT+0100 (BST)","timestamp":"2015-09-04T07:47:56.461Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T07:47:56.466Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T07:47:56.467Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 08:47:56 GMT+0100 (BST) took 132 milliseconds","timestamp":"2015-09-04T07:47:56.593Z"}
+{"level":"info","message":">>>>  No Change detected  <<<<","timestamp":"2015-09-04T07:47:56.593Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 08:47:59 GMT+0100 (BST)","timestamp":"2015-09-04T07:47:59.596Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T07:47:59.602Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T07:47:59.603Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 08:47:59 GMT+0100 (BST) took 109 milliseconds","timestamp":"2015-09-04T07:47:59.705Z"}
+{"level":"info","message":">>>>  No Change detected  <<<<","timestamp":"2015-09-04T07:47:59.705Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 08:48:02 GMT+0100 (BST)","timestamp":"2015-09-04T07:48:02.708Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T07:48:02.714Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T07:48:02.714Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 08:48:02 GMT+0100 (BST) took 135 milliseconds","timestamp":"2015-09-04T07:48:02.843Z"}
+{"level":"info","message":">>>>  No Change detected  <<<<","timestamp":"2015-09-04T07:48:02.844Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T07:57:12.745Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T07:57:12.753Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 08:57:12 GMT+0100 (BST)","timestamp":"2015-09-04T07:57:12.843Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T07:57:12.854Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T07:57:12.854Z"}
+{"level":"warn","message":" Last PDF Coutn is : 0","timestamp":"2015-09-04T07:57:12.969Z"}
+{"level":"warn","message":" New Count is : undefined","timestamp":"2015-09-04T07:57:12.969Z"}
+{"level":"info","message":"          >>>>  Change detected  <<<<","timestamp":"2015-09-04T07:57:12.970Z"}
+{"date":"Fri Sep 04 2015 08:57:12 GMT+0100 (BST)","process":{"pid":53,"uid":0,"gid":0,"cwd":"/src","execPath":"/usr/local/bin/node","version":"v0.10.39","argv":["node","/src/pdfstartup.js"],"memoryUsage":{"rss":27815936,"heapTotal":10324992,"heapUsed":5220888}},"os":{"loadavg":[0.0029296875,0.0146484375,0.04541015625],"uptime":4202367.610081129},"trace":[{"column":25,"file":"/src/pdfstartup.js","function":null,"line":215,"method":null,"native":false}],"stack":["ReferenceError: result is not defined","    at /src/pdfstartup.js:215:25"],"level":"error","message":"uncaughtException: result is not defined","timestamp":"2015-09-04T07:57:12.979Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T07:57:53.420Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T07:57:53.427Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 08:57:53 GMT+0100 (BST)","timestamp":"2015-09-04T07:57:53.516Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T07:57:53.527Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T07:57:53.528Z"}
+{"level":"warn","message":" Last PDF Coutn is : 0","timestamp":"2015-09-04T07:57:53.643Z"}
+{"level":"warn","message":" New Count is : undefined","timestamp":"2015-09-04T07:57:53.644Z"}
+{"level":"info","message":"          >>>>  Change detected  <<<<","timestamp":"2015-09-04T07:57:53.644Z"}
+{"date":"Fri Sep 04 2015 08:57:53 GMT+0100 (BST)","process":{"pid":59,"uid":0,"gid":0,"cwd":"/src","execPath":"/usr/local/bin/node","version":"v0.10.39","argv":["node","/src/pdfstartup.js"],"memoryUsage":{"rss":27279360,"heapTotal":10324992,"heapUsed":5221752}},"os":{"loadavg":[0.0029296875,0.0146484375,0.04541015625],"uptime":4202408.284073068},"trace":[{"column":25,"file":"/src/pdfstartup.js","function":null,"line":215,"method":null,"native":false}],"stack":["ReferenceError: result is not defined","    at /src/pdfstartup.js:215:25"],"level":"error","message":"uncaughtException: result is not defined","timestamp":"2015-09-04T07:57:53.652Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T08:13:02.688Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T08:13:02.696Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 09:13:02 GMT+0100 (BST)","timestamp":"2015-09-04T08:13:02.815Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T08:13:02.834Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T08:13:02.835Z"}
+{"level":"warn","message":" Last PDF Coutn is : 0","timestamp":"2015-09-04T08:13:02.976Z"}
+{"level":"warn","message":" New Count is : 7","timestamp":"2015-09-04T08:13:02.976Z"}
+{"level":"info","message":"          >>>>  Change detected  <<<<","timestamp":"2015-09-04T08:13:02.977Z"}
+{"date":"Fri Sep 04 2015 09:13:02 GMT+0100 (BST)","process":{"pid":65,"uid":0,"gid":0,"cwd":"/src","execPath":"/usr/local/bin/node","version":"v0.10.39","argv":["node","/src/pdfstartup.js"],"memoryUsage":{"rss":27283456,"heapTotal":10324992,"heapUsed":5226000}},"os":{"loadavg":[0.0029296875,0.0146484375,0.04541015625],"uptime":4203317.616917995},"trace":[{"column":25,"file":"/src/pdfstartup.js","function":null,"line":215,"method":null,"native":false}],"stack":["ReferenceError: result is not defined","    at /src/pdfstartup.js:215:25"],"level":"error","message":"uncaughtException: result is not defined","timestamp":"2015-09-04T08:13:02.985Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T08:15:44.769Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T08:15:44.776Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 09:15:44 GMT+0100 (BST)","timestamp":"2015-09-04T08:15:44.884Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T08:15:44.900Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T08:15:44.901Z"}
+{"date":"Fri Sep 04 2015 09:15:45 GMT+0100 (BST)","process":{"pid":71,"uid":0,"gid":0,"cwd":"/src","execPath":"/usr/local/bin/node","version":"v0.10.39","argv":["node","/src/pdfstartup.js"],"memoryUsage":{"rss":27193344,"heapTotal":10324992,"heapUsed":5227136}},"os":{"loadavg":[0.0029296875,0.0146484375,0.04541015625],"uptime":4203479.694188746},"trace":[{"column":47,"file":"/src/node_modules/winston/node_modules/cycle/cycle.js","function":"derez","line":93,"method":null,"native":false},{"column":6,"file":"/src/node_modules/winston/node_modules/cycle/cycle.js","function":"Object.decycle","line":101,"method":"decycle","native":false},{"column":31,"file":"/src/node_modules/winston/lib/winston/common.js","function":"Object.exports.log","line":132,"method":"exports.log","native":false},{"column":23,"file":"/src/node_modules/winston/lib/winston/transports/file.js","function":"File.log","line":147,"method":"log","native":false},{"column":17,"file":"/src/node_modules/winston/lib/winston/logger.js","function":"emit","line":186,"method":null,"native":false},{"column":13,"file":"/src/node_modules/winston/node_modules/async/lib/async.js","function":null,"line":122,"method":null,"native":false},{"column":13,"file":"/src/node_modules/winston/node_modules/async/lib/async.js","function":"_each","line":46,"method":null,"native":false},{"column":9,"file":"/src/node_modules/winston/node_modules/async/lib/async.js","function":"Object.async.each","line":121,"method":"async.each","native":false},{"column":9,"file":"/src/node_modules/winston/lib/winston/logger.js","function":"Logger.log","line":214,"method":"log","native":false},{"column":18,"file":"/src/node_modules/winston/lib/winston/common.js","function":"target.(anonymous function) [as warn]","line":52,"method":"(anonymous function) [as warn]","native":false}],"stack":["Error: NJS-015: action is a write-only property","    at derez (/src/node_modules/winston/node_modules/cycle/cycle.js:93:47)","    at Object.decycle (/src/node_modules/winston/node_modules/cycle/cycle.js:101:6)","    at Object.exports.log (/src/node_modules/winston/lib/winston/common.js:132:31)","    at File.log (/src/node_modules/winston/lib/winston/transports/file.js:147:23)","    at emit (/src/node_modules/winston/lib/winston/logger.js:186:17)","    at /src/node_modules/winston/node_modules/async/lib/async.js:122:13","    at _each (/src/node_modules/winston/node_modules/async/lib/async.js:46:13)","    at Object.async.each (/src/node_modules/winston/node_modules/async/lib/async.js:121:9)","    at Logger.log (/src/node_modules/winston/lib/winston/logger.js:214:9)","    at target.(anonymous function) [as warn] (/src/node_modules/winston/lib/winston/common.js:52:18)"],"level":"error","message":"uncaughtException: NJS-015: action is a write-only property","timestamp":"2015-09-04T08:15:45.065Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T08:16:18.165Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T08:16:18.173Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 09:16:18 GMT+0100 (BST)","timestamp":"2015-09-04T08:16:18.271Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T08:16:18.281Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T08:16:18.282Z"}
+{"level":"warn","message":" Last PDF Coutn is : 0","timestamp":"2015-09-04T08:16:18.404Z"}
+{"level":"warn","message":" New Count is : 8","timestamp":"2015-09-04T08:16:18.404Z"}
+{"level":"info","message":"          >>>>  Change detected  <<<<","timestamp":"2015-09-04T08:16:18.405Z"}
+{"date":"Fri Sep 04 2015 09:16:18 GMT+0100 (BST)","process":{"pid":77,"uid":0,"gid":0,"cwd":"/src","execPath":"/usr/local/bin/node","version":"v0.10.39","argv":["node","/src/pdfstartup.js"],"memoryUsage":{"rss":27402240,"heapTotal":10324992,"heapUsed":5270840}},"os":{"loadavg":[0.0029296875,0.0146484375,0.04541015625],"uptime":4203513.044740627},"trace":[{"column":25,"file":"/src/pdfstartup.js","function":null,"line":216,"method":null,"native":false}],"stack":["ReferenceError: result is not defined","    at /src/pdfstartup.js:216:25"],"level":"error","message":"uncaughtException: result is not defined","timestamp":"2015-09-04T08:16:18.413Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T08:16:39.641Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T08:16:39.648Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 09:16:39 GMT+0100 (BST)","timestamp":"2015-09-04T08:16:39.759Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T08:16:39.769Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T08:16:39.770Z"}
+{"level":"warn","message":" Last PDF Coutn is : 0","timestamp":"2015-09-04T08:16:39.908Z"}
+{"level":"warn","message":" New Count is : 8","timestamp":"2015-09-04T08:16:39.909Z"}
+{"level":"info","message":"          >>>>  Change detected  <<<<","timestamp":"2015-09-04T08:16:39.909Z"}
+{"date":"Fri Sep 04 2015 09:16:39 GMT+0100 (BST)","process":{"pid":83,"uid":0,"gid":0,"cwd":"/src","execPath":"/usr/local/bin/node","version":"v0.10.39","argv":["node","/src/pdfstartup.js"],"memoryUsage":{"rss":27156480,"heapTotal":10324992,"heapUsed":5225776}},"os":{"loadavg":[0.0029296875,0.0146484375,0.04541015625],"uptime":4203534.54930641},"trace":[{"column":25,"file":"/src/pdfstartup.js","function":null,"line":216,"method":null,"native":false}],"stack":["ReferenceError: result is not defined","    at /src/pdfstartup.js:216:25"],"level":"error","message":"uncaughtException: result is not defined","timestamp":"2015-09-04T08:16:39.918Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T08:28:18.407Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T08:28:18.414Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 09:28:18 GMT+0100 (BST)","timestamp":"2015-09-04T08:28:18.512Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T08:28:18.533Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T08:28:18.534Z"}
+{"level":"warn","message":" Last PDF Coutn is : 0","timestamp":"2015-09-04T08:28:18.770Z"}
+{"level":"warn","message":" New Count is : 11","timestamp":"2015-09-04T08:28:18.770Z"}
+{"level":"info","message":"          >>>>  Change detected  <<<<","timestamp":"2015-09-04T08:28:18.771Z"}
+{"date":"Fri Sep 04 2015 09:28:18 GMT+0100 (BST)","process":{"pid":95,"uid":0,"gid":0,"cwd":"/src","execPath":"/usr/local/bin/node","version":"v0.10.39","argv":["node","/src/pdfstartup.js"],"memoryUsage":{"rss":27426816,"heapTotal":10324992,"heapUsed":5225256}},"os":{"loadavg":[0.03515625,0.05712890625,0.0517578125],"uptime":4204233.410804355},"trace":[{"column":25,"file":"/src/pdfstartup.js","function":null,"line":209,"method":null,"native":false}],"stack":["ReferenceError: result is not defined","    at /src/pdfstartup.js:209:25"],"level":"error","message":"uncaughtException: result is not defined","timestamp":"2015-09-04T08:28:18.779Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T08:29:52.408Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T08:29:52.416Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 09:29:52 GMT+0100 (BST)","timestamp":"2015-09-04T08:29:52.524Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T08:29:52.536Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T08:29:52.537Z"}
+{"level":"warn","message":" Last PDF Coutn is : 0","timestamp":"2015-09-04T08:29:52.657Z"}
+{"level":"warn","message":" New Count is : 11","timestamp":"2015-09-04T08:29:52.658Z"}
+{"level":"info","message":"          >>>>  Change detected  <<<<","timestamp":"2015-09-04T08:29:52.658Z"}
+{"date":"Fri Sep 04 2015 09:29:52 GMT+0100 (BST)","process":{"pid":101,"uid":0,"gid":0,"cwd":"/src","execPath":"/usr/local/bin/node","version":"v0.10.39","argv":["node","/src/pdfstartup.js"],"memoryUsage":{"rss":27140096,"heapTotal":10324992,"heapUsed":5225920}},"os":{"loadavg":[0.00732421875,0.041015625,0.04541015625],"uptime":4204327.298347585},"trace":[{"column":25,"file":"/src/pdfstartup.js","function":null,"line":209,"method":null,"native":false}],"stack":["ReferenceError: result is not defined","    at /src/pdfstartup.js:209:25"],"level":"error","message":"uncaughtException: result is not defined","timestamp":"2015-09-04T08:29:52.667Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T08:31:35.917Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T08:31:35.925Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 09:31:36 GMT+0100 (BST)","timestamp":"2015-09-04T08:31:36.021Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T08:31:36.030Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T08:31:36.031Z"}
+{"level":"warn","message":" Last PDF Coutn is : 0","timestamp":"2015-09-04T08:31:36.145Z"}
+{"level":"warn","message":" New Count is : 11","timestamp":"2015-09-04T08:31:36.146Z"}
+{"level":"info","message":"          >>>>  Change detected  <<<<","timestamp":"2015-09-04T08:31:36.146Z"}
+{"level":"info","message":"undefined","timestamp":"2015-09-04T08:31:36.148Z"}
+{"date":"Fri Sep 04 2015 09:31:36 GMT+0100 (BST)","process":{"pid":107,"uid":0,"gid":0,"cwd":"/src","execPath":"/usr/local/bin/node","version":"v0.10.39","argv":["node","/src/pdfstartup.js"],"memoryUsage":{"rss":27398144,"heapTotal":10312960,"heapUsed":5353312}},"os":{"loadavg":[0.0029296875,0.03076171875,0.04541015625],"uptime":4204430.787579838},"trace":[{"column":25,"file":"/src/pdfstartup.js","function":null,"line":212,"method":null,"native":false}],"stack":["ReferenceError: result is not defined","    at /src/pdfstartup.js:212:25"],"level":"error","message":"uncaughtException: result is not defined","timestamp":"2015-09-04T08:31:36.156Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T08:33:42.696Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T08:33:42.703Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 09:33:42 GMT+0100 (BST)","timestamp":"2015-09-04T08:33:42.806Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T08:33:42.817Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T08:33:42.818Z"}
+{"level":"warn","message":" Last PDF Coutn is : 0","timestamp":"2015-09-04T08:33:42.947Z"}
+{"level":"warn","message":" New Count is : 11","timestamp":"2015-09-04T08:33:42.948Z"}
+{"level":"info","message":"          >>>>  Change detected  <<<<","timestamp":"2015-09-04T08:33:42.948Z"}
+{"0":11,"level":"info","message":"","timestamp":"2015-09-04T08:33:42.949Z"}
+{"date":"Fri Sep 04 2015 09:33:42 GMT+0100 (BST)","process":{"pid":113,"uid":0,"gid":0,"cwd":"/src","execPath":"/usr/local/bin/node","version":"v0.10.39","argv":["node","/src/pdfstartup.js"],"memoryUsage":{"rss":27533312,"heapTotal":10324992,"heapUsed":5235184}},"os":{"loadavg":[0.01513671875,0.03466796875,0.04541015625],"uptime":4204557.588738514},"trace":[{"column":25,"file":"/src/pdfstartup.js","function":null,"line":212,"method":null,"native":false}],"stack":["ReferenceError: result is not defined","    at /src/pdfstartup.js:212:25"],"level":"error","message":"uncaughtException: result is not defined","timestamp":"2015-09-04T08:33:42.957Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T08:34:51.011Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T08:34:51.018Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 09:34:51 GMT+0100 (BST)","timestamp":"2015-09-04T08:34:51.120Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T08:34:51.132Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T08:34:51.132Z"}
+{"level":"warn","message":" Last PDF Coutn is : 0","timestamp":"2015-09-04T08:34:51.255Z"}
+{"level":"warn","message":" New Count is : 11","timestamp":"2015-09-04T08:34:51.256Z"}
+{"level":"info","message":"          >>>>  Change detected  <<<<","timestamp":"2015-09-04T08:34:51.256Z"}
+{"level":"info","message":"011","timestamp":"2015-09-04T08:34:51.257Z"}
+{"date":"Fri Sep 04 2015 09:34:51 GMT+0100 (BST)","process":{"pid":119,"uid":0,"gid":0,"cwd":"/src","execPath":"/usr/local/bin/node","version":"v0.10.39","argv":["node","/src/pdfstartup.js"],"memoryUsage":{"rss":27136000,"heapTotal":10324992,"heapUsed":5237272}},"os":{"loadavg":[0.0048828125,0.02783203125,0.04541015625],"uptime":4204625.89770284},"trace":[{"column":80,"file":"/src/pdfstartup.js","function":null,"line":213,"method":null,"native":false}],"stack":["ReferenceError: begin is not defined","    at /src/pdfstartup.js:213:80"],"level":"error","message":"uncaughtException: begin is not defined","timestamp":"2015-09-04T08:34:51.265Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T08:36:48.106Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T08:36:48.113Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 09:36:48 GMT+0100 (BST)","timestamp":"2015-09-04T08:36:48.203Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T08:36:48.215Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T08:36:48.215Z"}
+{"level":"warn","message":" Last PDF Coutn is : 0","timestamp":"2015-09-04T08:36:48.340Z"}
+{"level":"warn","message":" New Count is : 11","timestamp":"2015-09-04T08:36:48.340Z"}
+{"level":"info","message":"          >>>>  Change detected  <<<<","timestamp":"2015-09-04T08:36:48.341Z"}
+{"0":11,"level":"info","message":"","timestamp":"2015-09-04T08:36:48.341Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 09:36:48 GMT+0100 (BST) took 139 milliseconds","timestamp":"2015-09-04T08:36:48.341Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 09:36:51 GMT+0100 (BST)","timestamp":"2015-09-04T08:36:51.346Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T08:36:51.353Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T08:36:51.353Z"}
+{"level":"warn","message":" Last PDF Coutn is : 11","timestamp":"2015-09-04T08:36:51.479Z"}
+{"level":"warn","message":" New Count is : 11","timestamp":"2015-09-04T08:36:51.479Z"}
+{"level":"info","message":"          >>>>  Change detected  <<<<","timestamp":"2015-09-04T08:36:51.479Z"}
+{"0":11,"level":"info","message":"","timestamp":"2015-09-04T08:36:51.480Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 09:36:51 GMT+0100 (BST) took 134 milliseconds","timestamp":"2015-09-04T08:36:51.480Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 09:36:54 GMT+0100 (BST)","timestamp":"2015-09-04T08:36:54.484Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T08:36:54.489Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T08:36:54.490Z"}
+{"level":"warn","message":" Last PDF Coutn is : 11","timestamp":"2015-09-04T08:36:54.607Z"}
+{"level":"warn","message":" New Count is : 11","timestamp":"2015-09-04T08:36:54.608Z"}
+{"level":"info","message":"          >>>>  Change detected  <<<<","timestamp":"2015-09-04T08:36:54.608Z"}
+{"0":11,"level":"info","message":"","timestamp":"2015-09-04T08:36:54.608Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 09:36:54 GMT+0100 (BST) took 124 milliseconds","timestamp":"2015-09-04T08:36:54.608Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 09:36:57 GMT+0100 (BST)","timestamp":"2015-09-04T08:36:57.613Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T08:36:57.619Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T08:36:57.621Z"}
+{"level":"warn","message":" Last PDF Coutn is : 11","timestamp":"2015-09-04T08:36:57.746Z"}
+{"level":"warn","message":" New Count is : 11","timestamp":"2015-09-04T08:36:57.746Z"}
+{"level":"info","message":"          >>>>  Change detected  <<<<","timestamp":"2015-09-04T08:36:57.747Z"}
+{"0":11,"level":"info","message":"","timestamp":"2015-09-04T08:36:57.747Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 09:36:57 GMT+0100 (BST) took 134 milliseconds","timestamp":"2015-09-04T08:36:57.747Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 09:37:00 GMT+0100 (BST)","timestamp":"2015-09-04T08:37:00.750Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T08:37:00.756Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T08:37:00.757Z"}
+{"level":"warn","message":" Last PDF Coutn is : 11","timestamp":"2015-09-04T08:37:00.883Z"}
+{"level":"warn","message":" New Count is : 11","timestamp":"2015-09-04T08:37:00.884Z"}
+{"level":"info","message":"          >>>>  Change detected  <<<<","timestamp":"2015-09-04T08:37:00.884Z"}
+{"0":11,"level":"info","message":"","timestamp":"2015-09-04T08:37:00.885Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 09:37:00 GMT+0100 (BST) took 135 milliseconds","timestamp":"2015-09-04T08:37:00.885Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 09:37:03 GMT+0100 (BST)","timestamp":"2015-09-04T08:37:03.888Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T08:37:03.893Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T08:37:03.894Z"}
+{"level":"warn","message":" Last PDF Coutn is : 11","timestamp":"2015-09-04T08:37:04.003Z"}
+{"level":"warn","message":" New Count is : 11","timestamp":"2015-09-04T08:37:04.003Z"}
+{"level":"info","message":"          >>>>  Change detected  <<<<","timestamp":"2015-09-04T08:37:04.004Z"}
+{"0":11,"level":"info","message":"","timestamp":"2015-09-04T08:37:04.008Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 09:37:04 GMT+0100 (BST) took 120 milliseconds","timestamp":"2015-09-04T08:37:04.008Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T08:54:51.552Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T08:54:51.560Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 09:54:51 GMT+0100 (BST)","timestamp":"2015-09-04T08:54:51.689Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T08:54:51.705Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T08:54:51.706Z"}
+{"level":"warn","message":" Last PDF Coutn is : 0","timestamp":"2015-09-04T08:54:51.858Z"}
+{"level":"warn","message":" New Count is : 11","timestamp":"2015-09-04T08:54:51.858Z"}
+{"level":"info","message":"          >>>>  Change detected  <<<<","timestamp":"2015-09-04T08:54:51.858Z"}
+{"0":11,"level":"info","message":"","timestamp":"2015-09-04T08:54:51.859Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 09:54:51 GMT+0100 (BST) took 172 milliseconds","timestamp":"2015-09-04T08:54:51.859Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 09:54:54 GMT+0100 (BST)","timestamp":"2015-09-04T08:54:54.864Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T08:54:54.870Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T08:54:54.871Z"}
+{"level":"warn","message":" Last PDF Coutn is : 11","timestamp":"2015-09-04T08:54:55.009Z"}
+{"level":"warn","message":" New Count is : 11","timestamp":"2015-09-04T08:54:55.009Z"}
+{"level":"info","message":"          >>>>  Change detected  <<<<","timestamp":"2015-09-04T08:54:55.009Z"}
+{"0":11,"level":"info","message":"","timestamp":"2015-09-04T08:54:55.009Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 09:54:55 GMT+0100 (BST) took 146 milliseconds","timestamp":"2015-09-04T08:54:55.010Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 09:54:58 GMT+0100 (BST)","timestamp":"2015-09-04T08:54:58.013Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T08:54:58.019Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT COUNT(*) FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T08:54:58.019Z"}
+{"level":"warn","message":" Last PDF Coutn is : 11","timestamp":"2015-09-04T08:54:58.137Z"}
+{"level":"warn","message":" New Count is : 11","timestamp":"2015-09-04T08:54:58.137Z"}
+{"level":"info","message":"          >>>>  Change detected  <<<<","timestamp":"2015-09-04T08:54:58.137Z"}
+{"0":11,"level":"info","message":"","timestamp":"2015-09-04T08:54:58.137Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 09:54:58 GMT+0100 (BST) took 125 milliseconds","timestamp":"2015-09-04T08:54:58.138Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T08:56:29.942Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T08:56:29.949Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 09:56:30 GMT+0100 (BST)","timestamp":"2015-09-04T08:56:30.092Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T08:56:30.102Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T08:56:30.103Z"}
+{"level":"warn","message":" Last PDF Coutn is : 0","timestamp":"2015-09-04T08:56:30.237Z"}
+{"level":"warn","message":" New Count is : R5542565_ITXSOS01_182392_PDF  ,115247,85045,1511638","timestamp":"2015-09-04T08:56:30.237Z"}
+{"level":"info","message":"          >>>>  Change detected  <<<<","timestamp":"2015-09-04T08:56:30.237Z"}
+{"0":"R5542565_ITXSOS01_182392_PDF  ","1":115247,"2":85045,"3":1511638,"level":"info","message":"","timestamp":"2015-09-04T08:56:30.238Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 09:56:30 GMT+0100 (BST) took 147 milliseconds","timestamp":"2015-09-04T08:56:30.238Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 09:56:33 GMT+0100 (BST)","timestamp":"2015-09-04T08:56:33.243Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T08:56:33.249Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T08:56:33.249Z"}
+{"level":"warn","message":" Last PDF Coutn is : R5542565_ITXSOS01_182392_PDF  ,115247,85045,1511638","timestamp":"2015-09-04T08:56:33.371Z"}
+{"level":"warn","message":" New Count is : R5542565_ITXSOS01_182392_PDF  ,115247,85045,1511638","timestamp":"2015-09-04T08:56:33.372Z"}
+{"level":"info","message":"          >>>>  Change detected  <<<<","timestamp":"2015-09-04T08:56:33.372Z"}
+{"0":"R5542565_ITXSOS01_182392_PDF  ","1":115247,"2":85045,"3":1511638,"level":"info","message":"","timestamp":"2015-09-04T08:56:33.372Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 09:56:33 GMT+0100 (BST) took 129 milliseconds","timestamp":"2015-09-04T08:56:33.373Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T08:59:10.809Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T08:59:10.816Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 09:59:10 GMT+0100 (BST)","timestamp":"2015-09-04T08:59:10.909Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T08:59:10.938Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T08:59:10.938Z"}
+{"level":"warn","message":" Last PDF Coutn is : 0","timestamp":"2015-09-04T08:59:11.059Z"}
+{"level":"warn","message":" New Count is : R5542565_ITXSOS01_182392_PDF  ,115247,85045,1511638","timestamp":"2015-09-04T08:59:11.059Z"}
+{"level":"info","message":"          >>>>  Change detected  <<<<","timestamp":"2015-09-04T08:59:11.059Z"}
+{"0":"R5542565_ITXSOS01_182392_PDF  ","1":115247,"2":85045,"3":1511638,"level":"info","message":"","timestamp":"2015-09-04T08:59:11.060Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 09:59:11 GMT+0100 (BST) took 152 milliseconds","timestamp":"2015-09-04T08:59:11.060Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T09:11:04.418Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T09:11:04.426Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:11:04 GMT+0100 (BST)","timestamp":"2015-09-04T09:11:04.537Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:11:04.562Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 ORDER BY jcactdate DESC, jcacttime DESC AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ","timestamp":"2015-09-04T09:11:04.563Z"}
+{"level":"error","message":"ORA-00933: SQL command not properly ended","timestamp":"2015-09-04T09:11:04.607Z"}
+{"date":"Fri Sep 04 2015 10:11:04 GMT+0100 (BST)","process":{"pid":149,"uid":0,"gid":0,"cwd":"/src","execPath":"/usr/local/bin/node","version":"v0.10.39","argv":["node","/src/pdfstartup.js"],"memoryUsage":{"rss":27410432,"heapTotal":10324992,"heapUsed":5192816}},"os":{"loadavg":[0.0029296875,0.0234375,0.04541015625],"uptime":4206799.24744264},"trace":[{"column":38,"file":"/src/pdfstartup.js","function":null,"line":168,"method":null,"native":false}],"stack":["TypeError: Cannot read property 'resultSet' of undefined","    at /src/pdfstartup.js:168:38"],"level":"error","message":"uncaughtException: Cannot read property 'resultSet' of undefined","timestamp":"2015-09-04T09:11:04.616Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T09:11:32.231Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T09:11:32.238Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:11:32 GMT+0100 (BST)","timestamp":"2015-09-04T09:11:32.370Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:11:32.381Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:11:32.382Z"}
+{"level":"warn","message":" Last PDF Coutn is : 0","timestamp":"2015-09-04T09:11:32.522Z"}
+{"level":"warn","message":" New Count is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:11:32.523Z"}
+{"level":"info","message":"          >>>>  Change detected  <<<<","timestamp":"2015-09-04T09:11:32.523Z"}
+{"0":"R5542565_ITXSOS01_182397_PDF  ","1":115247,"2":92125,"3":1908780,"level":"info","message":"","timestamp":"2015-09-04T09:11:32.523Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:11:32 GMT+0100 (BST) took 155 milliseconds","timestamp":"2015-09-04T09:11:32.524Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:11:35 GMT+0100 (BST)","timestamp":"2015-09-04T09:11:35.529Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:11:35.535Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:11:35.535Z"}
+{"level":"warn","message":" Last PDF Coutn is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:11:35.651Z"}
+{"level":"warn","message":" New Count is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:11:35.651Z"}
+{"level":"info","message":"          >>>>  Change detected  <<<<","timestamp":"2015-09-04T09:11:35.651Z"}
+{"0":"R5542565_ITXSOS01_182397_PDF  ","1":115247,"2":92125,"3":1908780,"level":"info","message":"","timestamp":"2015-09-04T09:11:35.652Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:11:35 GMT+0100 (BST) took 123 milliseconds","timestamp":"2015-09-04T09:11:35.652Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:11:38 GMT+0100 (BST)","timestamp":"2015-09-04T09:11:38.656Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:11:38.661Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:11:38.662Z"}
+{"level":"warn","message":" Last PDF Coutn is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:11:38.780Z"}
+{"level":"warn","message":" New Count is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:11:38.780Z"}
+{"level":"info","message":"          >>>>  Change detected  <<<<","timestamp":"2015-09-04T09:11:38.781Z"}
+{"0":"R5542565_ITXSOS01_182397_PDF  ","1":115247,"2":92125,"3":1908780,"level":"info","message":"","timestamp":"2015-09-04T09:11:38.781Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:11:38 GMT+0100 (BST) took 126 milliseconds","timestamp":"2015-09-04T09:11:38.781Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:11:41 GMT+0100 (BST)","timestamp":"2015-09-04T09:11:41.786Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:11:41.792Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:11:41.796Z"}
+{"level":"warn","message":" Last PDF Coutn is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:11:41.937Z"}
+{"level":"warn","message":" New Count is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:11:41.938Z"}
+{"level":"info","message":"          >>>>  Change detected  <<<<","timestamp":"2015-09-04T09:11:41.938Z"}
+{"0":"R5542565_ITXSOS01_182397_PDF  ","1":115247,"2":92125,"3":1908780,"level":"info","message":"","timestamp":"2015-09-04T09:11:41.938Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:11:41 GMT+0100 (BST) took 153 milliseconds","timestamp":"2015-09-04T09:11:41.938Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:11:44 GMT+0100 (BST)","timestamp":"2015-09-04T09:11:44.942Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:11:44.947Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:11:44.948Z"}
+{"level":"warn","message":" Last PDF Coutn is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:11:45.064Z"}
+{"level":"warn","message":" New Count is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:11:45.065Z"}
+{"level":"info","message":"          >>>>  Change detected  <<<<","timestamp":"2015-09-04T09:11:45.065Z"}
+{"0":"R5542565_ITXSOS01_182397_PDF  ","1":115247,"2":92125,"3":1908780,"level":"info","message":"","timestamp":"2015-09-04T09:11:45.066Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:11:45 GMT+0100 (BST) took 124 milliseconds","timestamp":"2015-09-04T09:11:45.066Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:11:48 GMT+0100 (BST)","timestamp":"2015-09-04T09:11:48.070Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:11:48.077Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:11:48.078Z"}
+{"level":"warn","message":" Last PDF Coutn is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:11:48.201Z"}
+{"level":"warn","message":" New Count is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:11:48.201Z"}
+{"level":"info","message":"          >>>>  Change detected  <<<<","timestamp":"2015-09-04T09:11:48.202Z"}
+{"0":"R5542565_ITXSOS01_182397_PDF  ","1":115247,"2":92125,"3":1908780,"level":"info","message":"","timestamp":"2015-09-04T09:11:48.206Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:11:48 GMT+0100 (BST) took 137 milliseconds","timestamp":"2015-09-04T09:11:48.207Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T09:16:05.513Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T09:16:05.520Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:16:05 GMT+0100 (BST)","timestamp":"2015-09-04T09:16:05.631Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:16:05.642Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:16:05.643Z"}
+{"date":"Fri Sep 04 2015 10:16:05 GMT+0100 (BST)","process":{"pid":161,"uid":0,"gid":0,"cwd":"/src","execPath":"/usr/local/bin/node","version":"v0.10.39","argv":["node","/src/pdfstartup.js"],"memoryUsage":{"rss":27672576,"heapTotal":10324992,"heapUsed":5200792}},"os":{"loadavg":[0.04296875,0.0400390625,0.046875],"uptime":4207100.447861302},"trace":[{"column":39,"file":"/src/pdfstartup.js","function":null,"line":191,"method":null,"native":false}],"stack":["ReferenceError: previousRecord is not defined","    at /src/pdfstartup.js:191:39"],"level":"error","message":"uncaughtException: previousRecord is not defined","timestamp":"2015-09-04T09:16:05.816Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T09:17:20.750Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T09:17:20.757Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:17:21 GMT+0100 (BST)","timestamp":"2015-09-04T09:17:21.175Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:17:21.184Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:17:21.185Z"}
+{"level":"warn","message":" Previous UBE is : ","timestamp":"2015-09-04T09:17:21.306Z"}
+{"level":"warn","message":" Latest UBE is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:17:21.306Z"}
+{"date":"Fri Sep 04 2015 10:17:21 GMT+0100 (BST)","process":{"pid":167,"uid":0,"gid":0,"cwd":"/src","execPath":"/usr/local/bin/node","version":"v0.10.39","argv":["node","/src/pdfstartup.js"],"memoryUsage":{"rss":27525120,"heapTotal":10324992,"heapUsed":5216872}},"os":{"loadavg":[0.177734375,0.07568359375,0.0556640625],"uptime":4207175.945928542},"trace":[{"column":18,"file":"/src/pdfstartup.js","function":null,"line":196,"method":null,"native":false}],"stack":["ReferenceError: previousRecord is not defined","    at /src/pdfstartup.js:196:18"],"level":"error","message":"uncaughtException: previousRecord is not defined","timestamp":"2015-09-04T09:17:21.314Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T09:17:43.621Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T09:17:43.628Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:17:43 GMT+0100 (BST)","timestamp":"2015-09-04T09:17:43.830Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:17:43.841Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:17:43.841Z"}
+{"level":"warn","message":" Previous UBE is : ","timestamp":"2015-09-04T09:17:43.969Z"}
+{"level":"warn","message":" Latest UBE is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:17:43.970Z"}
+{"level":"info","message":"          >>>>  CHANGE detected  <<<<","timestamp":"2015-09-04T09:17:43.970Z"}
+{"date":"Fri Sep 04 2015 10:17:43 GMT+0100 (BST)","process":{"pid":173,"uid":0,"gid":0,"cwd":"/src","execPath":"/usr/local/bin/node","version":"v0.10.39","argv":["node","/src/pdfstartup.js"],"memoryUsage":{"rss":27152384,"heapTotal":10312960,"heapUsed":5334504}},"os":{"loadavg":[0.11669921875,0.06982421875,0.05322265625],"uptime":4207198.610233062},"trace":[{"column":15,"file":"/src/pdfstartup.js","function":null,"line":202,"method":null,"native":false}],"stack":["ReferenceError: lastPdfCount is not defined","    at /src/pdfstartup.js:202:15"],"level":"error","message":"uncaughtException: lastPdfCount is not defined","timestamp":"2015-09-04T09:17:43.978Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T09:18:08.040Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T09:18:08.048Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:18:08 GMT+0100 (BST)","timestamp":"2015-09-04T09:18:08.139Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:18:08.150Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:18:08.151Z"}
+{"level":"warn","message":" Previous UBE is : ","timestamp":"2015-09-04T09:18:08.270Z"}
+{"level":"warn","message":" Latest UBE is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:18:08.271Z"}
+{"level":"info","message":"          >>>>  CHANGE detected  <<<<","timestamp":"2015-09-04T09:18:08.271Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:18:08 GMT+0100 (BST) took 133 milliseconds","timestamp":"2015-09-04T09:18:08.272Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:18:11 GMT+0100 (BST)","timestamp":"2015-09-04T09:18:11.277Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:18:11.283Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:18:11.284Z"}
+{"level":"warn","message":" Previous UBE is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:18:11.428Z"}
+{"level":"warn","message":" Latest UBE is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:18:11.429Z"}
+{"level":"info","message":"          >>>>  CHANGE detected  <<<<","timestamp":"2015-09-04T09:18:11.429Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:18:11 GMT+0100 (BST) took 152 milliseconds","timestamp":"2015-09-04T09:18:11.429Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:18:14 GMT+0100 (BST)","timestamp":"2015-09-04T09:18:14.434Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:18:14.439Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:18:14.440Z"}
+{"level":"warn","message":" Previous UBE is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:18:14.557Z"}
+{"level":"warn","message":" Latest UBE is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:18:14.557Z"}
+{"level":"info","message":"          >>>>  CHANGE detected  <<<<","timestamp":"2015-09-04T09:18:14.558Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:18:14 GMT+0100 (BST) took 124 milliseconds","timestamp":"2015-09-04T09:18:14.558Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:18:17 GMT+0100 (BST)","timestamp":"2015-09-04T09:18:17.562Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:18:17.568Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:18:17.570Z"}
+{"level":"warn","message":" Previous UBE is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:18:17.688Z"}
+{"level":"warn","message":" Latest UBE is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:18:17.689Z"}
+{"level":"info","message":"          >>>>  CHANGE detected  <<<<","timestamp":"2015-09-04T09:18:17.689Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:18:17 GMT+0100 (BST) took 130 milliseconds","timestamp":"2015-09-04T09:18:17.692Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T09:19:27.899Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T09:19:27.907Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:19:28 GMT+0100 (BST)","timestamp":"2015-09-04T09:19:28.035Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:19:28.045Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:19:28.045Z"}
+{"level":"warn","message":" Previous UBE is : ","timestamp":"2015-09-04T09:19:28.169Z"}
+{"level":"warn","message":" Latest UBE is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:19:28.170Z"}
+{"level":"info","message":"          >>>>  CHANGE detected  <<<<","timestamp":"2015-09-04T09:19:28.170Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:19:28 GMT+0100 (BST) took 136 milliseconds","timestamp":"2015-09-04T09:19:28.170Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:19:31 GMT+0100 (BST)","timestamp":"2015-09-04T09:19:31.175Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:19:31.181Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:19:31.182Z"}
+{"level":"warn","message":" Previous UBE is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:19:31.302Z"}
+{"level":"warn","message":" Latest UBE is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:19:31.302Z"}
+{"level":"info","message":"          >>>>  CHANGE detected  <<<<","timestamp":"2015-09-04T09:19:31.303Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:19:31 GMT+0100 (BST) took 128 milliseconds","timestamp":"2015-09-04T09:19:31.303Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:19:34 GMT+0100 (BST)","timestamp":"2015-09-04T09:19:34.307Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:19:34.312Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:19:34.313Z"}
+{"level":"warn","message":" Previous UBE is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:19:34.425Z"}
+{"level":"warn","message":" Latest UBE is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:19:34.425Z"}
+{"level":"info","message":"          >>>>  CHANGE detected  <<<<","timestamp":"2015-09-04T09:19:34.425Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:19:34 GMT+0100 (BST) took 120 milliseconds","timestamp":"2015-09-04T09:19:34.426Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T09:21:38.589Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T09:21:38.597Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:21:38 GMT+0100 (BST)","timestamp":"2015-09-04T09:21:38.682Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:21:38.693Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:21:38.693Z"}
+{"level":"warn","message":" Previous UBE is : ","timestamp":"2015-09-04T09:21:38.812Z"}
+{"level":"warn","message":" Latest UBE is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:21:38.812Z"}
+{"level":"info","message":"          >>>>  CHANGE detected  <<<<","timestamp":"2015-09-04T09:21:38.812Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:21:38 GMT+0100 (BST) took 132 milliseconds","timestamp":"2015-09-04T09:21:38.813Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:21:41 GMT+0100 (BST)","timestamp":"2015-09-04T09:21:41.819Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:21:41.824Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:21:41.825Z"}
+{"level":"warn","message":" Previous UBE is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:21:41.945Z"}
+{"level":"warn","message":" Latest UBE is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:21:41.945Z"}
+{"level":"info","message":"          >>>>  CHANGE detected  <<<<","timestamp":"2015-09-04T09:21:41.945Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:21:41 GMT+0100 (BST) took 128 milliseconds","timestamp":"2015-09-04T09:21:41.946Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T09:22:25.343Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T09:22:25.351Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:22:25 GMT+0100 (BST)","timestamp":"2015-09-04T09:22:25.481Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:22:25.491Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:22:25.492Z"}
+{"level":"warn","message":" Previous UBE is : ","timestamp":"2015-09-04T09:22:25.606Z"}
+{"level":"warn","message":" Latest UBE is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:22:25.607Z"}
+{"date":"Fri Sep 04 2015 10:22:25 GMT+0100 (BST)","process":{"pid":197,"uid":0,"gid":0,"cwd":"/src","execPath":"/usr/local/bin/node","version":"v0.10.39","argv":["node","/src/pdfstartup.js"],"memoryUsage":{"rss":27193344,"heapTotal":10324992,"heapUsed":5247968}},"os":{"loadavg":[0.09716796875,0.06298828125,0.0498046875],"uptime":4207480.248510029},"trace":[{"column":13,"file":"/src/pdfstartup.js","function":null,"line":193,"method":null,"native":false}],"stack":["ReferenceError: preciousRow is not defined","    at /src/pdfstartup.js:193:13"],"level":"error","message":"uncaughtException: preciousRow is not defined","timestamp":"2015-09-04T09:22:25.617Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T09:22:36.809Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T09:22:36.817Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:22:36 GMT+0100 (BST)","timestamp":"2015-09-04T09:22:36.934Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:22:36.944Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:22:36.944Z"}
+{"level":"warn","message":" Previous UBE is : ","timestamp":"2015-09-04T09:22:37.068Z"}
+{"level":"warn","message":" Latest UBE is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:22:37.069Z"}
+{"level":"info","message":"          >>>>  CHANGE detected  <<<<","timestamp":"2015-09-04T09:22:37.075Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:22:37 GMT+0100 (BST) took 142 milliseconds","timestamp":"2015-09-04T09:22:37.075Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:22:40 GMT+0100 (BST)","timestamp":"2015-09-04T09:22:40.080Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:22:40.086Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:22:40.087Z"}
+{"level":"warn","message":" Previous UBE is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:22:40.209Z"}
+{"level":"warn","message":" Latest UBE is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:22:40.210Z"}
+{"level":"info","message":"          >>>>  CHANGE detected  <<<<","timestamp":"2015-09-04T09:22:40.211Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:22:40 GMT+0100 (BST) took 131 milliseconds","timestamp":"2015-09-04T09:22:40.211Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T09:23:20.032Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T09:23:20.039Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:23:20 GMT+0100 (BST)","timestamp":"2015-09-04T09:23:20.142Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:23:20.153Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:23:20.154Z"}
+{"level":"warn","message":" Previous UBE is : ","timestamp":"2015-09-04T09:23:20.270Z"}
+{"level":"warn","message":" Latest UBE is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:23:20.271Z"}
+{"level":"info","message":"          >>>>  CHANGE detected  <<<<","timestamp":"2015-09-04T09:23:20.278Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:23:20 GMT+0100 (BST) took 138 milliseconds","timestamp":"2015-09-04T09:23:20.278Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:23:23 GMT+0100 (BST)","timestamp":"2015-09-04T09:23:23.283Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:23:23.290Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:23:23.290Z"}
+{"level":"warn","message":" Previous UBE is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:23:23.416Z"}
+{"level":"warn","message":" Latest UBE is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:23:23.416Z"}
+{"level":"info","message":"          >>>>  CHANGE detected  <<<<","timestamp":"2015-09-04T09:23:23.417Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:23:23 GMT+0100 (BST) took 134 milliseconds","timestamp":"2015-09-04T09:23:23.417Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:23:26 GMT+0100 (BST)","timestamp":"2015-09-04T09:23:26.422Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:23:26.428Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:23:26.428Z"}
+{"level":"warn","message":" Previous UBE is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:23:26.543Z"}
+{"level":"warn","message":" Latest UBE is : R5542565_ITXSOS01_182397_PDF  ,115247,92125,1908780","timestamp":"2015-09-04T09:23:26.544Z"}
+{"level":"info","message":"          >>>>  CHANGE detected  <<<<","timestamp":"2015-09-04T09:23:26.544Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:23:26 GMT+0100 (BST) took 123 milliseconds","timestamp":"2015-09-04T09:23:26.545Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T09:27:11.830Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T09:27:11.838Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:27:11 GMT+0100 (BST)","timestamp":"2015-09-04T09:27:11.963Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:27:11.974Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:27:11.974Z"}
+{"date":"Fri Sep 04 2015 10:27:12 GMT+0100 (BST)","process":{"pid":215,"uid":0,"gid":0,"cwd":"/src","execPath":"/usr/local/bin/node","version":"v0.10.39","argv":["node","/src/pdfstartup.js"],"memoryUsage":{"rss":27398144,"heapTotal":10324992,"heapUsed":5234896}},"os":{"loadavg":[0.2919921875,0.10595703125,0.0625],"uptime":4207766.737587617},"trace":[{"column":43,"file":"/src/pdfstartup.js","function":null,"line":191,"method":null,"native":false}],"stack":["ReferenceError: previousPdf is not defined","    at /src/pdfstartup.js:191:43"],"level":"error","message":"uncaughtException: previousPdf is not defined","timestamp":"2015-09-04T09:27:12.106Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T09:27:32.450Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T09:27:32.457Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:27:32 GMT+0100 (BST)","timestamp":"2015-09-04T09:27:32.546Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:27:32.556Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:27:32.557Z"}
+{"level":"warn","message":" Previous UBE PDF is : ","timestamp":"2015-09-04T09:27:32.681Z"}
+{"date":"Fri Sep 04 2015 10:27:32 GMT+0100 (BST)","process":{"pid":221,"uid":0,"gid":0,"cwd":"/src","execPath":"/usr/local/bin/node","version":"v0.10.39","argv":["node","/src/pdfstartup.js"],"memoryUsage":{"rss":27549696,"heapTotal":10324992,"heapUsed":5200536}},"os":{"loadavg":[0.208984375,0.09912109375,0.060546875],"uptime":4207787.321105608},"trace":[{"column":41,"file":"/src/pdfstartup.js","function":null,"line":192,"method":null,"native":false}],"stack":["ReferenceError: latestPdf is not defined","    at /src/pdfstartup.js:192:41"],"level":"error","message":"uncaughtException: latestPdf is not defined","timestamp":"2015-09-04T09:27:32.689Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T09:30:47.893Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T09:30:47.900Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:30:47 GMT+0100 (BST)","timestamp":"2015-09-04T09:30:47.993Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:30:48.003Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:30:48.004Z"}
+{"level":"warn","message":" Previous UBE PDF is : ","timestamp":"2015-09-04T09:30:48.124Z"}
+{"level":"warn","message":" Latest UBE PDF is : R5542565_ITXSOS01_182397_PDF  ","timestamp":"2015-09-04T09:30:48.124Z"}
+{"level":"info","message":"          >>>>  CHANGE detected  <<<<","timestamp":"2015-09-04T09:30:48.127Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:30:48 GMT+0100 (BST) took 135 milliseconds","timestamp":"2015-09-04T09:30:48.127Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:30:51 GMT+0100 (BST)","timestamp":"2015-09-04T09:30:51.132Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:30:51.141Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:30:51.142Z"}
+{"level":"warn","message":" Previous UBE PDF is : R5542565_ITXSOS01_182397_PDF  ","timestamp":"2015-09-04T09:30:51.263Z"}
+{"level":"warn","message":" Latest UBE PDF is : R5542565_ITXSOS01_182397_PDF  ","timestamp":"2015-09-04T09:30:51.264Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:30:51 GMT+0100 (BST) took 132 milliseconds","timestamp":"2015-09-04T09:30:51.265Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T09:32:09.126Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T09:32:09.133Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:32:09 GMT+0100 (BST)","timestamp":"2015-09-04T09:32:09.248Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:32:09.259Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:32:09.260Z"}
+{"level":"warn","message":" Previous UBE PDF is : ","timestamp":"2015-09-04T09:32:09.384Z"}
+{"level":"warn","message":" Latest UBE PDF is : R5542565_ITXSOS01_182397_PDF  ","timestamp":"2015-09-04T09:32:09.385Z"}
+{"level":"info","message":"          >>>>  CHANGE detected  <<<<","timestamp":"2015-09-04T09:32:09.387Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:32:09 GMT+0100 (BST) took 140 milliseconds","timestamp":"2015-09-04T09:32:09.387Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:32:12 GMT+0100 (BST)","timestamp":"2015-09-04T09:32:12.392Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:32:12.398Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:32:12.399Z"}
+{"level":"warn","message":" Previous UBE PDF is : R5542565_ITXSOS01_182397_PDF  ","timestamp":"2015-09-04T09:32:12.519Z"}
+{"level":"warn","message":" Latest UBE PDF is : R5542565_ITXSOS01_182397_PDF  ","timestamp":"2015-09-04T09:32:12.520Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:32:12 GMT+0100 (BST) took 129 milliseconds","timestamp":"2015-09-04T09:32:12.521Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:32:15 GMT+0100 (BST)","timestamp":"2015-09-04T09:32:15.525Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:32:15.531Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:32:15.531Z"}
+{"level":"warn","message":" Previous UBE PDF is : R5542565_ITXSOS01_182397_PDF  ","timestamp":"2015-09-04T09:32:15.650Z"}
+{"level":"warn","message":" Latest UBE PDF is : R5542565_ITXSOS01_182397_PDF  ","timestamp":"2015-09-04T09:32:15.650Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:32:15 GMT+0100 (BST) took 126 milliseconds","timestamp":"2015-09-04T09:32:15.651Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T09:33:24.086Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T09:33:24.093Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:33:24 GMT+0100 (BST)","timestamp":"2015-09-04T09:33:24.169Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:33:24.183Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:33:24.184Z"}
+{"level":"info","message":" ","timestamp":"2015-09-04T09:33:24.372Z"}
+{"level":"info","message":"          >>>>  CHANGE detected  <<<<","timestamp":"2015-09-04T09:33:24.372Z"}
+{"level":"info","message":" ","timestamp":"2015-09-04T09:33:24.373Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:33:24 GMT+0100 (BST) took 206 milliseconds","timestamp":"2015-09-04T09:33:24.373Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:33:27 GMT+0100 (BST)","timestamp":"2015-09-04T09:33:27.378Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:33:27.385Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:33:27.385Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:33:27 GMT+0100 (BST) took 125 milliseconds","timestamp":"2015-09-04T09:33:27.503Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:33:30 GMT+0100 (BST)","timestamp":"2015-09-04T09:33:30.508Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:33:30.513Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:33:30.514Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:33:30 GMT+0100 (BST) took 125 milliseconds","timestamp":"2015-09-04T09:33:30.632Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:33:33 GMT+0100 (BST)","timestamp":"2015-09-04T09:33:33.636Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:33:33.642Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:33:33.644Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:33:33 GMT+0100 (BST) took 129 milliseconds","timestamp":"2015-09-04T09:33:33.765Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:33:36 GMT+0100 (BST)","timestamp":"2015-09-04T09:33:36.769Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:33:36.778Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:33:36.779Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:33:36 GMT+0100 (BST) took 135 milliseconds","timestamp":"2015-09-04T09:33:36.904Z"}
+{"level":"info","message":"Docker Container Hostname is : b2aab5bd5ff2","timestamp":"2015-09-04T09:34:01.893Z"}
+{"level":"info","message":"---------- START MONITORING PDF QUEUE -----------","timestamp":"2015-09-04T09:34:01.900Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:34:01 GMT+0100 (BST)","timestamp":"2015-09-04T09:34:01.998Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:34:02.009Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:34:02.009Z"}
+{"level":"info","message":" ","timestamp":"2015-09-04T09:34:02.136Z"}
+{"level":"info","message":"          >>>>  CHANGE detected  <<<<","timestamp":"2015-09-04T09:34:02.137Z"}
+{"level":"info","message":" ","timestamp":"2015-09-04T09:34:02.137Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:34:02 GMT+0100 (BST) took 140 milliseconds","timestamp":"2015-09-04T09:34:02.137Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:34:05 GMT+0100 (BST)","timestamp":"2015-09-04T09:34:05.142Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:34:05.148Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:34:05.149Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:34:05 GMT+0100 (BST) took 126 milliseconds","timestamp":"2015-09-04T09:34:05.268Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:34:08 GMT+0100 (BST)","timestamp":"2015-09-04T09:34:08.273Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:34:08.278Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:34:08.279Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:34:08 GMT+0100 (BST) took 121 milliseconds","timestamp":"2015-09-04T09:34:08.394Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:34:11 GMT+0100 (BST)","timestamp":"2015-09-04T09:34:11.399Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:34:11.404Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:34:11.406Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:34:11 GMT+0100 (BST) took 141 milliseconds","timestamp":"2015-09-04T09:34:11.540Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:34:14 GMT+0100 (BST)","timestamp":"2015-09-04T09:34:14.545Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:34:14.554Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:34:14.554Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:34:14 GMT+0100 (BST) took 133 milliseconds","timestamp":"2015-09-04T09:34:14.678Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:34:17 GMT+0100 (BST)","timestamp":"2015-09-04T09:34:17.682Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:34:17.688Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:34:17.688Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:34:17 GMT+0100 (BST) took 119 milliseconds","timestamp":"2015-09-04T09:34:17.801Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:34:20 GMT+0100 (BST)","timestamp":"2015-09-04T09:34:20.807Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:34:20.814Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:34:20.814Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:34:20 GMT+0100 (BST) took 123 milliseconds","timestamp":"2015-09-04T09:34:20.930Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:34:23 GMT+0100 (BST)","timestamp":"2015-09-04T09:34:23.934Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:34:23.945Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:34:23.946Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:34:24 GMT+0100 (BST) took 158 milliseconds","timestamp":"2015-09-04T09:34:24.092Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:34:27 GMT+0100 (BST)","timestamp":"2015-09-04T09:34:27.095Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:34:27.101Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:34:27.102Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:34:27 GMT+0100 (BST) took 136 milliseconds","timestamp":"2015-09-04T09:34:27.231Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:34:30 GMT+0100 (BST)","timestamp":"2015-09-04T09:34:30.235Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:34:30.241Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:34:30.241Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:34:30 GMT+0100 (BST) took 123 milliseconds","timestamp":"2015-09-04T09:34:30.358Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:34:33 GMT+0100 (BST)","timestamp":"2015-09-04T09:34:33.361Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:34:33.367Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:34:33.367Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:34:33 GMT+0100 (BST) took 128 milliseconds","timestamp":"2015-09-04T09:34:33.489Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:34:36 GMT+0100 (BST)","timestamp":"2015-09-04T09:34:36.492Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:34:36.500Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:34:36.501Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:34:36 GMT+0100 (BST) took 127 milliseconds","timestamp":"2015-09-04T09:34:36.619Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:34:39 GMT+0100 (BST)","timestamp":"2015-09-04T09:34:39.623Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:34:39.629Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:34:39.629Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:34:39 GMT+0100 (BST) took 127 milliseconds","timestamp":"2015-09-04T09:34:39.750Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:34:42 GMT+0100 (BST)","timestamp":"2015-09-04T09:34:42.755Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:34:42.761Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:34:42.761Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:34:42 GMT+0100 (BST) took 126 milliseconds","timestamp":"2015-09-04T09:34:42.881Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:34:45 GMT+0100 (BST)","timestamp":"2015-09-04T09:34:45.885Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:34:45.890Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:34:45.892Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:34:46 GMT+0100 (BST) took 129 milliseconds","timestamp":"2015-09-04T09:34:46.014Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:34:49 GMT+0100 (BST)","timestamp":"2015-09-04T09:34:49.019Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:34:49.024Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:34:49.024Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:34:49 GMT+0100 (BST) took 126 milliseconds","timestamp":"2015-09-04T09:34:49.145Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:34:52 GMT+0100 (BST)","timestamp":"2015-09-04T09:34:52.149Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:34:52.158Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:34:52.158Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:34:52 GMT+0100 (BST) took 142 milliseconds","timestamp":"2015-09-04T09:34:52.291Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:34:55 GMT+0100 (BST)","timestamp":"2015-09-04T09:34:55.295Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:34:55.300Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:34:55.301Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:34:55 GMT+0100 (BST) took 158 milliseconds","timestamp":"2015-09-04T09:34:55.453Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:34:58 GMT+0100 (BST)","timestamp":"2015-09-04T09:34:58.457Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:34:58.469Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:34:58.469Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:34:58 GMT+0100 (BST) took 131 milliseconds","timestamp":"2015-09-04T09:34:58.588Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:35:01 GMT+0100 (BST)","timestamp":"2015-09-04T09:35:01.592Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:35:01.597Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:35:01.598Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:35:01 GMT+0100 (BST) took 122 milliseconds","timestamp":"2015-09-04T09:35:01.714Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:35:04 GMT+0100 (BST)","timestamp":"2015-09-04T09:35:04.718Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:35:04.724Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:35:04.725Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:35:04 GMT+0100 (BST) took 143 milliseconds","timestamp":"2015-09-04T09:35:04.861Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:35:07 GMT+0100 (BST)","timestamp":"2015-09-04T09:35:07.865Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:35:07.870Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:35:07.871Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:35:07 GMT+0100 (BST) took 132 milliseconds","timestamp":"2015-09-04T09:35:07.996Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:35:11 GMT+0100 (BST)","timestamp":"2015-09-04T09:35:11.000Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:35:11.006Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:35:11.007Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:35:11 GMT+0100 (BST) took 164 milliseconds","timestamp":"2015-09-04T09:35:11.164Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:35:14 GMT+0100 (BST)","timestamp":"2015-09-04T09:35:14.168Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:35:14.173Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:35:14.174Z"}
+{"level":"info","message":" ","timestamp":"2015-09-04T09:35:14.296Z"}
+{"level":"info","message":"          >>>>  CHANGE detected  <<<<","timestamp":"2015-09-04T09:35:14.298Z"}
+{"level":"info","message":" ","timestamp":"2015-09-04T09:35:14.298Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:35:14 GMT+0100 (BST) took 131 milliseconds","timestamp":"2015-09-04T09:35:14.298Z"}
+{"level":"info","message":"Checking initiated : Fri Sep 04 2015 10:35:17 GMT+0100 (BST)","timestamp":"2015-09-04T09:35:17.301Z"}
+{"jdeDate":"115246","jdeTime":"073536","timestamp":"2015-09-04T09:35:17.306Z","minutes":-5,"level":"info","message":""}
+{"level":"info","message":"SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110  WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= 115246 AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER')  ORDER BY jcactdate DESC, jcacttime DESC","timestamp":"2015-09-04T09:35:17.307Z"}
+{"level":"info","message":"Checking completed : Fri Sep 04 2015 10:35:17 GMT+0100 (BST) took 131 milliseconds","timestamp":"2015-09-04T09:35:17.432Z"}

@@ -32,7 +32,7 @@ var serverTimeOffset = 5;
 var credentials = {user: process.env.DB_USER, password: process.env.DB_PWD, connectString: process.env.DB_NAME};
 var hostname = process.env.HOSTNAME;
 
-var lastPdfCount = 0;
+var previousPdf = "";
 
 // Docker container Hostname is used for Audit logging and lock file control so if not available there is a problem.
 
@@ -143,7 +143,7 @@ function queryJdeJobControl(connection, record, begin)
 
 	// Issue with server clocks JDE and Linux being slightly out - approx 2.5 minutes.
 	// This will be rectified but in case it happens again or times drift slightly in future 
-	// Adjust query search date and time backwards by 5 minutes to allow for slightly different clock times
+	// Adjust query search date and time backwards by Offset - say 5 minutes - to allow for slightly different clock times
 	// and to ensure a PDF completing on JDE when this query runs is still included
 
 	var auditTimestamp = record[2];
@@ -152,66 +152,66 @@ function queryJdeJobControl(connection, record, begin)
 	var jdedate = result.jdeDate;
 	var jdetime = result.jdeTime;
 
-	//var query = "SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110 ";
-	var query = "SELECT COUNT(*) FROM testdta.F556110 ";
+	var query = "SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110 ";
 	query += " WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= ";
 	query += jdedate;
-	// query += " AND jcacttime >= ";
-	// query += jdetime;
 	query += " AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ";
+	query += " ORDER BY jcactdate DESC, jcacttime DESC";
 
 	logger.info(query);
 
 	connection.execute(query, [], { resultSet: true }, function(err, result) 
 	{
 		if (err) { logger.error(err.message) };
-		fetchRowsFromRS( connection, result.resultSet, numRows, audit );	
 
-		logger.debug(result.resultSet);
+		fetchRowsFromRS( connection, result.resultSet, numRows, audit, begin );	
 
-		var finish = new Date();
-
-		logger.info("Checking completed : " + finish + " took " + (finish - begin) + " milliseconds"  );
 	}); 
 }
 
 
 // Process results of query on JDE Job Control file 
 
-function fetchRowsFromRS(connection, resultSet, numRows, audit) {
+function fetchRowsFromRS(connection, resultSet, numRows, audit, begin) {
+
+    var latestRow = null;
+    var latestPdf = null;
 
     resultSet.getRows( numRows, function(err, rows) {
-       if ( err ) {
-            resultSet.close( function( err ) { 
-                logger.error( err.message );
-                oracleConnectionRelease(); 
-            });
-        } else if ( rows.length == 0 ) {
-            resultSet.close( function ( err) { 
-                if ( err ) { 
-                    logger.error(err.message); 
-                    oracleConnectionRelease();
-                }
-            });
+       if ( err ) { resultSet.close( function( err ) { logger.error( err.message ); oracleConnectionRelease(); })
+        } else if ( rows.length == 0 ) { 
+		resultSet.close( function ( err) {
+			if ( err ) { logger.error(err.message); oracleConnectionRelease(); }
+			});
         } else if ( rows.length > 0 ) {
             
             // Query has returned record
-            var record = rows[0];
-            logger.debug( record );
+            latestRow = rows[0];
+            latestPdf = latestRow[0];
+            logger.debug( "Latest UBE is : " + latestRow );
+
+		logger.debug(" Previous UBE PDF is : " + previousPdf);
+		logger.debug(" Latest UBE PDF is : " + latestPdf);
 
             // Compare count of eligible PDF files if different from last then we have a change so check and process in detail 
-            if ( lastPdfCount != record.O ) {
-                logger.info( ">>>>  Change detected  <<<<");
-                lastPdfCount = record.O;
+            if ( previousPdf === latestPdf ) {
+                logger.debug( "No Change detected");
+            } else {
+                logger.info( " ");
+                logger.info( "          >>>>  CHANGE detected  <<<<");
+                logger.info( " ");
+                previousPdf = latestPdf;
 
                 // Process files in detail here 
+		// ......
 
-            } else {
-                logger.info( ">>>>  No Change detected  <<<<");
             }
             
             // Read next record
             // fetchRowsFromRS( connection, resultSet, numRows, audit );
+
+           var finish = new Date();
+           logger.info("Checking completed : " + finish + " took " + (finish - begin) + " milliseconds"  );
 
            // Sleep briefly then repeat check (monitor)
            setTimeout( function() { recursive( connection, logger, credentials ) } , 3000  );
