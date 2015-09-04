@@ -8,15 +8,12 @@
 // Synopsis
 // --------
 // This program starts when the container starts and constantly monitors the JDE PDF output queue for change.
-// This program replaces the old style shell monitor program as use of sshfs is too heavy on cpu resource on the AIX
-// enterprise server due to encryption overhead.
-// When a change is detected control is passed to the pdfhandler which performs further checks to see if any logo related
-// processing is required.
-// This process uses date from last entry in the Audit file to keep the query count light - the query count is taken
-// frequently and when a change is detected that triggers further processing. 
-// The query uses the last date from the audit file to limit the query count - Audit entries are written on startup and
-// whenever a PDF file is procesed - the count is not important it is simply a mechanism to detect change i.e. new 
-// PDF's arriving in the JDE output queue)
+// This program replaces most of the old style shell monitor program as use of sshfs is too heavy on cpu 
+// resource on the AIX enterprise server due to encryption overhead.
+// When a change is detected control is passed to the pdfhandler which performs further checks to see if 
+// any logo related processing is required.
+// This process uses date from last processed PDF file entry in the Audit Log file to keep the checking 
+// query light and when a change is detected that triggers further processing. 
 
 
 var oracledb = require( "oracledb" ),
@@ -24,10 +21,8 @@ var oracledb = require( "oracledb" ),
     audit = require( "./common/audit.js" ),
     lock = require( "./common/lock.js" ),
     async = require( "async" ),
-    exec = require( "child_process" ).exec;
-
-
-var credentials = { user: process.env.DB_USER, password: process.env.DB_PWD, connectString: process.env.DB_NAME },
+    exec = require( "child_process" ).exec,
+    credentials = { user: process.env.DB_USER, password: process.env.DB_PWD, connectString: process.env.DB_NAME },
     pollInterval = 3000,
     serverTimeOffset = 5,
     hostname = process.env.HOSTNAME,
@@ -37,7 +32,8 @@ var credentials = { user: process.env.DB_USER, password: process.env.DB_PWD, con
     dirLocalJdePdf = process.env.DIR_SHAREDDATA;
 
 
-// Docker container Hostname is used for Audit logging and lock file control so if not available there is a problem.
+// Docker container Hostname is used for Audit logging and lock file control so if not available 
+// there is a problem.
 if ( typeof( hostname ) === "undefined" || hostname === "" ) {
     logger.error( "pdfmonitor.js needs environment variable Hostname to be defined" );
     logger.error( "This should always be available in docker containers - something is wrong - Aborting!" );
@@ -175,6 +171,7 @@ function processResultsFromF556110( connection, rs, numRows, audit, begin ) {
 
     var latestRow,
         latestPdf,
+        rowToProcess,
         finish;
 
     rs.getRows( numRows, function( err, rows ) {
@@ -203,7 +200,8 @@ function processResultsFromF556110( connection, rs, numRows, audit, begin ) {
                 logger.info( " ");
                 previousPdf = latestPdf;
 
-                // Process files in detail here 
+                // Process first PDF file here then call this same function to keep processing
+                // each record until all done. 
 		// ......
 
             }
