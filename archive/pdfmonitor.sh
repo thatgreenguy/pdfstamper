@@ -1,92 +1,107 @@
 #!/bin/bash
 #
-# Note that this script blocks and runs until killed, so you may want to
-# launch it as a background task.
+# PDFMonitor.sh
+# 
+# Description	: Poll JDE Print Queue and perform post PDF Processing on certain files
+# Author	: Paul Green
+# Dated		: 2015-07-30
 #
+# Synopsis
+# --------
+# This shell program forms part of a dockerised container application
+# It runs when the docker container starts
+# It Polls the JDE PrintQueue directory on AIX
+# Whenever new PDF files are detected it calls a Javascript program that performs
+# post PDF processing actions on selected PDF files (see pdfhandler.js for more info).
+# It also calls the Javascript PDFHandler program once when started to immediately deal
+# with any PDF files sitting in the JDE PrintQueue since this program was last active.
+# It establishes an sshfs mount to the AIX remote system that requires monitoring
 
-# Establish sshfs mount to remote system that requires monitoring
-DYNCMD="sshfs ${SSHFS_USER}@${SSHFS_HOSTDIR} /home/pdfdata"  
-$DYNCMD
+# Initialisation
+INTERVAL_SECONDS=2
+REMOTE_DIR="/home/pdfdata"
+REMOTE_DIR_SHAREDDATA="/home/shareddata"
 
+# Establish mount to remote JDE enterprise server (AIX) system for JDE Print Queue access/monitoring 
+umount $REMOTE_DIR
+DYNCMD="sshfs -o reconnect -C -o workaround=all -o ServerAliveInterval=30 -o Ciphers=arcfour  -o cache=no -o password_stdin ${SSHFS_USER}@${SSHFS_HOST}:${DIR_JDEPDF} ${REMOTE_DIR}"  
+echo $SSHFS_PWD | $DYNCMD
 if [ $? -ne 0 ]
 then 
 	echo
 	echo "--------- ERROR ------------"
-	echo "Problem mounting remote directory to monitor"
+	echo "Problem mounting remote JDE PDF (Print Queue) directory to monitor"
 	echo "Expecting 3 docker -e arguments for User, Pwd and Target Host:Directory"
 	echo "Re-run Docker command and provide remote SSHFS User, Pwd and Host:Directory values"
 	echo "Tried this command: '${DYNCMD}' but it failed!"
 	exit 1
 fi
 
-# The absolute path of the directory containing this script.
-DIR="$( cd "$( dirname "$0" )" && pwd)"
+# Establish mount to remote JDE enterprise server (AIX) system to use a common (between Docker containers)
+# work area for original (pre-process) PDF file backups and for inter container communication 
+umount $REMOTE_DIR_SHAREDDATA
+DYNCMD="sshfs -o reconnect -C -o workaround=all -o ServerAliveInterval=30 -o Ciphers=arcfour  -o cache=no -o password_stdin ${SSHFS_USER}@${SSHFS_HOST}:${DIR_SHAREDDATA} ${REMOTE_DIR_SHAREDDATA}"  
+echo $SSHFS_PWD | $DYNCMD
+if [ $? -ne 0 ]
+then 
+	echo
+	echo "--------- ERROR ------------"
+	echo "Problem mounting common (between docker containers) remote AIX shareddata working directory"
+	echo "Expecting 3 docker -e arguments for User, Pwd and Target Host:Directory"
+	echo "Re-run Docker command and provide remote SSHFS User, Pwd and Host:Directory values"
+	echo "Tried this command: '${DYNCMD}' but it failed!"
+	exit 1
+fi
 
-# Where is the top level project directory relative to this script?
-PROJECT_DIR="/home"
+# STARTUP / RECOVERY
+#
+# If this container app crashed or the server was taken offline for a time then on startup
+# might need to recover/process any JDE PDF's generated since last time this program was active.
+# For example if the container is down no logos will be stamped on Invoice Prints so when it comes 
+# back up and this script runs for first time then pass control over to the javascrip PDF handler
+# to deal with any un-processed PDF files in the Print Queue  
+DTSTAMP=`date`
+echo 
+echo "-------------------------------------------------------"
+echo "${HOSTNAME} : PDFMONITOR : STARTING UP : ${DTSTAMP}"
+echo "${HOSTNAME} : PDFMONITOR : Now Monitoring ${DIR_JDEPDF} on AIX Host ${SSHFS_HOST}"
+echo "${HOSTNAME} : PDFMONITOR : Docker Containers using ${DIR_SHAREDDATA} on AIX Host ${SSHFS_HOST} as common work area"
+echo
 
-# Set up a list of directories to monitor.
-MONITOR=()
-MONITOR+=( "${PROJECT_DIR}/pdfdata" )
- 
-# This file will be used as a timestamp reference point.
-TIMESTAMP_FILE="/tmp/file-monitor-ts"
- 
-# The interval in seconds between each check on monitored files.
-INTERVAL_SECONDS=2
-# How long in the past to to set the timestamp on the reference file
-# used for comparison. This is probably overkill, but when running
-# Vagrant VMs with synced folders you can run into all sorts of
-# interesting behavior with regard to updating timestamps.
-LOOKBACK_SECONDS=5
- 
-# The last set of updates. We keep this for comparison purposes.
-# Since the lookback covers multiple cycles of monitoring for changes
-# we need to be able to update only if there are fresh changes in
-# the present cycle.
-LAST_UPDATES=""
- 
-# Loop indefinitely. Killing this process is the only way to exit it,
-# which is fine, but you may want to add some sort of check on other
-# criteria so that it can shut itself down in response to circumstances.
+NODEARGS=" S ${HOSTNAME} "
+node ./src/pdfhandler ${NODEARGS} 
+
+# Establish unique file names for this container to hold the before and after 
+# directory snapshots
+BEFORE="/tmp/${HOSTNAME}_before"
+AFTER="/tmp/${HOSTNAME}_after"
+
+# Take a snapshot of the remote monitored directory before starting to monitor
+ls -1 $REMOTE_DIR > $BEFORE 
+
+# Ensure Startup flag is not 'S' for all subsequent calls to pdfhandler set to 'M' for Monitor Loop
+NODEARGS=" M ${HOSTNAME} "
+
+
+
+# POLLING 
+#
+# Loop indefinitely - to stop this program stop the container. 
+# This container application exists to monitor this directory and pass control over to the 
+# PDF Handler progam to deal with new PDF's
 while [[ true ]] ; do
-  # OS X has a date command signature that differs significantly from
-  # that used in Linux distros.
-  if [[ ${OSTYPE} =~ ^darwin ]]; then
-    TIMESTAMP=`date +%s`
-    TIMESTAMP=$(( ${TIMESTAMP} - ${LOOKBACK_SECONDS} ))
-    TIMESTAMP=`date -r ${TIMESTAMP} +%m%d%H%M.%S`
-  else
-    TIMESTAMP=`date -d "-${LOOKBACK_SECONDS} sec" +%m%d%H%M.%S`
+  
+  # Take another snapshot of the remote monitored directory for comparison
+  ls -1 $REMOTE_DIR > $AFTER
+ 
+  # Compare the Before and After snapshots 
+  if ! diff -q $BEFORE $AFTER > /dev/null; then
+     DTSTAMP=`date`
+     echo "${HOSTNAME} : PDFMONITOR : ${DTSTAMP} : Change detected in ${DIR_JDEPDF}"
+     rm $BEFORE
+     mv $AFTER $BEFORE
+     node ./src/pdfhandler ${NODEARGS}
   fi
- 
-  # Create or update the reference timestamp file.
-  touch -t ${TIMESTAMP} "${TIMESTAMP_FILE}"
- 
-  # Identify updates by comparison with the reference timestamp file.
-  UPDATES=`find ${MONITOR[*]} -type f -newer ${TIMESTAMP_FILE}`
- 
-  if [[ "${UPDATES}" ]] ; then
-    # Pass the updates through ls or stat in order to add a timestamp for
-    # each result. Thus if the same file is updated several times over several
-    # monitor cycles it will still trigger when compared to the prior set of
-    # updates.
-    if [[ ${OSTYPE} =~ ^darwin ]]; then
-      UPDATES=`stat -F ${UPDATES}`
-    else
-      UPDATES=`ls --full-time ${UPDATES}`
-    fi
- 
-    # Only take action if there are new changes in this monitor cycle.
-    if [[ "${UPDATES}" != "${LAST_UPDATES}" ]] ; then
- 
-      # Action to take is to call Javascript function which handles Stamping Logos
-	DT=date
-	echo "Changes detected : ${DT}"
-	node /src/pdfhandler.js
-    fi
-  fi
- 
-  LAST_UPDATES="${UPDATES}"
+
   sleep ${INTERVAL_SECONDS}
 done
