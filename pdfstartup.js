@@ -18,184 +18,182 @@
 // whenever a PDF file is procesed - the count is not important it is simply a mechanism to detect change i.e. new 
 // PDF's arriving in the JDE output queue)
 
-var oracledb = require("oracledb");
-var logger = require("./common/logger");
-var audit = require("./common/audit.js");
-var lock = require("./common/lock.js");
-var async = require("async");
-var exec = require("child_process").exec;
 
-var numRows = 1;
-var pollInterval = 2;
-var serverTimeOffset = 5;
+var oracledb = require( "oracledb" ),
+    logger = require( "./common/logger" ),
+    audit = require( "./common/audit.js" ),
+    lock = require( "./common/lock.js" ),
+    async = require( "async" ),
+    exec = require( "child_process" ).exec;
 
-var credentials = {user: process.env.DB_USER, password: process.env.DB_PWD, connectString: process.env.DB_NAME};
-var hostname = process.env.HOSTNAME;
 
-var previousPdf = "";
+var credentials = { user: process.env.DB_USER, password: process.env.DB_PWD, connectString: process.env.DB_NAME },
+    pollInterval = 3000,
+    serverTimeOffset = 5,
+    hostname = process.env.HOSTNAME,
+    previousPdf = "",
+    numRows = 1;
+
 
 // Docker container Hostname is used for Audit logging and lock file control so if not available there is a problem.
-
-if (typeof(hostname) === "undefined" || hostname === "") {
-    logger.error("pdfmonitor.js needs environment variable Hostname to be defined");
-    logger.error("This should always be available in docker containers - something is wrong - Aborting!");
-    process.exit(1);
+if ( typeof( hostname ) === "undefined" || hostname === "" ) {
+    logger.error( "pdfmonitor.js needs environment variable Hostname to be defined" );
+    logger.error( "This should always be available in docker containers - something is wrong - Aborting!" );
+    process.exit( 1 );
 } else {
-    logger.info("Docker Container Hostname is : " + hostname);
+    logger.debug( "Docker Container Hostname is : " + hostname );
 }
 
-// If Container has just started then record fact in Audit log
 
-logger.info("---------- START MONITORING PDF QUEUE -----------");
-audit.createAuditEntry('pdfmonitor', 'pdfstartup.js', hostname, 'Start Monitoring');
+// Announce that this Pdf handler process has just started up - recorded in custom Jde Audit Log table
+logger.info( "---------- START MONITORING PDF QUEUE -----------" );
+audit.createAuditEntry( 'pdfmonitor', 'pdfstartup.js', hostname, 'Start Monitoring' );
 
 
-// Get Oracle DB connection to re-use 
-oracledb.getConnection( credentials, function(err, connection)
-{
-	if (err) { logger.error("Oracle DB Connection Failure"); return;	}
+// Get Oracle DB connection to re-use then make initial call to the recursive monitoring function
+// this function will act on any new Jde Pdf files and once done will sleep and repeat 
+oracledb.getConnection( credentials, function( err , connection ) {
 
-	// Only interested in processing PDF files that have appeared in the PrintQueue since last run of this process
-	// This query grabs the last date from Audit Log first as starting point for processing
-	recursive(connection, logger, credentials);
+    if (err) {
+        logger.error( "Oracle DB Connection Failure" );
+        return;
+    }
+
+    // Only interested in processing PDF files that have appeared in the PrintQueue since last run of this process
+    // This query grabs the last date from Audit Log first as starting point for processing
+    recursiveMonitor( connection );
+
 });
 
-// Check, process, sleep briefly then call itself to repeat
-function recursive(connection, logger, credentials) {
-    var begin = new Date();
+
+// FUNCTIONS
+//
+// Recursive monitoring process repeatedly checks the Jde Job Control table for those report types flagged as requiring a Dlink logo
+// When it detects that 1 or more new eligible Pdf files have been created it applies the logo image to each page.
+// Once all identified Pdf files are processed this monitoring process sleeps for a short time then checks again
+function recursiveMonitor( connection ) {
+
+    var begin;
+
+    begin  = new Date();
     
-    logger.info("Checking initiated : " + begin);
+    logger.debug( "" );
+    logger.debug( "Checking initiated : " + begin );
 
-    queryJdeAuditLog(connection, begin);
-
+    queryJdeAuditlog( connection, begin );
 };
 
 
-
 // Need date and time of last processed PDF file by this program as starting point for this process run  
+function queryJdeAuditlog( connection, begin ) {
+    
+    var query;
 
-function queryJdeAuditLog(connection, begin) 
-{
+    query  = "SELECT paupmj, paupmt, pasawlatm FROM testdta.F559859 WHERE PAFNDFUF2 <> 'pdfmonitor' ORDER BY pasawlatm DESC";
 
-	var query = "SELECT paupmj, paupmt, pasawlatm FROM testdta.F559859 WHERE PAFNDFUF2 <> 'pdfmonitor' ORDER BY pasawlatm DESC";
+    connection.execute( query, [], { resultSet: true }, function( err, result ) {
+        if ( err ) {
+            logger.error(err.message)
+        };
 
-	connection.execute(query, [], { resultSet: true }, function(err, result) 
-	{
-		if (err) { logger.error(err.message) };
-		fetchRowsFromJdeAuditLogRS( connection, result.resultSet, numRows, audit, begin );	
-	}); 
+        processResultsFromF559859( connection, result.resultSet, numRows, audit, begin );	
+    }); 
 }
 
 
-// Process results from Audit Log Query but only actually getting one record here
- 
-function fetchRowsFromJdeAuditLogRS(connection, resultSet, numRows, audit, begin)
-{
-  resultSet.getRows( numRows, function(err, rows)
-  {
-   	if (err)
-	{
-        	resultSet.close(function(err)
-		{
-			if (err)
-			{
-				logger.error(err.message);
-				connection.release(function(err)
-				{
-					if (err) { logger.error(err.message); }
-				});
-			}
-		}); 
-      	} else if (rows.length == 0)
-	{
-		resultSet.close(function(err)
-		{
-			if (err)
-			{
-				logger.error(err.message);
-				connection.release(function(err)
-				{
-					if (err) { logger.error(err.message); }
-				});
-			}
-		});
-	} else if (rows.length > 0)
-	{
-		
-		// Last audit entry retrieved
-		// Process continues by querying the JDE Job Control Master file for eligible PDF's to process
+// Process results from JDE Audit Log table Query but only interested in last Pdf job processed
+// to determine date and time which is used to control further queries
+function processResultsFromF559859( connection, resultSet, numRows, audit, begin ) {
 
-		var record = rows[0];
-		logger.debug(record);
-		queryJdeJobControl(connection, record, begin);
+    var record;
+
+    resultSet.getRows( numRows, function(err, rows) {
+        if (err) { 
+            oracleResultClose(connection);
+
+      	} else if (rows.length == 0) {
+            oracleResultClose(connection);
+
+	} else if (rows.length > 0) {
 		
+            // Last audit entry retrieved
+            // Process continues by querying the JDE Job Control Master file for eligible PDF's to process
+
+            record = rows[ 0 ];
+            logger.debug( record );
+            oracleResultClose( connection );
+            queryJdeJobControl( connection, record, begin );
 	}
-  });
+    });
 }
-
 
 
 // Query the JDE Job Control Master file to fetch all PDF files generated since last audit entry
 // Only select PDF jobs that are registered for post PDF processing e.g. R5542565 Invoice Print
+function queryJdeJobControl( connection, record, begin ) {
 
-function queryJdeJobControl(connection, record, begin) 
-{
+    var auditTimestamp,
+        query,
+        result,
+        jdeDate,
+        jdeTime;
 
-	// Issue with server clocks JDE and Linux being slightly out - approx 2.5 minutes.
-	// This will be rectified but in case it happens again or times drift slightly in future 
-	// Adjust query search date and time backwards by Offset - say 5 minutes - to allow for slightly different clock times
-	// and to ensure a PDF completing on JDE when this query runs is still included
 
-	var auditTimestamp = record[2];
-	var result = audit.adjustTimestampByMinutes(auditTimestamp, - serverTimeOffset);
-	logger.info(result);
-	var jdedate = result.jdeDate;
-	var jdetime = result.jdeTime;
+    // Issue with server clocks JDE and Linux being slightly out - approx 2.5 minutes.
+    // This will be rectified but in case it happens again or times drift slightly in future 
+    // Adjust query search date and time backwards by Offset - say 5 minutes - to allow for slightly different clock times
+    // and to ensure a PDF completing on JDE when this query runs is still included
+    auditTimestamp = record[ 2 ];
+    result = audit.adjustTimestampByMinutes( auditTimestamp, - serverTimeOffset );
+    jdedate = result.jdeDate;
+    jdetime = result.jdeTime;
+    
+    query = "SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110 ";
+    query += " WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= ";
+    query += jdedate;
+    query += " AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ";
+    query += " ORDER BY jcactdate DESC, jcacttime DESC";
+    
+    logger.debug(result);
+    logger.debug(query);
 
-	var query = "SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110 ";
-	query += " WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= ";
-	query += jdedate;
-	query += " AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ";
-	query += " ORDER BY jcactdate DESC, jcacttime DESC";
-
-	logger.info(query);
-
-	connection.execute(query, [], { resultSet: true }, function(err, result) 
-	{
-		if (err) { logger.error(err.message) };
-
-		fetchRowsFromRS( connection, result.resultSet, numRows, audit, begin );	
-
-	}); 
+    connection.execute( query, [], { resultSet: true }, function( err, result ) {
+        if ( err ) {
+             logger.error( err.message )
+        };
+        
+        processResultsFromF556110( connection, result.resultSet, numRows, audit, begin );	
+    }); 
 }
 
 
 // Process results of query on JDE Job Control file 
+function processResultsFromF556110( connection, resultSet, numRows, audit, begin ) {
 
-function fetchRowsFromRS(connection, resultSet, numRows, audit, begin) {
+    var latestRow,
+        latestPdf,
+        finish;
 
-    var latestRow = null;
-    var latestPdf = null;
+    resultSet.getRows( numRows, function( err, rows ) {
+        if ( err ) { 
+            oracleResultClose(connection);
 
-    resultSet.getRows( numRows, function(err, rows) {
-       if ( err ) { resultSet.close( function( err ) { logger.error( err.message ); oracleConnectionRelease(); })
-        } else if ( rows.length == 0 ) { 
-		resultSet.close( function ( err) {
-			if ( err ) { logger.error(err.message); oracleConnectionRelease(); }
-			});
+        } else if ( rows.length == 0 ) {
+            oracleResultClose(connection);
+
         } else if ( rows.length > 0 ) {
+
+            latestRow = rows[ 0 ];
+            latestPdf = latestRow[ 0 ];
             
-            // Query has returned record
-            latestRow = rows[0];
-            latestPdf = latestRow[0];
             logger.debug( "Latest UBE is : " + latestRow );
+            logger.debug(" Previous UBE PDF is : " + previousPdf);
+            logger.debug(" Latest UBE PDF is : " + latestPdf);
 
-		logger.debug(" Previous UBE PDF is : " + previousPdf);
-		logger.debug(" Latest UBE PDF is : " + latestPdf);
-
-            // Compare count of eligible PDF files if different from last then we have a change so check and process in detail 
+            // If latest JDE Pdf job name does not match the previous one we have a change so check and process in detail 
             if ( previousPdf === latestPdf ) {
                 logger.debug( "No Change detected");
+
             } else {
                 logger.info( " ");
                 logger.info( "          >>>>  CHANGE detected  <<<<");
@@ -206,21 +204,36 @@ function fetchRowsFromRS(connection, resultSet, numRows, audit, begin) {
 		// ......
 
             }
-            
+
             // Read next record
             // fetchRowsFromRS( connection, resultSet, numRows, audit );
 
-           var finish = new Date();
-           logger.info("Checking completed : " + finish + " took " + (finish - begin) + " milliseconds"  );
+           finish = new Date();
+           logger.debug( "Checking completed : " + finish + " took " + ( finish - begin ) + " milliseconds" );
 
-           // Sleep briefly then repeat check (monitor)
-           setTimeout( function() { recursive( connection, logger, credentials ) } , 3000  );
+            // Finished processing so close result set
+            oracleResultClose(connection);
 
-
+            // Sleep briefly then repeat check monitor indefinitely at polling interval
+            setTimeout( function() { recursiveMonitor( connection, logger, credentials ) } , pollInterval );
         }
     }); 
 }
 
+
+// Close Oracle database result set
+function oracleResultsetClose( connection ) {
+
+    resultSet.close(function(err) {
+        if ( err ) {
+            logger.error(err.message);
+            oracleConnectionRelease(); 
+        }
+    }); 
+}
+
+
+// Close Oracle database connection
 function oracleConnectionRelease( connection ) {
 
     logger.debug("Releasing Connection");
@@ -229,8 +242,4 @@ function oracleConnectionRelease( connection ) {
             logger.error( err.message );
         }
     });
-
 }
-
-
-
