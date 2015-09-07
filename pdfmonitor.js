@@ -253,9 +253,12 @@ function processLockedPdfFile(connection, record)
             logger.info( record[ 0 ] + " >>>>> Already Processed - Releasing Lock." );
             lock.removeLock( record, hostname );
         } else {
-             logger.info( record[0] + " >>>>> Processing Now." );
+             logger.info( record[0] + "JDE PDF - Processing Started" );
 
-             // This PDF file has not yet been processed and we have the lock so process it now.	
+             // This PDF file has not yet been processed and we have the lock so process it now.
+             // Note: Lock will be removed if all process steps complete or if there is an error
+             // Last process step creates an audit entry which prevents file being re-processed by future runs 
+             // so if error and lock removed - no audit entry therefore file will be re-processed by future run (recovery)	
              processPDF( record );
         }
     }); 
@@ -276,23 +279,43 @@ function processPDF( record ) {
     parms = { "jcfndfuf2": jcfndfuf2, "record": record, "genkey": genkey, "hostname": hostname };
 
     async.series([
-        function ( cb ) { createBackupDir( parms, cb ) }, 
-        function ( cb ) { backupPdfFile( parms, cb ) }, 	
-        function ( cb ) { copyPdfToWorkDir( parms, cb ) }, 
+        function ( cb ) { passParms( parms, cb ) }, 
+        function ( cb ) { createWorkDir( parms, cb ) }, 
+        function ( cb ) { copyJdePdfToWorkDir( parms, cb ) }, 
 //        function ( cb ) { applyLogo( parms, cb ) }, 
 //        function ( cb ) { replaceJdePdfWithLogoVersion( parms, cb ) },
 //        function ( cb ) { createAuditEntry( parms, cb ) },
-        function ( cb ) { removeLock( parms, cb ) }
-        ], function ( cb ) { allDone( parms, cb ) }
+          function ( cb ) { removeLock( parms, cb ) }
+        ], function(err, results) {
+             var parms = results[ 0 ];
+
+             // Lose lock regardless whether PDF file proceesed correctly or not
+             removeLock( parms );
+
+             if ( err ) {
+               logger.warn("JDE PDF " + parms.jcfndfuf2 + " - Processing failed - will retry on later runs");
+	     } else {
+               logger.info("JDE PDF " + parms.jcfndfuf2 + " - Processing Complete");
+             }
+           }
     );
 }
 
 
-function createBackupDir(parms, cb) {
+// Ensure required parameters for releasing lock are available in final async function
+// Need to release lock if PDF file processed okay or failed with errors so it can be picked up and recovered by future runs!
+// For example sshfs connection to remote directories on AIX might go down and re-establish later
+function passParms(parms, cb) {
 
-    var cmd = "mkdir -p /home/shareddata/backup";
+  cb( null, parms);  
 
-    logger.info( "Processing PDF " + parms.jcfndfuf2 + " - Create Backup Directory" );
+}
+
+function createWorkDir(parms, cb) {
+
+    var cmd = "mkdir -p /home/shareddata/wrkdir";
+
+    logger.info( "JDE PDF " + parms.jcfndfuf2 + " - Ensure working directory exists" );
     logger.debug( cmd );
     exec( cmd, function( err, stdout, stderr ) {
         if ( err !== null ) {
@@ -304,12 +327,12 @@ function createBackupDir(parms, cb) {
 }
 
 // Make a backup copy of the original JDE PDF file - just in case we need the untouched original
-// These can be purged inline with the normal JDE PrintQueue - currentlt PDF's older than approx 2 months
-function backupPdfFile( parms, cb ) {
+// These can be purged inline with the normal JDE PrintQueue - currently PDF's older than approx 2 months
+function copyJdePdfToWorkDir( parms, cb ) {
 
-    var cmd = "cp /home/pdfdata/" + parms.jcfndfuf2 + " /home/shareddata/backup/" + parms.jcfndfuf2;
+    var cmd = "cp /home/pdfdata/" + parms.jcfndfuf2 + " /home/shareddata/wrkdir/" + parms.jcfndfuf2.trim() + "_ORIGINAL";
 
-    logger.info( "Processing PDF " + parms.jcfndfuf2 + " - Copy JDE PDF file to Backup Directory" );
+    logger.info( "JDE PDF " + parms.jcfndfuf2 + " - Make backup copy of original JDE PDF file in work directory" );
     logger.debug( cmd );
     exec( cmd, function( err, stdout, stderr ) {
         if ( err !== null ) {
@@ -321,31 +344,14 @@ function backupPdfFile( parms, cb ) {
 }
 
 
-// Make a working copy of the original JDE PDF file - this will have logos added to each page
-function copyPdfToWorkDir( parms, cb ) {
-
-    var cmd = "cp /home/pdfdata/" + parms.jcfndfuf2 + " /home/shareddata/" + parms.jcfndfuf2.trim() + "_ORIGINAL";
-
-    logger.info( "Processing PDF " + parms.jcfndfuf2 + " - Copy JDE PDF file to work Directory" );
-    logger.debug( cmd );
-    exec( cmd, function( err, stdout, stderr ) {
-        if ( err !== null ) {
-            cb( err, cmd + " - Failed" );
-        } else {
-            cb( null, cmd + " - Done" );
-        }
-    });
-}
-
-
-// Apply logo to working copy of JDE PDF file
+// Read original PDF and create new replacement version in working directory with logos added
 function applyLogo( parms, cb ) {
 
-    var pdfInput = "/home/shareddata/" + parms.jcfndfuf2.trim() + "_ORIGINAL",
-        pdfOutput = '/home/shareddata/' + parms.jcfndfuf2,
+    var pdfInput = "/home/shareddata/wrkdir/" + parms.jcfndfuf2.trim() + "_ORIGINAL",
+        pdfOutput = '/home/shareddata/wrkdir/' + parms.jcfndfuf2,
         cmd = "node ./src/pdfaddlogo.js " + pdfInput + " " + pdfOutput ;
 
-    logger.info( "Processing PDF " + parms.jcfndfuf2 + " - Apply Logo to JDE PDF in Work Directory" );
+    logger.info( "JDE PDF " + parms.jcfndfuf2 + " - Read original creating new PDF in work Directory with logos" );
     logger.debug( cmd );
     exec( cmd, function( err, stdout, stderr ) {
         if ( err !== null ) {
@@ -360,11 +366,11 @@ function applyLogo( parms, cb ) {
 // Replace original JDE PDF File in PrintQueue with amended PDF incuding logos
 function replaceJdePdfWithLogoVersion( parms, cb ) {
 
-    var pdfWithLogos = "/home/shareddata/" + parms.jcfndfuf2,
+    var pdfWithLogos = "/home/shareddata/wrkdir/" + parms.jcfndfuf2,
         jdePrintQueue = "/home/pdfdata/" + parms.jcfndfuf2,
         cmd = "mv " + pdfWithLogos + " " + jdePrintQueue;
 
-    logger.info( "Processing PDF " + parms.jcfndfuf2 + " - Replace JDE PDF with modified Logo version" );
+    logger.info( "JDE PDF " + parms.jcfndfuf2 + " - Replace JDE output queue PDF with modified Logo version" );
     logger.debug( cmd );
     exec( cmd, function( err, stdout, stderr ) {
         if ( err !== null ) {
@@ -378,24 +384,18 @@ function replaceJdePdfWithLogoVersion( parms, cb ) {
 
 function createAuditEntry( parms, cb ) {
 
-    // Create Audit entry for this Processed record
+    // Create Audit entry for this Processed record - once created it won't be processed again
     audit.createAuditEntry( parms.jcfndfuf2, parms.genkey, parms.hostname, "PROCESSED - LOGO" );
-    logger.info( "Processing PDF " + parms.jcfndfuf2 + " - Audit Record written to JDE" );
+    logger.info( "JDE PDF " + parms.jcfndfuf2 + " - Audit Record written to JDE" );
     cb( null, "Audit record written" );
 }
 
 
-function removeLock( parms, cb ) {
+function removeLock( parms ) {
 
     lock.removeLock( parms.record, parms.hostname );
-    logger.info( "Processing PDF " + parms.jcfndfuf2 + " - Lock Released" );
-    cb( null, "Lock Released" );
-}
-
-
-function allDone(err, results) {
-
-	logger.debug( "PDF File Processed - ALL DONE" );
+    logger.info( "JDE PDF " + parms.jcfndfuf2 + " - Lock Released" );
+   
 }
 
 
