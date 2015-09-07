@@ -102,16 +102,16 @@ function queryJdeAuditlog( connection, begin ) {
 
 // Process results from JDE Audit Log table Query but only interested in last Pdf job processed
 // to determine date and time which is used to control further queries
-function processResultsFromF559859( connection, rs, numRows, audit, begin ) {
+function processResultsFromF559859( connection, rsF559859, numRows, audit, begin ) {
 
     var record;
 
-    rs.getRows( numRows, function( err, rows ) {
+    rsF559859.getRows( numRows, function( err, rows ) {
         if ( err ) { 
-            oracleResultsetClose( connection, rs );
+            oracleResultsetClose( connection, rsF559859 );
 
       	} else if ( rows.length == 0 ) {
-            oracleResultsetClose( connection, rs );
+            oracleResultsetClose( connection, rsF559859 );
 
 	} else if ( rows.length > 0 ) {
 		
@@ -120,7 +120,7 @@ function processResultsFromF559859( connection, rs, numRows, audit, begin ) {
 
             record = rows[ 0 ];
             logger.debug( record );
-            oracleResultsetClose( connection, rs );
+            oracleResultsetClose( connection, rsF559859 );
             queryJdeJobControl( connection, record, begin );
 	}
     });
@@ -135,7 +135,8 @@ function queryJdeJobControl( connection, record, begin ) {
         query,
         result,
         jdeDate,
-        jdeTime;
+        jdeTime,
+        firstRecord = true;
 
 
     // Issue with server clocks JDE and Linux being slightly out - approx 2.5 minutes.
@@ -150,75 +151,85 @@ function queryJdeJobControl( connection, record, begin ) {
     query = "SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110 ";
     query += " WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= ";
     query += jdedate;
-    query += " AND RTRIM(SUBSTR(jcfndfuf2, 0, INSTR(jcfndfuf2, '_') - 1), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ";
-    query += " ORDER BY jcactdate DESC, jcacttime DESC";
-    
+    query += " AND RTRIM( SUBSTR(jcfndfuf2, 0, (INSTR(jcfndfuf2, '_') - 1)), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ";
+    query += " ORDER BY jcactdate, jcacttime";
+    	
     logger.debug(result);
     logger.debug(query);
 
+
     connection.execute( query, [], { resultSet: true }, function( err, result ) {
         if ( err ) {
-             logger.error( err.message )
+            logger.error( err.message )
         };
-        
-        processResultsFromF556110( connection, result.resultSet, numRows, audit, begin );	
+        processResultsFromF556110( connection, result.resultSet, numRows, audit, begin, firstRecord );	
     }); 
 }
 
 
 // Process results of query on JDE Job Control file 
-function processResultsFromF556110( connection, rs, numRows, audit, begin ) {
+function processResultsFromF556110( connection, rsF556110, numRows, audit, begin, firstRecord ) {
 
-    var latestRow,
-        latestPdf,
+    var currentRow,
+        currentPdf,
         rowToProcess,
         finish;
 
-    rs.getRows( numRows, function( err, rows ) {
+    rsF556110.getRows( numRows, function( err, rows ) {
         if ( err ) { 
-            oracleResultsetClose( connection, rs );
+            oracleResultsetClose( connection, rsF556110 );
 
+		logger.debug("rsF556110 Error");
+	
         } else if ( rows.length == 0 ) {
-            oracleResultsetClose( connection, rs );
-
-        } else if ( rows.length > 0 ) {
-
-            latestRow = rows[ 0 ];
-            latestPdf = latestRow[ 0 ];
-            
-            logger.debug( "Latest UBE is : " + latestRow );
-            logger.debug(" Previous UBE PDF is : " + previousPdf);
-            logger.debug(" Latest UBE PDF is : " + latestPdf);
-
-            // If latest JDE Pdf job name does not match the previous one we have a change so check and process in detail 
-            if ( previousPdf === latestPdf ) {
-                logger.debug( "No Change detected");
-
-            } else {
-                logger.info( " ");
-                logger.info( "          >>>>  CHANGE detected  <<<<");
-                logger.info( " ");
-                previousPdf = latestPdf;
-
-                // Process first PDF file here then call this same function to keep processing
-                // each record until all done. 
-		// ......
-
-            }
-
-            // Read next record
-            // fetchRowsFromRS( connection, rs, numRows, audit );
+            oracleResultsetClose( connection, rsF556110 );
 
             finish = new Date();
-            logger.debug( "Checking completed : " + finish + " took " + ( finish - begin ) + " milliseconds" );
-
-            // Finished processing so close result set
-            oracleResultsetClose( connection, rs );
+            logger.info( "Checking completed : " + finish + " took " + ( finish - begin ) + " milliseconds" );
 
             // Sleep briefly then repeat check monitor indefinitely at polling interval
             setTimeout( function() { recursiveMonitor( connection, logger, credentials ) } , pollInterval );
+
+        } else if ( rows.length > 0 ) {
+
+            currentRow = rows[ 0 ];
+            currentPdf = currentRow[ 0 ];
+            
+            if ( firstRecord ) {
+
+                firstRecord = false;
+                logger.debug(" Previous UBE PDF is : " + previousPdf);
+                logger.debug(" Latest UBE PDF is : " + currentPdf);
+
+                // If latest JDE Pdf job name does not match the previous one we have a change so check and process in detail 
+                if ( previousPdf === currentPdf ) {
+                    logger.debug( "No Change detected - sleep then recheck shortly");
+                } else {
+                    logger.info( " ");
+                    logger.info( "          >>>>  CHANGE detected  <<<<");
+                    logger.info( " ");
+                }
+
+            }
+            // Process PDF file
+            processPdfFile(currentPdf, currentRow);
+
+            // Read next record
+            processResultsFromF556110( connection, rsF556110, numRows, audit, begin, firstRecord );
+
         }
     }); 
+}
+
+
+// Process PDF file
+function processPdfFile(currentPdf, currentRow) {
+
+    logger.info("Process PDF file : " + currentRow);
+
+    // Save value of last successfully processed PDF for monitor checking
+    previousPdf = currentPdf;
+    
 }
 
 
@@ -227,7 +238,7 @@ function oracleResultsetClose( connection, rs ) {
 
     rs.close( function( err ) {
         if ( err ) {
-            logger.error(err.message);
+            logger.error("Error closing resultset: " + err.message);
             oracleConnectionRelease(); 
         }
     }); 
@@ -240,7 +251,7 @@ function oracleConnectionRelease( connection ) {
     logger.debug( "Releasing Connection" );
     connection.release( function ( err ) {
         if ( err ) {
-            logger.error( err.message );
+            logger.error( "Error closing connection: " + err.message );
         }
     });
 }
