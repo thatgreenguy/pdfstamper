@@ -232,7 +232,7 @@ function processLockedPdfFile(connection, record)
     var query,
         countRec,
         count,
-        myfunc;
+        cb = null;
 
     logger.debug( record[ 0 ] + " >>>>> Lock established" );
 
@@ -261,11 +261,10 @@ function processLockedPdfFile(connection, record)
              // Last process step creates an audit entry which prevents file being re-processed by future runs 
              // so if error and lock removed - no audit entry therefore file will be re-processed by future run (recovery)	
              
-	     myfunc = function() { processPDF( record ) };	
-
 	     // Before processing PDF file check remote mounts still in place then call process PDF function
              // Remote mounts will be established / re-established as necessary
-	     mounts.checkRemoteMounts( myfunc );
+	     cb = function() { processPDF( record ) };	
+	     mounts.checkRemoteMounts( cb );
 
 //             processPDF( record ); 
 
@@ -291,21 +290,24 @@ function processPDF( record ) {
         function ( cb ) { passParms( parms, cb ) }, 
         function ( cb ) { createWorkDir( parms, cb ) }, 
         function ( cb ) { copyJdePdfToWorkDir( parms, cb ) }, 
-//        function ( cb ) { applyLogo( parms, cb ) }, 
-//        function ( cb ) { replaceJdePdfWithLogoVersion( parms, cb ) },
-//        function ( cb ) { createAuditEntry( parms, cb ) },
-          function ( cb ) { removeLock( parms, cb ) }
+        function ( cb ) { applyLogo( parms, cb ) }, 
+        function ( cb ) { replaceJdePdfWithLogoVersion( parms, cb ) },
+        function ( cb ) { createAuditEntry( parms, cb ) },
+        function ( cb ) { removeLock( parms, cb ) }
         ], function(err, results) {
-             var parms = results[ 0 ];
 
-             // Lose lock regardless whether PDF file proceesed correctly or not
-             removeLock( parms );
+             var parms; 
 
              if ( err ) {
                logger.warn("JDE PDF " + parms.jcfndfuf2 + " - Processing failed - will retry on later runs");
 	     } else {
                logger.info("JDE PDF " + parms.jcfndfuf2 + " - Processing Complete");
              }
+
+             // Lose lock regardless whether PDF file proceesed correctly or not
+             parms = results[ 0 ];
+             removeLock( parms );
+
            }
     );
 }
