@@ -1,33 +1,36 @@
+// Module		: mounts.js
+// Description		: Check remote mounts in place and establish or re-establish as necessary
+// Author		: Paul Green
+// Dated		: 2015-09-08
+
 
 var async = require( 'async' ),
-  log = require( './common/logger' ),
+  log = require( './logger' ),
   exec = require( 'child_process' ).exec,
-  remoteJdeDir = '/jdedwards/e812/PrintQueue',
-  remoteWorkDir = '/home/pdfprint',
+  remoteJdeDir = process.env.DIR_JDEPDF,
+  remoteWorkDir = process.env.DIR_SHAREDDATA,
   localJdeDir = '/home/pdfdata',
   localWorkDir = '/home/shareddata',
-  sshfsPassword = 'cea63b06a9',
-  sshfsUser = 'pdfprint',
-  sshfsHost = '172.31.240.241',
+  sshfsPassword = process.env.SSHFS_PWD,
+  sshfsUser = process.env.SSHFS_USER,
+  sshfsHost = process.env.SSHFS_HOST,
   sshfsServerKeepaliveSeconds = 30;
-
-
-checkRemoteMounts();
 
 
 
 // Check mounts in place - once established they should remain semi-permanent
 // Establish or re-establish mount directories to JDE Enterprise server on AIX.
-function checkRemoteMounts() {
+module.exports.checkRemoteMounts = function( callback ) {
   async.series([
     function ( cb ) { checkJdeQueueMounted( cb ) }, 
     function ( cb ) { checkWorkDirMounted( cb ) } 	
     ], function( err, results ) {
          if ( err ) {
            log.warn( 'Problem with remote mounts - attempting auto recovery' );
-	   establishRemoteMounts();
+	   establishRemoteMounts( callback );
          } else {
-           log.debug( 'Remote mounts okay' );  
+           log.debug( 'Remote mounts okay' );
+           callback();  
          }
        }
     );
@@ -35,7 +38,7 @@ function checkRemoteMounts() {
 
 
 // When issue detected with remote mounts to AIX Jde Enterprise server then establish or re-establish them
-function establishRemoteMounts() {
+function establishRemoteMounts( callback ) {
   async.series([
     function ( cb ) { unmountJdeQueue( cb ) }, 
     function ( cb ) { unmountSharedWorkDir( cb ) }, 	
@@ -45,7 +48,8 @@ function establishRemoteMounts() {
          if ( err ) {
            log.error( 'Unable to establish Remote mounts to AIX (JDE Enterprise Server)' );
          } else {
-           log.info( 'Remote mounts established' );  
+           log.info( 'Remote mounts established' );
+           calback();
          }
        }
     );

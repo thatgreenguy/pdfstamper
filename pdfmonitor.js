@@ -20,6 +20,7 @@ var oracledb = require( "oracledb" ),
     logger = require( "./common/logger" ),
     audit = require( "./common/audit.js" ),
     lock = require( "./common/lock.js" ),
+    mounts = require( "./common/mounts.js" ),
     async = require( "async" ),
     exec = require( "child_process" ).exec,
     credentials = { user: process.env.DB_USER, password: process.env.DB_PWD, connectString: process.env.DB_NAME },
@@ -209,7 +210,6 @@ function processResultsFromF556110( connection, rsF556110, numRows, audit, begin
                     logger.info( "          >>>>  CHANGE detected  <<<<");
                     logger.info( " ");
                 }
-
             }
 
             // Multiple pdfhandler processes could be running so need to establish exclusive rights to 
@@ -231,7 +231,8 @@ function processLockedPdfFile(connection, record)
 
     var query,
         countRec,
-        count;
+        count,
+        myfunc;
 
     logger.debug( record[ 0 ] + " >>>>> Lock established" );
 
@@ -259,7 +260,15 @@ function processLockedPdfFile(connection, record)
              // Note: Lock will be removed if all process steps complete or if there is an error
              // Last process step creates an audit entry which prevents file being re-processed by future runs 
              // so if error and lock removed - no audit entry therefore file will be re-processed by future run (recovery)	
-             processPDF( record );
+             
+	     myfunc = function() { processPDF( record ) };	
+
+	     // Before processing PDF file check remote mounts still in place then call process PDF function
+             // Remote mounts will be established / re-established as necessary
+	     mounts.checkRemoteMounts( myfunc );
+
+//             processPDF( record ); 
+
         }
     }); 
 }
