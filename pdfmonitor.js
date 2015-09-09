@@ -30,7 +30,12 @@ var oracledb = require( "oracledb" ),
     previousPdf = "",
     numRows = 1,
     dirRemoteJdePdf = process.env.DIR_JDEPDF,
-    dirLocalJdePdf = process.env.DIR_SHAREDDATA;
+    dirLocalJdePdf = process.env.DIR_SHAREDDATA,
+    logLevel = process.env.LOG_LEVEL;
+
+// Change logging level 
+if ( typeof( logLevel ) === 'undefined' ) { logLevel = 'info' };
+logger.level = logLevel;
 
 
 // Docker container Hostname is used for Audit logging and lock file control so if not available 
@@ -76,8 +81,6 @@ function recursiveMonitor( connection ) {
     var begin;
 
     begin  = new Date();
-    
-    logger.debug( "" );
     logger.debug( "Checking initiated : " + begin );
 
     queryJdeAuditlog( connection, begin );
@@ -240,8 +243,8 @@ function processPdfEntry( connection, rsF556110, begin, jobControlRecord, firstR
   var cb = null,
     currentPdf;
 
-  logger.info('processPdfEntry for : ' + jobControlRecord);
-  logger.info('processPdfEntry First? : ' + firstRecord);
+  logger.debug('processPdfEntry for : ' + jobControlRecord);
+  logger.debug('processPdfEntry First? : ' + firstRecord);
  
 
   if ( firstRecord ) {
@@ -252,7 +255,7 @@ function processPdfEntry( connection, rsF556110, begin, jobControlRecord, firstR
     // If latest JDE Pdf job name does not match the previous one we have a change so check and process in detail 
     if ( previousPdf === currentPdf ) {
 
-      logger.debug( "No Change detected - sleep then recheck shortly");
+      logger.info( "No Change detected - sleep then recheck shortly");
 
     } else {
 
@@ -266,8 +269,8 @@ function processPdfEntry( connection, rsF556110, begin, jobControlRecord, firstR
 
       // Before processing recently noticed PDF file(s) first check mount points and re-establish if necessary
       cb = function() { lock.gainExclusivity( jobControlRecord, hostname, connection, processLockedPdfFile ); };      
-      mounts.checkRemoteMounts( cb );           
-     }
+      mounts.checkRemoteMounts( cb );
+    }           
   } else {
 
     // Process second and subsequent records.
@@ -289,7 +292,7 @@ function processLockedPdfFile(connection, record)
         count,
         cb = null;
 
-    logger.debug( record[ 0 ] + " >>>>> Lock established" );
+    logger.info( 'JDE PDF ' + record[ 0 ] + " - Lock established" );
 
     // Check this PDF file has definitely not yet been processed by any other pdfHandler instance
     // that may be running concurrently
@@ -306,10 +309,10 @@ function processLockedPdfFile(connection, record)
         countRec = result.rows[ 0 ];
         count = countRec[ 0 ];
         if ( count > 0 ) {
-            logger.info( record[ 0 ] + " >>>>> Already Processed - Releasing Lock." );
+            logger.info( 'JDE PDF ' + record[ 0 ] + " - Already Processed - Releasing Lock." );
             lock.removeLock( record, hostname );
         } else {
-             logger.info( record[0] + "JDE PDF - Processing Started" );
+             logger.info( 'JDE PDF ' + record[0] + ' - Processing Started' );
 
              // This PDF file has not yet been processed and we have the lock so process it now.
              // Note: Lock will be removed if all process steps complete or if there is an error
@@ -375,7 +378,7 @@ function createWorkDir(parms, cb) {
 
     var cmd = "mkdir -p /home/shareddata/wrkdir";
 
-    logger.info( "JDE PDF " + parms.jcfndfuf2 + " - Ensure working directory exists" );
+    logger.verbose( "JDE PDF " + parms.jcfndfuf2 + " - Ensure working directory exists" );
     logger.debug( cmd );
     exec( cmd, function( err, stdout, stderr ) {
         if ( err !== null ) {
@@ -393,7 +396,7 @@ function copyJdePdfToWorkDir( parms, cb ) {
 
     var cmd = "cp /home/pdfdata/" + parms.jcfndfuf2 + " /home/shareddata/wrkdir/" + parms.jcfndfuf2.trim() + "_ORIGINAL";
 
-    logger.info( "JDE PDF " + parms.jcfndfuf2 + " - Make backup copy of original JDE PDF file in work directory" );
+    logger.verbose( "JDE PDF " + parms.jcfndfuf2 + " - Make backup copy of original JDE PDF file in work directory" );
     logger.debug( cmd );
     exec( cmd, function( err, stdout, stderr ) {
         if ( err !== null ) {
@@ -413,7 +416,7 @@ function applyLogo( parms, cb ) {
         pdfOutput = '/home/shareddata/wrkdir/' + parms.jcfndfuf2,
         cmd = "node ./src/pdfaddlogo.js " + pdfInput + " " + pdfOutput ;
 
-    logger.info( "JDE PDF " + parms.jcfndfuf2 + " - Read original creating new PDF in work Directory with logos" );
+    logger.verbose( "JDE PDF " + parms.jcfndfuf2 + " - Read original creating new PDF in work Directory with logos" );
     logger.debug( cmd );
     exec( cmd, function( err, stdout, stderr ) {
         if ( err !== null ) {
@@ -433,7 +436,7 @@ function replaceJdePdfWithLogoVersion( parms, cb ) {
         jdePrintQueue = "/home/pdfdata/" + parms.jcfndfuf2,
         cmd = "mv " + pdfWithLogos + " " + jdePrintQueue;
 
-    logger.info( "JDE PDF " + parms.jcfndfuf2 + " - Replace JDE output queue PDF with modified Logo version" );
+    logger.verbose( "JDE PDF " + parms.jcfndfuf2 + " - Replace JDE output queue PDF with modified Logo version" );
     logger.debug( cmd );
     exec( cmd, function( err, stdout, stderr ) {
         if ( err !== null ) {
@@ -450,7 +453,7 @@ function createAuditEntry( parms, cb ) {
 
     // Create Audit entry for this Processed record - once created it won't be processed again
     audit.createAuditEntry( parms.jcfndfuf2, parms.genkey, parms.hostname, "PROCESSED - LOGO" );
-    logger.info( "JDE PDF " + parms.jcfndfuf2 + " - Audit Record written to JDE" );
+    logger.verbose( "JDE PDF " + parms.jcfndfuf2 + " - Audit Record written to JDE" );
     cb( null, "Audit record written" );
 }
 
@@ -458,7 +461,7 @@ function createAuditEntry( parms, cb ) {
 function removeLock( parms ) {
 
     lock.removeLock( parms.record, parms.hostname );
-    logger.info( "JDE PDF " + parms.jcfndfuf2 + " - Lock Released" );
+    logger.verbose( "JDE PDF " + parms.jcfndfuf2 + " - Lock Released" );
    
 }
 

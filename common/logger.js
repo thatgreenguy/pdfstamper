@@ -3,7 +3,7 @@
 // Author		: Paul Green
 // Dated		: 2015-09-03
 
-var winston = require('winston');  
+var winston = require('winston');
 
 winston.emitErrs = true;
 
@@ -19,7 +19,7 @@ var logger = new winston.Logger({
             colorize: false 
         }),
         new winston.transports.Console({
-            level: 'debug',
+            level: 'info',
             handleExceptions: true,
             json: false,
             colorize: true

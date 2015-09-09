@@ -21,8 +21,8 @@ var oracledb = require('oracledb'),
 
 exports.gainExclusivity = function(record, hostname, conn, processLockedPdfFile) {
 
-	if (typeof(record) === 'undefined') { console.log('ERROR: Valid JDE Job Control Record Expected.'); return false; }
-	if (typeof(processLockedPdfFile) !== 'function') { console.log('ERROR: Callback function expected to process PDF file.'); return false; }
+	if ( typeof( record ) === 'undefined') { console.log('ERROR: Valid JDE Job Control Record Expected.'); return false; }
+	if ( typeof( processLockedPdfFile ) !== 'function') { console.log('ERROR: Callback function expected to process PDF file.'); return false; }
 
 	var jcfndfuf2 = record[0];
 	var jcprocessid = record[3];
