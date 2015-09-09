@@ -250,9 +250,6 @@ function processPdfEntry( connection, rsF556110, begin, jobControlRecord, firstR
     firstRecord = false;
     currentPdf = jobControlRecord[ 0 ];
 
-    logger.debug(" Previous UBE PDF is : " + previousPdf);
-    logger.debug(" Latest UBE PDF is : " + currentPdf);
-
     // If latest JDE Pdf job name does not match the previous one we have a change so check and process in detail 
     if ( previousPdf === currentPdf ) {
 
@@ -261,6 +258,8 @@ function processPdfEntry( connection, rsF556110, begin, jobControlRecord, firstR
     } else {
 
       previousPdf = currentPdf;
+      logger.debug(" Previous PDF file : " + previousPdf);
+      logger.debug(" Latest PDF file : " + currentPdf);
 
       logger.info( " ");
       logger.info( "          >>>>  CHANGE detected in JDE Output Queue <<<<");

@@ -4,179 +4,128 @@
 // Dated		: 2015-08-03
 
   
-var oracledb = require('oracledb');
-var logger = require("./logger");
-var credentials = {user: 'test_user', password: 'test_user', connectString: 'jdetest'};
+var oracledb = require('oracledb'),
+  logger = require("./logger"),
+  credentials = { user: process.env.DB_USER, password: process.env.DB_PWD, connectString: process.env.DB_NAME };
 
 
-// Function		: createAuditEntry
-//
-// Description		: Insert new Audit entry into the audit log file.
-// Author		: Paul Green
-// Dated		: 2015-08-03
-//
-// Synopsis
-// --------
+// Insert new Audit entry into the JDE audit log file.
+exports.createAuditEntry = function( pdfjob, genkey, ctrid, status ) {
 
-exports.createAuditEntry = function(pdfjob, genkey, ctrid, status) {
+  var dt,
+  timestamp,
+  jdedate,
+  jdetime,
+  query;
 
-	if (typeof(pdfjob) === 'undefined') pdfjob = ' ';
-	if (typeof(genkey) === 'undefined') genkey = ' ';
-	if (typeof(ctrid) === 'undefined') ctrid = ' ';
-	if (typeof(status) === 'undefined') status = ' ';
+  dt = new Date();
+  timestamp = exports.createTimestamp( dt );
+  jdedate = exports.getJdeJulianDate( dt );
+  jdetime = exports.getJdeAuditTime( dt );
 
-	var dt = new Date();
-	var timestamp = exports.createTimestamp(dt);
-	var jdedate = exports.getJdeJulianDate(dt);
-	var jdetime = exports.getJdeAuditTime(dt);
+  if ( typeof( pdfjob ) === 'undefined' ) pdfjob = ' ';
+  if ( typeof( genkey ) === 'undefined' ) genkey = ' ';
+  if ( typeof( ctrid ) === 'undefined' ) ctrid = ' ';
+  if ( typeof( status ) === 'undefined' ) status = ' ';
 
-	oracledb.getConnection( credentials, function(err, connection)
-	{
-		if (err) { logger.error('Oracle DB Connection Failure'); return;	}
+  oracledb.getConnection( credentials, function(err, connection) {
+    if ( err ) { 
+      logger.error( 'Oracle DB Connection Failure' );
+      return;
+    }
 
-		var query = "INSERT INTO testdta.F559859 VALUES (:pasawlatm, :pafndfuf2, :pablkk, :paactivid, :padeltastat, :papid, :pajobn, :pauser, :paupmj, :paupmt)";
-	
-		connection.execute(query, [timestamp, pdfjob, genkey, ctrid, status, 'PDFHANDLER', 'CENTOS', 'DOCKER', jdedate, jdetime ], { autoCommit: true }, function(err, result) 
-		{
-			if (err)
-			{
-				 logger.error(err.message);
-			}
-			connection.release( function(err)
-			{
-				if (err)
-				{
-					logger.error(err.message);
-					return;
-				}
-			});
-		});
-  	});
+    query = "INSERT INTO testdta.F559859 VALUES (:pasawlatm, :pafndfuf2, :pablkk, :paactivid, :padeltastat, :papid, :pajobn, :pauser, :paupmj, :paupmt)";
+ 
+    connection.execute( query, [timestamp, pdfjob, genkey, ctrid, status, 'PDFHANDLER', 'CENTOS', 'DOCKER', jdedate, jdetime ], { autoCommit: true }, function( err, result ) {
+      if ( err ) {
+        logger.error( err.message );
+      }
+      connection.release( function( err ) {
+        if ( err ) {
+          logger.error( err.message );
+          return;
+        }
+      });
+    });
+  });
 }
 
 
-
-
-// Function 		: createAuditTimestamp 
-//
-// Description		: Create human readable timestamp string suitable for Audit Logging
-// Author		: Paul Green
-// Dated		: 2015-08-03
-//
-// Synopsis
-// --------
-// Returns timestamp string like 'YYYY-MM-DD T HH:MM:SS MMMMMMMMM'
-// Date and time elements are padded with leading '0' by default.
-// Date and Time separator characters are '-' and ':' by default.
+// Create human readable timestamp string suitable for Audit Logging - Returns timestamp string like 'YYYY-MM-DD T HH:MM:SS MMMMMMMMM'
+// Date and time elements are padded with leading '0' by default. Date and Time separator characters are '-' and ':' by default.
 // MMMMMMMMM is time as milliseconds since epoch to keep generated string unique for same second inserts to Audit Log table. 
+exports.createTimestamp = function( dt, dateSep, timeSep, padChar ) {
 
-exports.createTimestamp = function(dt, dateSep, timeSep, padChar) {
-
-	if (typeof(dt) === 'undefined') dt = new Date();
-	if (typeof(dateSep) === 'undefined') dateSep = '-';
-	if (typeof(timeSep) === 'undefined') timeSep = ':';
-	if (typeof(padChar) === 'undefined') padChar = '0';
-
-	return dt.getFullYear() + dateSep + (padChar + (dt.getMonth()+1)).slice(-2) + dateSep + (padChar + dt.getDate()).slice(-2)
-		+ ' T ' + (padChar + dt.getHours()).slice(-2) + timeSep + (padChar + dt.getMinutes()).slice(-2) + timeSep
-		+ (padChar + dt.getSeconds()).slice(-2) + ' ' + dt.getTime();
+  if ( typeof( dt ) === 'undefined' ) dt = new Date();
+  if ( typeof( dateSep ) === 'undefined' ) dateSep = '-';
+  if ( typeof( timeSep ) === 'undefined' ) timeSep = ':';
+  if ( typeof( padChar ) === 'undefined' ) padChar = '0';
+  
+  return dt.getFullYear() + dateSep + ( padChar + ( dt.getMonth() + 1 ) ).slice( -2 ) + dateSep + ( padChar + dt.getDate() ).slice( -2 )
+    + ' T ' + ( padChar + dt.getHours() ).slice( -2 ) + timeSep + ( padChar + dt.getMinutes() ).slice( -2 ) + timeSep
+    + ( padChar + dt.getSeconds() ).slice( -2 ) + ' ' + dt.getTime();
 }
 
 
+// Convert date to weird JDE Julian date - JDE does not use real Julian dates rather some half baked version which only works for dates after 1900
+exports.getJdeJulianDate = function( dt ) {
 
+  var yyyy,
+  onejan,
+  ddd,
+  julian;
 
-exports.getJdeJulianDate = function(dt) {
+  if ( typeof( dt ) === 'undefined' ) dt = new Date();
 
-// Function		: getJdeJulianDate
-//
-// Description		: Convert date to weird JDE Julian date
-// Author		: Paul Green
-// Dated		: 2015-08-03
-//
-// Synopsis
-// --------
-// JDE does not use real Julian dates rather some half baked version which only works for dates after 1900
-
-	if (typeof(dt) === 'undefined') dt = new Date();
-
-	var yyyy = dt.getFullYear() - 1900;
-	var onejan = new Date(dt.getFullYear(), 0, 1);	
-	var ddd = Math.ceil((dt - onejan) / 86400000);
-	var julian = yyyy.toString() + ('000' + ddd).slice(-3);
-
-	return julian;
+  yyyy = dt.getFullYear() - 1900;
+  onejan = new Date( dt.getFullYear(), 0, 1 );	
+  ddd = Math.ceil( ( dt - onejan ) / 86400000 );
+  julian = yyyy.toString() + ( '000' + ddd ).slice( -3 );
+  
+  return julian;
 } 
 
 
+// Convert date to JDE Audit Time HHMMSS - Return jde Audit time in format HHMMSS with no separators and leading 0's if required.
+exports.getJdeAuditTime = function( dt, padChar ) {
 
+  var jdetime;
 
-// Function		: getJdeTime
-//
-// Description		: Convert date to JDE Audit Time HHMMSS
-// Author		: Paul Green
-// Dated		: 2015-08-03
-//
-// Synopsis
-// --------
-// Return jde Aaudit time in format HHMMSS with no separators and leading 0's if required.
+  if ( typeof( dt ) === 'undefined' ) dt = new Date();
+  if ( typeof( padChar ) === 'undefined' ) padChar = '0';
 
-exports.getJdeAuditTime = function(dt, padChar) {
+  jdetime = ( padChar + dt.getHours() ).slice( -2 ) + ( padChar + dt.getMinutes() ).slice( -2 ) + ( padChar + dt.getSeconds() ).slice( -2 );
 
-	if (typeof(dt) === 'undefined') dt = new Date();
-	if (typeof(padChar) === 'undefined') padChar = '0';
-
-	var jdetime = (padChar + dt.getHours()).slice(-2) + (padChar + dt.getMinutes()).slice(-2) + (padChar + dt.getSeconds()).slice(-2);
-
-	return jdetime;
-
+  return jdetime;
 }
 
 
-
-// Function		: adjustTimestampByMinutes
-//
-// Description		: Reduce audit timestamp value by x minutes and return adjusted value plus Jde date and Time equivalents
-// Author		: Paul Green
-// Dated		: 2015-08-03
-//
-// Synopsis
-// --------
+// Reduce audit timestamp value by x minutes and return adjusted value plus Jde date and Time equivalents
 // Accepts timestamp string (from audit file) and returns date adjusted by x minutes
 // as well as JDE Julian Date and JDE Julian Time Audit value equivalants 
+exports.adjustTimestampByMinutes = function( timestamp, mins ) {
 
-exports.adjustTimestampByMinutes = function(timestamp, mins)
-{
-	var millisecs = null;
-	var n = null;
-	var dt = new Date();
+  var millisecs = null,
+  n = null,
+  dt = new Date(),
+  adjdt = null,
+  newdt,
+  newtm;
 	
-	// Date and Time should be passed if not set to zeros and return adjusted by minutes value
-	if ( typeof(mins) === 'undefined' ) mins = -5;
-	if ( typeof(timestamp) !== 'undefined' ) {
+  // Date and Time should be passed if not set to zeros and return adjusted by minutes value
+  if ( typeof( mins ) === 'undefined' ) mins = -5;
+  if ( typeof( timestamp ) !== 'undefined' ) {
+    millisecs = timestamp.substr( 22, 13 );
+    n = parseInt( millisecs );
+    dt = new Date( n );
+  }
 
-		millisecs = timestamp.substr(22, 13);
-		n = parseInt(millisecs);
-		dt = new Date(n);
-	}
-
-	logger.debug('>>>>> timestamp is: ' + timestamp);
-	logger.debug('>>>>> milli seconds ' + millisecs);  
-	logger.debug('>>>>> Date is: ' + dt);
-
-	// Get timestamp date adjusted by however minutes
-
-	var adjdt = new Date(dt.setMinutes(dt.getMinutes() + mins));
+  // Get timestamp date adjusted by however minutes
+  adjdt = new Date( dt.setMinutes( dt.getMinutes() + mins ) );
 	
-	logger.debug('>>>>> add minutes : ' + adjdt);
+  // Return Jde Julian style Date and Times 
+  newdt = module.exports.getJdeJulianDate( adjdt );
+  newtm = module.exports.getJdeAuditTime( adjdt );
 
-	// Return Jde Julian style Date and Times 
-	var newdt = module.exports.getJdeJulianDate(adjdt);
-	var newtm = module.exports.getJdeAuditTime(adjdt);
-
-	return {'jdeDate': newdt, 'jdeTime': newtm, 'timestamp': dt, 'minutes': mins };
-	
+  return {'jdeDate': newdt, 'jdeTime': newtm, 'timestamp': dt, 'minutes': mins };
 }
-
-
-
-

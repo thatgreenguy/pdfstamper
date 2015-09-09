@@ -4,10 +4,9 @@
 // Dated		: 2015-08-04
 
   
-var oracledb = require('oracledb');
-var audit = require('./audit.js');
-
-var credentials = {user: 'test_user', password: 'test_user', connectString: 'jdetest'};
+var oracledb = require('oracledb'),
+  audit = require('./audit.js'),
+  credentials = { user: process.env.DB_USER, password: process.env.DB_PWD, connectString: process.env.DB_NAME};
 
 
 // Function		: gainExclusivity
@@ -21,6 +20,8 @@ var credentials = {user: 'test_user', password: 'test_user', connectString: 'jde
 // Expect valid JDE Job Control record to be passed along with callback function to process PDF if lock successful
 
 exports.gainExclusivity = function(record, hostname, conn, processLockedPdfFile) {
+
+console.log("Creds: " + credentials.user + ' ' + credentials.password + ' ' + credentials.connectString);
 
 	if (typeof(record) === 'undefined') { console.log('ERROR: Valid JDE Job Control Record Expected.'); return false; }
 	if (typeof(processLockedPdfFile) !== 'function') { console.log('ERROR: Callback function expected to process PDF file.'); return false; }
