@@ -21,8 +21,6 @@ var oracledb = require('oracledb'),
 
 exports.gainExclusivity = function(record, hostname, conn, processLockedPdfFile) {
 
-console.log("Creds: " + credentials.user + ' ' + credentials.password + ' ' + credentials.connectString);
-
 	if (typeof(record) === 'undefined') { console.log('ERROR: Valid JDE Job Control Record Expected.'); return false; }
 	if (typeof(processLockedPdfFile) !== 'function') { console.log('ERROR: Callback function expected to process PDF file.'); return false; }
 
@@ -95,7 +93,6 @@ exports.removeLock = function(record, hostname) {
 		if (err) { console.log('Oracle DB Connection Failure'); return;	}
 
 		var query = "DELETE FROM testdta.F559858 WHERE lkfndfuf2 = '" + jcfndfuf2  +"' AND lkactivid = '" + hostname + "'";
-console.log(query);	
 		connection.execute(query, [ ], { autoCommit: true }, function(err, result) 
 		{
 			if (err)

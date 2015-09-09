@@ -212,8 +212,7 @@ function processResultsFromF556110( connection, rsF556110, numRows, audit, begin
     rsF556110.getRows( numRows, function( err, rows ) {
         if ( err ) { 
             oracleResultsetClose( connection, rsF556110 );
-
-		logger.debug("rsF556110 Error");
+            logger.debug("rsF556110 Error");
 	
         } else if ( rows.length == 0 ) {
             oracleResultsetClose( connection, rsF556110 );
@@ -257,9 +256,9 @@ function processPdfEntry( connection, rsF556110, begin, jobControlRecord, firstR
 
     } else {
 
-      previousPdf = currentPdf;
       logger.debug(" Previous PDF file : " + previousPdf);
       logger.debug(" Latest PDF file : " + currentPdf);
+      previousPdf = currentPdf;
 
       logger.info( " ");
       logger.info( "          >>>>  CHANGE detected in JDE Output Queue <<<<");
