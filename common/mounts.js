@@ -49,7 +49,7 @@ function establishRemoteMounts( callback ) {
            log.error( 'Unable to establish Remote mounts to AIX (JDE Enterprise Server)' );
          } else {
            log.info( 'Remote mounts established' );
-           calback();
+           callback();
          }
        }
     );

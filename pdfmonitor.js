@@ -109,9 +109,12 @@ function processResultsFromF559859( connection, rsF559859, numRows, audit, begin
 
     rsF559859.getRows( numRows, function( err, rows ) {
         if ( err ) { 
+
             oracleResultsetClose( connection, rsF559859 );
 
       	} else if ( rows.length == 0 ) {
+
+            queryJdeJobControl( connection, null, begin );
             oracleResultsetClose( connection, rsF559859 );
 
 	} else if ( rows.length > 0 ) {
@@ -120,9 +123,8 @@ function processResultsFromF559859( connection, rsF559859, numRows, audit, begin
             // Process continues by querying the JDE Job Control Master file for eligible PDF's to process
 
             record = rows[ 0 ];
-            logger.debug( record );
-            oracleResultsetClose( connection, rsF559859 );
             queryJdeJobControl( connection, record, begin );
+            oracleResultsetClose( connection, rsF559859 );
 	}
     });
 }
@@ -137,33 +139,66 @@ function queryJdeJobControl( connection, record, begin ) {
         result,
         jdeDate,
         jdeTime,
+        jdeDateToday,
         firstRecord = true;
+
+    logger.debug( record );
+
+    // Normally query JDE job control file from last Pdf file processed by this process, however, firt time and if
+    // if JDE Audit Log file is cleared there will be no entry so use current Date and Time instead
+    if ( record === null ) {
+        auditTimestamp = audit.createTimestamp();
+    } else {
+        auditTimestamp = record[ 2 ];
+    }
 
 
     // Issue with server clocks JDE and Linux being slightly out - approx 2.5 minutes.
     // This will be rectified but in case it happens again or times drift slightly in future 
     // Adjust query search date and time backwards by Offset - say 5 minutes - to allow for slightly different clock times
     // and to ensure a PDF completing on JDE when this query runs is still included
-    auditTimestamp = record[ 2 ];
     result = audit.adjustTimestampByMinutes( auditTimestamp, - serverTimeOffset );
-    jdedate = result.jdeDate;
-    jdetime = result.jdeTime;
+    jdeDate = result.jdeDate;
+    jdeTime = result.jdeTime;
     
-    query = "SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110 ";
-    query += " WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= ";
-    query += jdedate;
-    query += " AND RTRIM( SUBSTR(jcfndfuf2, 0, (INSTR(jcfndfuf2, '_') - 1)), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ";
-    query += " ORDER BY jcactdate, jcacttime";
+    // Get todays date in JDE Julian format
+    jdeDateToday = audit.getJdeJulianDate();
+
+    // This job normally runs every few seconds so usually we want to query job control records for today and since time 
+    // of last processed PDF file (adjusted by server time offset)
+    // However, if running after midnight or no PDF files generated for a couple of days then we should not include
+    // time in query as it might potentially exclude some PDF entries on different days that we need to process.
+
+    if ( jdeDateToday === jdeDate ) {
+       
+        query = "SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110 ";
+        query += " WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= ";
+        query += jdeDate + ' AND jcacttime >= ' + jdeTime;
+        query += " AND RTRIM( SUBSTR(jcfndfuf2, 0, (INSTR(jcfndfuf2, '_') - 1)), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ";
+        query += " ORDER BY jcactdate, jcacttime";
     	
+	logger.debug( 'Last entry was today : ' + jdeDateToday + ' see: ' + jdeDate);
+    } else { 
+       
+         query = "SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110 ";
+        query += " WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= ";
+        query += jdeDate;
+        query += " AND RTRIM( SUBSTR(jcfndfuf2, 0, (INSTR(jcfndfuf2, '_') - 1)), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ";
+        query += " ORDER BY jcactdate, jcacttime";
+    	
+	logger.debug( 'Last entry was Not today : ' + jdeDateToday + ' see: ' + jdeDate);
+    }
+
     logger.debug(result);
     logger.debug(query);
 
-
     connection.execute( query, [], { resultSet: true }, function( err, result ) {
-        if ( err ) {
-            logger.error( err.message )
+        if ( err ) { 
+          logger.error( err.message )
         };
-        processResultsFromF556110( connection, result.resultSet, numRows, audit, begin, firstRecord );	
+
+        processResultsFromF556110( connection, result.resultSet, numRows, audit, begin, firstRecord );
+
     }); 
 }
 
@@ -171,9 +206,7 @@ function queryJdeJobControl( connection, record, begin ) {
 // Process results of query on JDE Job Control file 
 function processResultsFromF556110( connection, rsF556110, numRows, audit, begin, firstRecord ) {
 
-    var currentRow,
-        currentPdf,
-        rowToProcess,
+    var jobControlRecord,
         finish;
 
     rsF556110.getRows( numRows, function( err, rows ) {
@@ -186,42 +219,66 @@ function processResultsFromF556110( connection, rsF556110, numRows, audit, begin
             oracleResultsetClose( connection, rsF556110 );
 
             finish = new Date();
-            logger.info( "Checking completed : " + finish + " took " + ( finish - begin ) + " milliseconds" );
+            logger.info( "Check completed by : " + finish + " took " + ( finish - begin ) + " milliseconds" );
 
             // Sleep briefly then repeat check monitor indefinitely at polling interval
-//            setTimeout( function() { recursiveMonitor( connection, logger, credentials ) } , pollInterval );
+            setTimeout( function() { recursiveMonitor( connection, logger, credentials ) } , pollInterval );
 
         } else if ( rows.length > 0 ) {
 
-            currentRow = rows[ 0 ];
-            currentPdf = currentRow[ 0 ];
-            
-            if ( firstRecord ) {
+            jobControlRecord = rows[ 0 ];
 
-                firstRecord = false;
-                logger.debug(" Previous UBE PDF is : " + previousPdf);
-                logger.debug(" Latest UBE PDF is : " + currentPdf);
-
-                // If latest JDE Pdf job name does not match the previous one we have a change so check and process in detail 
-                if ( previousPdf === currentPdf ) {
-                    logger.debug( "No Change detected - sleep then recheck shortly");
-                } else {
-                    logger.info( " ");
-                    logger.info( "          >>>>  CHANGE detected  <<<<");
-                    logger.info( " ");
-                }
-            }
-
-            // Multiple pdfhandler processes could be running so need to establish exclusive rights to 
-            // process this PDF file - if not simply move onto next eligible PDF file to process.
-
-            lock.gainExclusivity( currentRow, hostname, connection, processLockedPdfFile );		
-		
-            // Read next record
-            processResultsFromF556110( connection, rsF556110, numRows, audit, begin, firstRecord );
+	    // Process PDF entry
+            processPdfEntry( connection, rsF556110, begin, jobControlRecord, firstRecord );            
 
         }
     }); 
+}
+
+// Called to handle processing of first and subsequent 'new' PDF Entries detected in JDE Output Queue  
+function processPdfEntry( connection, rsF556110, begin, jobControlRecord, firstRecord ) {
+
+  var cb = null,
+    currentPdf;
+
+  logger.info('processPdfEntry for : ' + jobControlRecord);
+  logger.info('processPdfEntry First? : ' + firstRecord);
+ 
+
+  if ( firstRecord ) {
+
+    firstRecord = false;
+    currentPdf = jobControlRecord[ 0 ];
+
+    logger.debug(" Previous UBE PDF is : " + previousPdf);
+    logger.debug(" Latest UBE PDF is : " + currentPdf);
+
+    // If latest JDE Pdf job name does not match the previous one we have a change so check and process in detail 
+    if ( previousPdf === currentPdf ) {
+
+      logger.debug( "No Change detected - sleep then recheck shortly");
+
+    } else {
+
+      previousPdf = currentPdf;
+
+      logger.info( " ");
+      logger.info( "          >>>>  CHANGE detected in JDE Output Queue <<<<");
+      logger.info( " ");
+
+      // Before processing recently noticed PDF file(s) first check mount points and re-establish if necessary
+      cb = function() { lock.gainExclusivity( jobControlRecord, hostname, connection, processLockedPdfFile ); };      
+      mounts.checkRemoteMounts( cb );           
+     }
+  } else {
+
+    // Process second and subsequent records.
+    lock.gainExclusivity( jobControlRecord, hostname, connection, processLockedPdfFile );		
+  }
+
+  // Process subsequent PDF entries if any - Read next Job Control record
+  processResultsFromF556110( connection, rsF556110, numRows, audit, begin, firstRecord );
+
 }
 
 
@@ -261,12 +318,7 @@ function processLockedPdfFile(connection, record)
              // Last process step creates an audit entry which prevents file being re-processed by future runs 
              // so if error and lock removed - no audit entry therefore file will be re-processed by future run (recovery)	
              
-	     // Before processing PDF file check remote mounts still in place then call process PDF function
-             // Remote mounts will be established / re-established as necessary
-	     cb = function() { processPDF( record ) };	
-	     mounts.checkRemoteMounts( cb );
-
-//             processPDF( record ); 
+             processPDF( record ); 
 
         }
     }); 
@@ -292,22 +344,20 @@ function processPDF( record ) {
         function ( cb ) { copyJdePdfToWorkDir( parms, cb ) }, 
         function ( cb ) { applyLogo( parms, cb ) }, 
         function ( cb ) { replaceJdePdfWithLogoVersion( parms, cb ) },
-        function ( cb ) { createAuditEntry( parms, cb ) },
-        function ( cb ) { removeLock( parms, cb ) }
+        function ( cb ) { createAuditEntry( parms, cb ) }
         ], function(err, results) {
 
-             var parms; 
-
-             if ( err ) {
-               logger.warn("JDE PDF " + parms.jcfndfuf2 + " - Processing failed - will retry on later runs");
-	     } else {
-               logger.info("JDE PDF " + parms.jcfndfuf2 + " - Processing Complete");
-             }
+             var prms = results[ 0 ];
 
              // Lose lock regardless whether PDF file proceesed correctly or not
-             parms = results[ 0 ];
-             removeLock( parms );
+             removeLock( prms );
 
+             // log results of Pdf processing
+             if ( err ) {
+               logger.error("JDE PDF " + prms.jcfndfuf2 + " - Processing failed - check logs in ./logs");
+	     } else {
+               logger.info("JDE PDF " + prms.jcfndfuf2 + " - Processing Complete");
+             }
            }
     );
 }
@@ -318,6 +368,7 @@ function processPDF( record ) {
 // For example sshfs connection to remote directories on AIX might go down and re-establish later
 function passParms(parms, cb) {
 
+  logger.debug( 'passParms' + ' : ' + parms );
   cb( null, parms);  
 
 }
@@ -330,6 +381,7 @@ function createWorkDir(parms, cb) {
     logger.debug( cmd );
     exec( cmd, function( err, stdout, stderr ) {
         if ( err !== null ) {
+	    logger.debug( cmd + ' ERROR: ' + err );
             cb( err, cmd + " - Failed" );
         } else {
             cb( null, cmd + " - Done" );
@@ -347,6 +399,7 @@ function copyJdePdfToWorkDir( parms, cb ) {
     logger.debug( cmd );
     exec( cmd, function( err, stdout, stderr ) {
         if ( err !== null ) {
+	    logger.debug( cmd + ' ERROR: ' + err );
             cb( err, cmd + " - Failed" );
         } else {
             cb( null, cmd + " - Done" );
@@ -366,6 +419,7 @@ function applyLogo( parms, cb ) {
     logger.debug( cmd );
     exec( cmd, function( err, stdout, stderr ) {
         if ( err !== null ) {
+	    logger.debug( cmd + ' ERROR: ' + err );
             cb( err, cmd + " - Failed" );
          } else {
             cb( null, cmd + " - Done" );
@@ -385,6 +439,7 @@ function replaceJdePdfWithLogoVersion( parms, cb ) {
     logger.debug( cmd );
     exec( cmd, function( err, stdout, stderr ) {
         if ( err !== null ) {
+	    logger.debug( cmd + ' ERROR: ' + err );
             cb( err, cmd + " - Failed" );
         } else {
             cb( null, cmd + " - Done" );
