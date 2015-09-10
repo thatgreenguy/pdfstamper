@@ -19,12 +19,9 @@ var oracledb = require( 'oracledb' ),
   pdfChecker = require( './pdfchecker.js' ),
   pollInterval = 3000,
   dbCn = null,
-  dbCredentials = { user: process.env.DB_USER, 
-                    password: process.env.DB_PWD,
-                    connectString: process.env.DB_NAME
-                  },
+  dbCredentials = { user: process.env.DB_USER, password: process.env.DB_PWD, connectString: process.env.DB_NAME },
   hostname = process.env.HOSTNAME,
-  logLevel = process.env.LOG_LEVEL
+  logLevel = process.env.LOG_LEVEL,
   lastPdf = null;
 
 
@@ -48,20 +45,21 @@ if ( typeof( hostname ) === 'undefined' || hostname === '' ) {
 } else {
 
   // Get Oracle Db connection once then pass through to be re-used
-  oracledb.getConnection( dbCredentials, function( err, dbCn ) {
+  oracledb.getConnection( dbCredentials, function( err, cn ) {
     if ( err ) {
       log.error( 'Oracle DB connection Failure : ' + err );
       process.exit( 1 );
+    } 
 
-    } else {
+    // Save, pass and reuse the connection
+    dbCn = cn;
 
-      // Log process startup in Jde Audit table 
-      audit.createAuditEntry( 'pdfhandler', 'pdfhandler.js', hostname, 'Start Jde Pdf Logo handler' );
+    // Log process startup in Jde Audit table 
+    audit.createAuditEntry( 'pdfhandler', 'pdfhandler.js', hostname, 'Start Jde Pdf Logo handler' );
 
-      // When process start perform the polled processing immediately then it will repeat periodically
-      performPolledProcess();
+    // When process start perform the polled processing immediately then it will repeat periodically
+    performPolledProcess();
 
-    }
   });
 }
 
@@ -96,7 +94,7 @@ function performPostRemoteMountChecks( err, data ) {
   } else {
 
     // Remote mounts okay so go ahead and process, checking for new Pdf's etc
-    pdfChecker.performJdePdfProcessing( dbCn, dbCredentials, log, audit, pollInterval, hostname, lastPdf );
+    pdfChecker.performJdePdfProcessing( dbCn, dbCredentials, log, audit, pollInterval, hostname, lastPdf, performPolledProcess );
   }
 
 }
@@ -128,7 +126,7 @@ function performPostEstablishRemoteMounts( err, data ) {
 
     // Remote mounts okay so go ahead and process, checking for new Pdf's etc
     log.verbose( 'Remote mounts to Jde re-established - will continue normally')
-    pdfChecker.performJdePdfProcessing( dbCn, dbCredentials, log, audit, pollInterval, hostname, lastPdf );
+    pdfChecker.performJdePdfProcessing( dbCn, dbCredentials, log, audit, pollInterval, hostname, lastPdf, performPolledProcess );
   }
 
 }
