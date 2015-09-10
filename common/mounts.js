@@ -23,7 +23,8 @@ var async = require( 'async' ),
 module.exports.checkRemoteMounts = function( callback ) {
   async.series([
     function ( cb ) { checkJdeQueueMounted( cb ) }, 
-    function ( cb ) { checkWorkDirMounted( cb ) } 	
+    function ( cb ) { checkWorkDirMounted( cb ) }, 	
+    function ( cb ) { createSharedWorkDir( cb ) } 	
     ], function( err, results ) {
          if ( err ) {
            log.warn( 'Problem with remote mounts - attempting auto recovery' );
@@ -43,7 +44,8 @@ module.exports.establishRemoteMounts = function( callback ) {
     function ( cb ) { unmountJdeQueue( cb ) }, 
     function ( cb ) { unmountSharedWorkDir( cb ) }, 	
     function ( cb ) { mountJdeQueue( cb ) },
-    function ( cb ) { mountSharedWorkDir( cb ) } 	
+    function ( cb ) { mountSharedWorkDir( cb ) },
+    function ( cb ) { createSharedWorkDir( cb ) } 	
     ], function( err, results ) {
          if ( err ) {
            log.error( 'Unable to establish Remote mounts to AIX (JDE Enterprise Server)' );
@@ -93,6 +95,28 @@ function mountSharedWorkDir( cb) {
   cmd += sshfsServerKeepaliveSeconds;
   cmd += ' -o Ciphers=arcfour  -o cache=no -o password_stdin '
   cmd += sshfsUser + '@' + sshfsHost + ':' + remoteWorkDir + ' ' +  localWorkDir;  
+
+  exec( cmd, function( err, stdout, stderr ) {
+    if ( err !== null ) {
+      log.error( cmd + ' - Failed');  
+      cb( err, cmd + ' - Failed' );
+    } else {
+      log.debug( cmd + ' - Done' );  
+      cb(null, cmd + ' - Done');
+    }
+  });
+}
+
+
+// Ensure remote working directory 'wrkdir' is available
+// Usually once created on first run this will remain but there is always possibility of it being manually removed
+// after disaster recovery etc. Either way once connection established ensure the directory exists - it is used as a
+// staging (work directory) to hold new logo enhanced Pdf files before finally replacing the Jde generated Pdfs
+function createSharedWorkDir( cb) {
+  
+  var cmd;
+
+  cmd = 'mkdir -p ' + localWorkDir + '/wrkdir';
 
   exec( cmd, function( err, stdout, stderr ) {
     if ( err !== null ) {

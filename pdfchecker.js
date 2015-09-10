@@ -1,77 +1,38 @@
-// pdfmonitor.js
-//
-// Description		: Monitor the JDE output queue and whenever a change (new report) is detected trigger 
-//			: further processing checks to handle logo images on select reports.
-// Author		: Paul Green
-// Dated		: 2015-09-03
+// pdfchecker.js  : Check Jde Job Control table looking for any recently generated Pdf files that are configured 
+//                : in JDE to be eligible for logo processing and apply Dlink logo image when required.
+// Author         : Paul Green
+// Dated          : 2015-09-03
 //
 // Synopsis
 // --------
-// This program starts when the container starts and constantly monitors the JDE PDF output queue for change.
-// This program replaces most of the old style shell monitor program as use of sshfs is too heavy on cpu 
-// resource on the AIX enterprise server due to encryption overhead.
-// When a change is detected control is passed to the pdfhandler which performs further checks to see if 
-// any logo related processing is required.
-// This process uses date from last processed PDF file entry in the Audit Log file to keep the checking 
-// query light and when a change is detected that triggers further processing. 
+//
+// Called periodically by pdfhandler.js
+// It checks the Jde Job Control Audit table looking for recently completed UBE reports.
+// When it detects reports belonging to Invoice Print (and/or any other configured reports) it will process the resulting
+// PDF file adding logo images to each page.
 
 
 var oracledb = require( "oracledb" ),
-    logger = require( "./common/logger" ),
-    audit = require( "./common/audit.js" ),
     lock = require( "./common/lock.js" ),
-    mounts = require( "./common/mounts.js" ),
     async = require( "async" ),
     exec = require( "child_process" ).exec,
     credentials = { user: process.env.DB_USER, password: process.env.DB_PWD, connectString: process.env.DB_NAME },
     pollInterval = 3000,
     serverTimeOffset = 5,
-    hostname = process.env.HOSTNAME,
     previousPdf = "",
     numRows = 1,
     dirRemoteJdePdf = process.env.DIR_JDEPDF,
-    dirLocalJdePdf = process.env.DIR_SHAREDDATA,
-    logLevel = process.env.LOG_LEVEL;
-
-// Change logging level 
-if ( typeof( logLevel ) === 'undefined' ) { logLevel = 'info' };
-logger.level = logLevel;
+    dirLocalJdePdf = process.env.DIR_SHAREDDATA;
 
 
-// Docker container Hostname is used for Audit logging and lock file control so if not available 
-// there is a problem.
-if ( typeof( hostname ) === "undefined" || hostname === "" ) {
-    logger.error( "pdfmonitor.js needs environment variable Hostname to be defined" );
-    logger.error( "This should always be available in docker containers - something is wrong - Aborting!" );
-    process.exit( 1 );
-} else {
-    logger.debug( "Docker Container Hostname is : " + hostname );
-}
+module.exports.performJdePdfProcessing = function( dbCn, dbCredentials, log, audit, pollInterval, hostname, lastPdf ) {
+
+  console.log( 'OKAY Im in!!!!' );
+
+} 
 
 
-// Announce that this Pdf handler process has just started up - recorded in custom Jde Audit Log table
-logger.info( "---------- START MONITORING PDF QUEUE -----------" );
-audit.createAuditEntry( 'pdfmonitor', 'pdfstartup.js', hostname, 'Start Monitoring' );
-
-// Get Oracle DB connection to re-use then make initial call to the recursive monitoring function
-// this function will act on any new Jde Pdf files and once done will sleep and repeat 
-oracledb.getConnection( credentials, function( err , connection ) {
-
-    if (err) {
-        logger.error( "Oracle DB Connection Failure" );
-        return;
-    }
-
-    // Only interested in processing PDF files that have appeared in the PrintQueue since last run of this process
-    // This query grabs the last date from Audit Log first as starting point for processing
-    recursiveMonitor( connection );
-
-});
-
-
-
-
-// FUNCTIONS
+// - Functions
 //
 // Recursive monitoring process repeatedly checks the Jde Job Control table for those report types flagged as requiring a Dlink logo
 // When it detects that 1 or more new eligible Pdf files have been created it applies the logo image to each page.
@@ -337,7 +298,6 @@ function processPDF( record ) {
 
     async.series([
         function ( cb ) { passParms( parms, cb ) }, 
-        function ( cb ) { createWorkDir( parms, cb ) }, 
         function ( cb ) { copyJdePdfToWorkDir( parms, cb ) }, 
         function ( cb ) { applyLogo( parms, cb ) }, 
         function ( cb ) { replaceJdePdfWithLogoVersion( parms, cb ) },
@@ -370,21 +330,6 @@ function passParms(parms, cb) {
 
 }
 
-function createWorkDir(parms, cb) {
-
-    var cmd = "mkdir -p /home/shareddata/wrkdir";
-
-    logger.verbose( "JDE PDF " + parms.jcfndfuf2 + " - Ensure working directory exists" );
-    logger.debug( cmd );
-    exec( cmd, function( err, stdout, stderr ) {
-        if ( err !== null ) {
-	    logger.debug( cmd + ' ERROR: ' + err );
-            cb( err, cmd + " - Failed" );
-        } else {
-            cb( null, cmd + " - Done" );
-        }
-    });
-}
 
 // Make a backup copy of the original JDE PDF file - just in case we need the untouched original
 // These can be purged inline with the normal JDE PrintQueue - currently PDF's older than approx 2 months
