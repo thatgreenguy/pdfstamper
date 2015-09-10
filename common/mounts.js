@@ -27,10 +27,10 @@ module.exports.checkRemoteMounts = function( callback ) {
     ], function( err, results ) {
          if ( err ) {
            log.warn( 'Problem with remote mounts - attempting auto recovery' );
-	   establishRemoteMounts( callback );
+	   callback( err, 'Remote mount check failed' );
          } else {
            log.debug( 'Remote mounts okay' );
-           callback();  
+           callback( null, 'Remote mount(s) check okay' );  
          }
        }
     );
@@ -38,7 +38,7 @@ module.exports.checkRemoteMounts = function( callback ) {
 
 
 // When issue detected with remote mounts to AIX Jde Enterprise server then establish or re-establish them
-function establishRemoteMounts( callback ) {
+module.exports.establishRemoteMounts = function( callback ) {
   async.series([
     function ( cb ) { unmountJdeQueue( cb ) }, 
     function ( cb ) { unmountSharedWorkDir( cb ) }, 	
@@ -47,9 +47,10 @@ function establishRemoteMounts( callback ) {
     ], function( err, results ) {
          if ( err ) {
            log.error( 'Unable to establish Remote mounts to AIX (JDE Enterprise Server)' );
+           callback( err, 'Remote mount failed' );
          } else {
            log.info( 'Remote mounts established' );
-           callback();
+           callback( null, 'Remote mount(s) established' );
          }
        }
     );
