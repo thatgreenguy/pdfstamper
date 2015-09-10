@@ -75,7 +75,7 @@ function processResultsFromF559859( dbCn,
 
       	} else if ( rows.length == 0 ) {
 
-            queryJdeJobControl( dbCn, null, begin );
+            queryJdeJobControl( dbCn, null, begin, log, audit, pollInterval, hostname, lastPdf, performPolledProcess );
             oracleResultsetClose( dbCn, rsF559859 );
 
 	} else if ( rows.length > 0 ) {
@@ -107,16 +107,15 @@ function queryJdeJobControl( dbCn, record, begin, log, audit, pollInterval, host
     // New query so set first record flag to true
     firstRecord = true;
 
-    // Set the Last PDF processed by this application (from the JDE Audit table)
-    lastPdf = record[ 3 ];
-    log.verbose( 'Last JDE Audit Record / PDF Processed was : ' + record );
-
     // Normally query JDE job control file from last Pdf file processed by this process, however, firt time and if
     // if JDE Audit Log file is cleared there will be no entry so use current Date and Time instead
     if ( record === null ) {
         auditTimestamp = audit.createTimestamp();
     } else {
-        auditTimestamp = record[ 2 ];
+      // Set the Last PDF processed by this application (from the JDE Audit table)
+      lastPdf = record[ 3 ];
+      log.verbose( 'Last JDE Audit Record / PDF Processed was : ' + record );
+      auditTimestamp = record[ 2 ];
     }
 
 
@@ -213,22 +212,41 @@ function processPdfEntry( dbCn,
   var cb = null,
     currentPdf;
 
-  if ( firstRecord ) {
+  currentPdf = jobControlRecord[ 0 ];
+  log.verbose('Last PDF: ' + lastPdf + ' currentPdf: ' + currentPdf );
+
+  // If latest JDE Pdf job name does not match the previous one we have a change so check and process in detail 
+  if ( lastPdf !== currentPdf ) {
+
+    log.debug(" Last PDF file : " + lastPdf);
+    log.debug(" Latest PDF file : " + currentPdf);
+//    log.info( " ");
+//    log.info( "          >>>>  CHANGE detected in JDE Output Queue <<<<");
+//    log.info( " ");
+
+    // Before processing recently noticed PDF file(s) first check mount points and re-establish if necessary
+    var cb = function() {
+      processLockedPdfFile( dbCn, jobControlRecord, audit, log, hostname );
+    }
+    lock.gainExclusivity( jobControlRecord, 
+      hostname, dbCn, cb );
+      
+  }           
+
+/*  if ( firstRecord ) {
 
     firstRecord = false;
     currentPdf = jobControlRecord[ 0 ];
 
-    log.verbose('Last PDF: ' + lastPdf + ' currentPdf: ' + currentPdf );
     log.verbose('First Record: ' + firstRecord + ' processPdfEntry: ' + jobControlRecord );
-
     // If latest JDE Pdf job name does not match the previous one we have a change so check and process in detail 
     if ( lastPdf !== currentPdf ) {
 
       log.debug(" Last PDF file : " + lastPdf);
       log.debug(" Latest PDF file : " + currentPdf);
-      log.info( " ");
-      log.info( "          >>>>  CHANGE detected in JDE Output Queue <<<<");
-      log.info( " ");
+//      log.info( " ");
+//      log.info( "          >>>>  CHANGE detected in JDE Output Queue <<<<");
+//      log.info( " ");
 
       // Before processing recently noticed PDF file(s) first check mount points and re-establish if necessary
       var cb = function() {
@@ -238,6 +256,7 @@ function processPdfEntry( dbCn,
         hostname, dbCn, cb );
       
     }           
+
   } else {
 
     // Process second and subsequent records.
@@ -247,6 +266,7 @@ function processPdfEntry( dbCn,
     lock.gainExclusivity( jobControlRecord, 
       hostname, dbCn, cb );		
   }
+*/
 
   // Process subsequent PDF entries if any - Read next Job Control record
   processResultsFromF556110( dbCn, 
