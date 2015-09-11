@@ -82,6 +82,8 @@ exports.removeLock = function( record, hostname ) {
     }
   
     query = "DELETE FROM testdta.F559858 WHERE lkfndfuf2 = '" + jcfndfuf2  +"' AND lkactivid = '" + hostname + "'";
+    log.debug( query );
+
     connection.execute( query, [ ], { autoCommit: true }, function( err, result ) {
       if ( err ) {
         log.error( 'Oracle DB Delete Lock failure : ' + err );

@@ -219,17 +219,18 @@ function processPdfEntry( dbCn, rsF556110, begin, jobControlRecord, firstRecord,
   log.verbose('Last PDF: ' + lastPdf + ' currentPdf: ' + currentPdf );
 
   // If latest JDE Pdf job name does not match the previous one we have a change so check and process in detail 
-  if ( lastPdf !== currentPdf ) {
+//  if ( lastPdf !== currentPdf ) {
+//
+//    log.info( ' ');
+//    log.info( '     >>>>> CHANGE detected in JDE Output Queue <<<<<' );
+//
+//    // Before processing recently noticed PDF file(s) first check mount points and re-establish if necessary
+//    var cb = function() { processLockedPdfFile( dbCn, jobControlRecord, hostname ); }
+//    lock.gainExclusivity( jobControlRecord, hostname, dbCn, cb );
+//      
+//  }           
 
-    log.warn( "     <<<<<  JDE Job Control monitoring - CHANGE detected in JDE Output Queue >>>>>");
-
-    // Before processing recently noticed PDF file(s) first check mount points and re-establish if necessary
-    var cb = function() { processLockedPdfFile( dbCn, jobControlRecord, hostname ); }
-    lock.gainExclusivity( jobControlRecord, hostname, dbCn, cb );
-      
-  }           
-
-/*  if ( firstRecord ) {
+  if ( firstRecord ) {
 
     firstRecord = false;
     currentPdf = jobControlRecord[ 0 ];
@@ -240,12 +241,12 @@ function processPdfEntry( dbCn, rsF556110, begin, jobControlRecord, firstRecord,
 
       log.debug(" Last PDF file : " + lastPdf);
       log.debug(" Latest PDF file : " + currentPdf);
-//      log.info( " ");
-//      log.info( "          >>>>  CHANGE detected in JDE Output Queue <<<<");
-//      log.info( " ");
+      log.info( " ");
+      log.info( "          >>>>  CHANGE detected in JDE Output Queue <<<<");
+      log.info( " ");
 
       // Before processing recently noticed PDF file(s) first check mount points and re-establish if necessary
-      var cb = function() { processLockedPdfFile( dbCn, jobControlRecord, audit, log, hostname ); }
+      var cb = function() { processLockedPdfFile( dbCn, jobControlRecord, hostname ); }
       lock.gainExclusivity( jobControlRecord, hostname, dbCn, cb );
       
     }           
@@ -253,10 +254,10 @@ function processPdfEntry( dbCn, rsF556110, begin, jobControlRecord, firstRecord,
   } else {
 
     // Process second and subsequent records.
-    var cb = function() { processLockedPdfFile( dbCn, jobControlRecord, audit, log, hostname ); }
+    var cb = function() { processLockedPdfFile( dbCn, jobControlRecord, hostname ); }
     lock.gainExclusivity( jobControlRecord, hostname, dbCn, cb );		
   }
-*/
+
 
   // Process subsequent PDF entries if any - Read next Job Control record
   processResultsFromF556110( dbCn, rsF556110, numRows, begin, firstRecord, pollInterval, hostname, lastPdf, performPolledProcess );
@@ -272,7 +273,7 @@ function processLockedPdfFile(dbCn, record, hostname ) {
         count,
         cb = null;
 
-    log.info( 'JDE PDF ' + record[ 0 ] + " - Lock established" );
+    log.verbose( 'JDE PDF ' + record[ 0 ] + " - Lock established" );
 
     // Check this PDF file has definitely not yet been processed by any other pdfHandler instance
     // that may be running concurrently
@@ -293,7 +294,7 @@ function processLockedPdfFile(dbCn, record, hostname ) {
             lock.removeLock( record, hostname );
 
         } else {
-             log.info( 'JDE PDF ' + record[0] + ' - Processing Started' );
+             log.verbose( 'JDE PDF ' + record[0] + ' - Processing Started' );
 
              // This PDF file has not yet been processed and we have the lock so process it now.
              // Note: Lock will be removed if all process steps complete or if there is an error
@@ -331,7 +332,7 @@ function processPDF( record, hostname ) {
              var prms = results[ 0 ];
 
              // Lose lock regardless whether PDF file proceesed correctly or not
-             removeLock( prms );
+             removeLock( record, hostname );
 
              // log results of Pdf processing
              if ( err ) {
@@ -349,7 +350,6 @@ function processPDF( record, hostname ) {
 // For example sshfs dbCn to remote directories on AIX might go down and re-establish later
 function passParms(parms, cb) {
 
-  log.debug( 'passParms' + ' : ' + parms );
   cb( null, parms);  
 
 }
@@ -424,10 +424,13 @@ function createAuditEntry( parms, cb ) {
 }
 
 
-function removeLock( parms ) {
+function removeLock( record, hostname ) {
 
-  lock.removeLock( parms.record, parms.hostname );
-  log.verbose( "JDE PDF " + parms.jcfndfuf2 + " - Lock Released" );
+  log.debug( 'removeLock: Record: ' + record );
+  log.debug( 'removeLock: Record: ' + hostname );
+
+  lock.removeLock( record, hostname );
+  log.verbose( 'JDE PDF ' + record[ 0 ] + ' - Lock Released' );
    
 }
 
