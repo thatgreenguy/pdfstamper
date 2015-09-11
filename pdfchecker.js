@@ -28,7 +28,7 @@ var oracledb = require( 'oracledb' ),
 module.exports.performJdePdfProcessing = function( dbCn, dbCredentials, pollInterval, hostname, lastPdf, performPolledProcess ) {
 
   begin = new Date();
-  log.verbose( 'Begin Checking : ' + begin + ' - Looking for new Jde Pdf files since last run' );
+  log.debug( 'Begin Checking : ' + begin + ' - Looking for new Jde Pdf files since last run' );
 
   if ( dbCn === null ) {
     log.warn( 'Oracle DB connection expected - Pass valid Oracle connection object' );
@@ -100,11 +100,7 @@ function queryJdeJobControl( dbCn, record, begin, pollInterval, hostname, lastPd
         jdeDate,
         jdeTime,
         jdeDateToday,
-        firstRecord,
         wkAdt;
-
-    // New query so set first record flag to true
-    firstRecord = true;
 
     // Normally query JDE job control file from last Pdf file processed by this process, however, firt time and if
     // JDE Audit Log file is cleared there will be no entry so use current System Date and Time instead
@@ -176,13 +172,13 @@ function queryJdeJobControl( dbCn, record, begin, pollInterval, hostname, lastPd
           return;
         }
 
-        processResultsFromF556110( dbCn, rs.resultSet, numRows, begin, firstRecord, pollInterval, hostname, lastPdf, performPolledProcess );
+        processResultsFromF556110( dbCn, rs.resultSet, numRows, begin, pollInterval, hostname, lastPdf, performPolledProcess );
     }); 
 }
 
 
 // Process results of query on JDE Job Control file 
-function processResultsFromF556110( dbCn, rsF556110, numRows, begin, firstRecord, pollInterval, hostname, lastPdf, performPolledProcess ) {
+function processResultsFromF556110( dbCn, rsF556110, numRows, begin, pollInterval, hostname, lastPdf, performPolledProcess ) {
 
   var jobControlRecord,
   finish;
@@ -196,7 +192,7 @@ function processResultsFromF556110( dbCn, rsF556110, numRows, begin, firstRecord
     } else if ( rows.length == 0 ) {
       oracleResultsetClose( dbCn, rsF556110 );
       finish = new Date();
-      log.verbose( 'End Check : ' + finish  + ' took ' + ( finish - begin ) + ' milliseconds' );
+      log.verbose( 'End Check: ' + finish  + ' took: ' + ( finish - begin ) + ' milliseconds, Last Pdf: ' + lastPdf );
  
       // No more Job control records to process in this run - this run is done - so schedule next run
       setTimeout( performPolledProcess, pollInterval );
@@ -207,54 +203,31 @@ function processResultsFromF556110( dbCn, rsF556110, numRows, begin, firstRecord
       log.debug( jobControlRecord );
 
       // Process PDF entry
-      processPdfEntry( dbCn, rsF556110, begin, jobControlRecord, firstRecord, pollInterval, hostname, lastPdf, performPolledProcess );            
+      processPdfEntry( dbCn, rsF556110, begin, jobControlRecord, pollInterval, hostname, lastPdf, performPolledProcess );            
 
     }
   }); 
 }
 
 // Called to handle processing of first and subsequent 'new' PDF Entries detected in JDE Output Queue  
-function processPdfEntry( dbCn, rsF556110, begin, jobControlRecord, firstRecord, pollInterval, hostname, lastPdf, performPolledProcess ) {
+function processPdfEntry( dbCn, rsF556110, begin, jobControlRecord, pollInterval, hostname, lastPdf, performPolledProcess ) {
 
   var cb = null,
     currentPdf;
 
   currentPdf = jobControlRecord[ 0 ];
-  log.verbose('First Record: ' + firstRecord );
-  log.verbose('Last PDF: ' + lastPdf + ' currentPdf: ' + currentPdf );
+  log.debug('Last PDF: ' + lastPdf + ' currentPdf: ' + currentPdf );
 
-  if ( firstRecord ) {
-
-    firstRecord = false;
-    currentPdf = jobControlRecord[ 0 ];
-
-    log.debug('First Record: ' + firstRecord + ' processPdfEntry: ' + jobControlRecord );
-    log.verbose(" Last PDF file : " + lastPdf);
-    log.verbose(" Latest PDF file : " + currentPdf);
-
-    // If latest JDE Pdf job name does not match the previous one we have a change so check and process in detail 
-    if ( lastPdf !== currentPdf ) {
-
-      log.info( " ");
-      log.info( "          >>>>  CHANGE detected in JDE Output Queue <<<<");
-      log.info( " ");
-
-      // Before processing recently noticed PDF file(s) first check mount points and re-establish if necessary
-      var cb = function() { processLockedPdfFile( dbCn, jobControlRecord, hostname ); }
-      lock.gainExclusivity( jobControlRecord, hostname, dbCn, cb );
-      
-    }           
-
-  } else {
+  // If Last Pdf is same as current Pdf then nothing changed since last check
+  if ( lastPdf !== currentPdf ) {
 
     // Process second and subsequent records.
-    var cb = function() { processLockedPdfFile( dbCn, jobControlRecord, hostname ); }
+    cb = function() { processLockedPdfFile( dbCn, jobControlRecord, hostname ); }
     lock.gainExclusivity( jobControlRecord, hostname, dbCn, cb );		
   }
 
-
   // Process subsequent PDF entries if any - Read next Job Control record
-  processResultsFromF556110( dbCn, rsF556110, numRows, begin, firstRecord, pollInterval, hostname, lastPdf, performPolledProcess );
+  processResultsFromF556110( dbCn, rsF556110, numRows, begin, pollInterval, hostname, lastPdf, performPolledProcess );
 
 }
 
@@ -284,7 +257,7 @@ function processLockedPdfFile(dbCn, record, hostname ) {
         countRec = result.rows[ 0 ];
         count = countRec[ 0 ];
         if ( count > 0 ) {
-            log.info( 'JDE PDF ' + record[ 0 ] + " - Already Processed - Releasing Lock." );
+            log.verbose( 'JDE PDF ' + record[ 0 ] + " - Already Processed - Releasing Lock." );
             lock.removeLock( record, hostname );
 
         } else {
@@ -319,7 +292,7 @@ function processPDF( record, hostname ) {
         function ( cb ) { passParms( parms, cb ) }, 
         function ( cb ) { copyJdePdfToWorkDir( parms, cb ) }, 
         function ( cb ) { applyLogo( parms, cb ) }, 
-//        function ( cb ) { replaceJdePdfWithLogoVersion( parms, cb ) },
+        function ( cb ) { replaceJdePdfWithLogoVersion( parms, cb ) },
         function ( cb ) { createAuditEntry( parms, cb ) }
         ], function(err, results) {
 
@@ -332,7 +305,7 @@ function processPDF( record, hostname ) {
              if ( err ) {
                log.error("JDE PDF " + prms.jcfndfuf2 + " - Processing failed - check logs in ./logs");
 	     } else {
-               log.info("JDE PDF " + prms.jcfndfuf2 + " - Processing Complete - Logos added");
+               log.info("JDE PDF " + prms.jcfndfuf2 + " - Logo Processing Complete");
              }
            }
     );
