@@ -37,9 +37,11 @@ exports.gainExclusivity = function( record, hostname, conn, processLockedPdfFile
     }
   
     query = "INSERT INTO testdta.F559858 VALUES (:lkfndfuf2, :lksawlatm, :lkactivid, :lkpid, :lkjobn, :lkuser, :lkupmj, :lkupmt)";
+    log.debug( query );
+
     connection.execute( query, [jcfndfuf2, timestamp, hostname, 'PDFHANDLER', 'CENTOS', 'DOCKER', jdedate, jdetime ], { autoCommit: true }, function( err, result ) {
       if ( err ) {
-        log.error( 'Oracle DB Insert Lock Failure : ' + err.message );
+        log.debug( 'Oracle DB Insert Lock Failure : ' + err.message );
         return;
       }
       connection.release( function( err ) {
@@ -86,7 +88,7 @@ exports.removeLock = function( record, hostname ) {
 
     connection.execute( query, [ ], { autoCommit: true }, function( err, result ) {
       if ( err ) {
-        log.error( 'Oracle DB Delete Lock failure : ' + err );
+        log.debug( 'Oracle DB Delete Lock failure : ' + err );
         return;
       }
       connection.release( function(err) {
