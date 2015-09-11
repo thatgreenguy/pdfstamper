@@ -47,7 +47,7 @@ function queryJdeAuditLog( dbCn, pollInterval, hostname, lastPdf, performPolledP
 
     var query;
 
-    query  = "SELECT paupmj, paupmt, pasawlatm, pafndfuf2 FROM testdta.F559859 ";
+    query  = "SELECT paupmj, paupmt, pasawlatm, pafndfuf2, pablkk FROM testdta.F559859 ";
     query += "WHERE RTRIM(PAFNDFUF2, ' ') <> 'pdfhandler' ORDER BY pasawlatm DESC";
 
     dbCn.execute( query, [], { resultSet: true }, function( err, rs ) {
@@ -100,7 +100,8 @@ function queryJdeJobControl( dbCn, record, begin, pollInterval, hostname, lastPd
         jdeDate,
         jdeTime,
         jdeDateToday,
-        firstRecord;
+        firstRecord,
+        wkAdt;
 
     // New query so set first record flag to true
     firstRecord = true;
@@ -126,10 +127,14 @@ function queryJdeJobControl( dbCn, record, begin, pollInterval, hostname, lastPd
       // Set the Last PDF processed by this application (from the JDE Audit table) and use its Date and Time for Query
       lastPdf = record[ 3 ];
       log.verbose( 'Last JDE Audit Record / PDF Processed was : ' + record );
-      auditTimestamp = record[ 2 ];
-      result = audit.adjustTimestampByMinutes( auditTimestamp );
-      jdeDate = record[ 0 ]; 
-      jdeTime = record[ 1 ]; 
+      //auditTimestamp = record[ 2 ];
+      //result = audit.adjustTimestampByMinutes( auditTimestamp );
+      
+      // The actual end date and time (from the JDE Job Control File) of the last job picked up in the Audit control table
+      // is stored in BLKK so exatrct from there
+      wkAdt = record[ 4 ].split(' ');  
+      jdeDate = wkAdt[ 0 ]; 
+      jdeTime = wkAdt[ 1 ]; 
 
       log.debug( 'Audit record found so query using Date and Time from that: ' + jdeDate + ' ' + jdeTime );
 
