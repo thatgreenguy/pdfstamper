@@ -28,7 +28,7 @@ var oracledb = require( 'oracledb' ),
 module.exports.performJdePdfProcessing = function( dbCn, dbCredentials, pollInterval, hostname, lastPdf, performPolledProcess ) {
 
   begin = new Date();
-  log.verbose( 'Begin Checking : ' + begin + ' - Looking for new Jde Pdf files since last run' );
+  log.verbose( 'Checking started at ' + begin + ' - looking for new Jde Pdf files since last run' );
 
   if ( dbCn === null ) {
     log.warn( 'Oracle DB connection expected - Pass valid Oracle connection object' );
@@ -106,36 +106,26 @@ function queryJdeJobControl( dbCn, record, begin, pollInterval, hostname, lastPd
     firstRecord = true;
 
     // Normally query JDE job control file from last Pdf file processed by this process, however, firt time and if
-    // JDE Audit Log file is cleared there will be no entry so use current System Date and Time instead
+    // if JDE Audit Log file is cleared there will be no entry so use current Date and Time instead
     if ( record === null ) {
-
-      // Issue with server clocks JDE and Linux being slightly out - approx 2.5 minutes.
-      // This will be rectified but in case it happens again or times drift slightly in future 
-      // Adjust query search date and time backwards by Offset - say 5 minutes - to allow for slightly different clock times
-      // and to ensure a PDF completing on JDE when this query runs is not missed
-
-      auditTimestamp = audit.createTimestamp();
-      result = audit.adjustTimestampByMinutes( auditTimestamp, - serverTimeOffset );
-      jdeDate = result.jdeDate;
-      jdeTime = result.jdeTime;
-
-      log.debug( 'No Audit record found so query using Date and Time from system: ' + jdeDate + ' ' + jdeTime );
-
+        auditTimestamp = audit.createTimestamp();
     } else {
-
-      // Set the Last PDF processed by this application (from the JDE Audit table) and use its Date and Time for Query
+      // Set the Last PDF processed by this application (from the JDE Audit table)
       lastPdf = record[ 3 ];
       log.verbose( 'Last JDE Audit Record / PDF Processed was : ' + record );
       auditTimestamp = record[ 2 ];
-      result = audit.adjustTimestampByMinutes( auditTimestamp );
-      jdeDate = record[ 0 ]; 
-      jdeTime = record[ 1 ]; 
-
-      log.debug( 'Audit record found so query using Date and Time from that: ' + jdeDate + ' ' + jdeTime );
-
     }
- 
-    // Get todays date from System in JDE Julian format
+
+
+    // Issue with server clocks JDE and Linux being slightly out - approx 2.5 minutes.
+    // This will be rectified but in case it happens again or times drift slightly in future 
+    // Adjust query search date and time backwards by Offset - say 5 minutes - to allow for slightly different clock times
+    // and to ensure a PDF completing on JDE when this query runs is still included
+    result = audit.adjustTimestampByMinutes( auditTimestamp, - serverTimeOffset );
+    jdeDate = result.jdeDate;
+    jdeTime = result.jdeTime;
+    
+    // Get todays date in JDE Julian format
     jdeDateToday = audit.getJdeJulianDate();
 
     // This job normally runs every few seconds so usually we want to query job control records for today and since time 
@@ -143,7 +133,7 @@ function queryJdeJobControl( dbCn, record, begin, pollInterval, hostname, lastPd
     // for a couple of days then we should not include time in query as it might potentially exclude some earlier PDF entries on
     // different days that we need to process.
 
-    if ( jdeDateToday == jdeDate & record !== null ) {
+    if ( jdeDateToday === jdeDate ) {
        
         query = "SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110 ";
         query += " WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= ";
@@ -154,7 +144,7 @@ function queryJdeJobControl( dbCn, record, begin, pollInterval, hostname, lastPd
 	log.debug( 'Last entry was today : ' + jdeDateToday + ' see: ' + jdeDate);
     } else { 
        
-        query = "SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110 ";
+         query = "SELECT jcfndfuf2, jcactdate, jcacttime, jcprocessid FROM testdta.F556110 ";
         query += " WHERE jcjobsts = 'D' AND jcfuno = 'UBE' AND jcactdate >= ";
         query += jdeDate;
         query += " AND RTRIM( SUBSTR(jcfndfuf2, 0, (INSTR(jcfndfuf2, '_') - 1)), ' ') in ( SELECT RTRIM(crpgm, ' ') FROM testdta.F559890 WHERE crcfgsid = 'PDFHANDLER') ";
@@ -191,8 +181,8 @@ function processResultsFromF556110( dbCn, rsF556110, numRows, begin, firstRecord
     } else if ( rows.length == 0 ) {
       oracleResultsetClose( dbCn, rsF556110 );
       finish = new Date();
-      log.verbose( 'End Check : ' + finish  + ' took ' + ( finish - begin ) + ' milliseconds' );
- 
+      log.verbose( 'Checking completed : ' + finish  + ' took ' + ( finish - begin ) + ' milliseconds' );
+
       // No more Job control records to process in this run - this run is done - so schedule next run
       setTimeout( performPolledProcess, pollInterval );
 
@@ -221,7 +211,8 @@ function processPdfEntry( dbCn, rsF556110, begin, jobControlRecord, firstRecord,
   // If latest JDE Pdf job name does not match the previous one we have a change so check and process in detail 
   if ( lastPdf !== currentPdf ) {
 
-    log.warn( "     <<<<<  JDE Job Control monitoring - CHANGE detected in JDE Output Queue >>>>>");
+    log.debug(" Last PDF: " + lastPdf + ' Current one: ' + currentPdf );
+    log.info( "          >>>>  CHANGE detected in JDE Output Queue <<<<");
 
     // Before processing recently noticed PDF file(s) first check mount points and re-establish if necessary
     var cb = function() { processLockedPdfFile( dbCn, jobControlRecord, hostname ); }
