@@ -126,7 +126,7 @@ function queryJdeJobControl( dbCn, record, begin, pollInterval, hostname, lastPd
 
       // Set the Last PDF processed by this application (from the JDE Audit table) and use its Date and Time for Query
       lastPdf = record[ 3 ];
-      log.verbose( 'Last JDE Audit Record / PDF Processed was : ' + record );
+      log.debug( 'Last Audited PDF was : ' + record );
       //auditTimestamp = record[ 2 ];
       //result = audit.adjustTimestampByMinutes( auditTimestamp );
       
@@ -203,7 +203,6 @@ function processResultsFromF556110( dbCn, rsF556110, numRows, begin, firstRecord
 
     } else if ( rows.length > 0 ) {
 
-
       jobControlRecord = rows[ 0 ];
       log.debug( jobControlRecord );
 
@@ -221,31 +220,21 @@ function processPdfEntry( dbCn, rsF556110, begin, jobControlRecord, firstRecord,
     currentPdf;
 
   currentPdf = jobControlRecord[ 0 ];
+  log.verbose('First Record: ' + firstRecord );
   log.verbose('Last PDF: ' + lastPdf + ' currentPdf: ' + currentPdf );
-
-  // If latest JDE Pdf job name does not match the previous one we have a change so check and process in detail 
-//  if ( lastPdf !== currentPdf ) {
-//
-//    log.info( ' ');
-//    log.info( '     >>>>> CHANGE detected in JDE Output Queue <<<<<' );
-//
-//    // Before processing recently noticed PDF file(s) first check mount points and re-establish if necessary
-//    var cb = function() { processLockedPdfFile( dbCn, jobControlRecord, hostname ); }
-//    lock.gainExclusivity( jobControlRecord, hostname, dbCn, cb );
-//      
-//  }           
 
   if ( firstRecord ) {
 
     firstRecord = false;
     currentPdf = jobControlRecord[ 0 ];
 
-    log.verbose('First Record: ' + firstRecord + ' processPdfEntry: ' + jobControlRecord );
+    log.debug('First Record: ' + firstRecord + ' processPdfEntry: ' + jobControlRecord );
+    log.verbose(" Last PDF file : " + lastPdf);
+    log.verbose(" Latest PDF file : " + currentPdf);
+
     // If latest JDE Pdf job name does not match the previous one we have a change so check and process in detail 
     if ( lastPdf !== currentPdf ) {
 
-      log.debug(" Last PDF file : " + lastPdf);
-      log.debug(" Latest PDF file : " + currentPdf);
       log.info( " ");
       log.info( "          >>>>  CHANGE detected in JDE Output Queue <<<<");
       log.info( " ");

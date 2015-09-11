@@ -42,6 +42,7 @@ exports.createAuditEntry = function( pdfjob, genkey, ctrid, status ) {
     connection.execute( query, [timestamp, pdfjob, genkey, ctrid, status, 'PDFHANDLER', 'CENTOS', 'DOCKER', jdedate, jdetime ], { autoCommit: true }, function( err, result ) {
       if ( err ) {
         logger.error( err.message );
+        return;
       }
       connection.release( function( err ) {
         if ( err ) {
