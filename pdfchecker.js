@@ -12,10 +12,12 @@
 // PDF file adding logo images to each page.
 
 
-var oracledb = require( "oracledb" ),
-  lock = require( "./common/lock.js" ),
-  async = require( "async" ),
-  exec = require( "child_process" ).exec,
+var oracledb = require( 'oracledb' ),
+  lock = require( './common/lock.js' ),
+  log = require( './common/logger.js' ),
+  audit = require( './common/audit.js' ),
+  async = require( 'async' ),
+  exec = require( 'child_process' ).exec,
   dirRemoteJdePdf = process.env.DIR_JDEPDF,
   dirLocalJdePdf = process.env.DIR_SHAREDDATA,
   serverTimeOffset = 5,
@@ -23,17 +25,16 @@ var oracledb = require( "oracledb" ),
   begin = null;
 
 
-module.exports.performJdePdfProcessing = function( dbCn, 
-  dbCredentials, log, audit, pollInterval, hostname, lastPdf, performPolledProcess ) {
+module.exports.performJdePdfProcessing = function( dbCn, dbCredentials, pollInterval, hostname, lastPdf, performPolledProcess ) {
 
   begin = new Date();
   log.verbose( 'Checking started at ' + begin + ' - looking for new Jde Pdf files since last run' );
 
   if ( dbCn === null ) {
-    log.warn( 'Oracle DB connection expected - Will generate new one' );
+    log.warn( 'Oracle DB connection expected - Pass valid Oracle connection object' );
   }
 
-  module.exports.queryJdeAuditLog( dbCn, log, audit, pollInterval, hostname, lastPdf, performPolledProcess ); 
+  queryJdeAuditLog( dbCn, pollInterval, hostname, lastPdf, performPolledProcess ); 
 
 } 
 
@@ -42,8 +43,7 @@ module.exports.performJdePdfProcessing = function( dbCn,
 //
 // Jde Audit Log records date and time of every Pdf file processed by this application.
 // Fetch the last audit entry made by this process and use the date and time as starting point for next query check  
-module.exports.queryJdeAuditLog = function( dbCn,
- log, audit, pollInterval, hostname, lastPdf, performPolledProcess ) {
+function queryJdeAuditLog( dbCn, pollInterval, hostname, lastPdf, performPolledProcess ) {
 
     var query;
 
@@ -55,16 +55,14 @@ module.exports.queryJdeAuditLog = function( dbCn,
             log.error( err.message )
         };
 
-        processResultsFromF559859( dbCn, 
-          rs.resultSet, numRows, audit, begin, log, pollInterval, hostname, lastPdf, performPolledProcess );	
+        processResultsFromF559859( dbCn, rs.resultSet, numRows, begin, pollInterval, hostname, lastPdf, performPolledProcess );	
     }); 
 }
 
 
 // Process results from JDE Audit Log table Query but only interested in last Pdf job processed
 // to determine date and time which is used to control further queries
-function processResultsFromF559859( dbCn, 
-  rsF559859, numRows, audit, begin, log, pollInterval, hostname, lastPdf, performPolledProcess ) {
+function processResultsFromF559859( dbCn, rsF559859, numRows, begin, pollInterval, hostname, lastPdf, performPolledProcess ) {
 
     var record;
 
@@ -75,7 +73,7 @@ function processResultsFromF559859( dbCn,
 
       	} else if ( rows.length == 0 ) {
 
-            queryJdeJobControl( dbCn, null, begin, log, audit, pollInterval, hostname, lastPdf, performPolledProcess );
+            queryJdeJobControl( dbCn, null, begin, pollInterval, hostname, lastPdf, performPolledProcess );
             oracleResultsetClose( dbCn, rsF559859 );
 
 	} else if ( rows.length > 0 ) {
@@ -84,7 +82,7 @@ function processResultsFromF559859( dbCn,
             // Process continues by querying the JDE Job Control Master file for eligible PDF's to process
 
             record = rows[ 0 ];
-            queryJdeJobControl( dbCn, record, begin, log, audit, pollInterval, hostname, lastPdf, performPolledProcess );
+            queryJdeJobControl( dbCn, record, begin, pollInterval, hostname, lastPdf, performPolledProcess );
             oracleResultsetClose( dbCn, rsF559859 );
 	}
     });
@@ -93,7 +91,7 @@ function processResultsFromF559859( dbCn,
 
 // Query the JDE Job Control Master file to fetch all PDF files generated since last audit entry
 // Only select PDF jobs that are registered for post PDF processing e.g. R5542565 Invoice Print
-function queryJdeJobControl( dbCn, record, begin, log, audit, pollInterval, hostname, lastPdf, performPolledProcess
+function queryJdeJobControl( dbCn, record, begin, pollInterval, hostname, lastPdf, performPolledProcess
  ) {
 
     var auditTimestamp,
@@ -155,7 +153,6 @@ function queryJdeJobControl( dbCn, record, begin, log, audit, pollInterval, host
 	log.debug( 'Last entry was Not today : ' + jdeDateToday + ' see: ' + jdeDate);
     }
 
-    log.debug(result);
     log.debug(query);
 
     dbCn.execute( query, [], { resultSet: true }, function( err, rs ) {
@@ -164,15 +161,13 @@ function queryJdeJobControl( dbCn, record, begin, log, audit, pollInterval, host
           return;
         }
 
-        processResultsFromF556110( dbCn, 
-          rs.resultSet, numRows, audit, begin, firstRecord, log, pollInterval, hostname, lastPdf, performPolledProcess );
+        processResultsFromF556110( dbCn, rs.resultSet, numRows, begin, firstRecord, pollInterval, hostname, lastPdf, performPolledProcess );
     }); 
 }
 
 
 // Process results of query on JDE Job Control file 
-function processResultsFromF556110( dbCn, 
-  rsF556110, numRows, audit, begin, firstRecord, log, pollInterval, hostname, lastPdf, performPolledProcess ) {
+function processResultsFromF556110( dbCn, rsF556110, numRows, begin, firstRecord, pollInterval, hostname, lastPdf, performPolledProcess ) {
 
   var jobControlRecord,
   finish;
@@ -186,7 +181,7 @@ function processResultsFromF556110( dbCn,
     } else if ( rows.length == 0 ) {
       oracleResultsetClose( dbCn, rsF556110 );
       finish = new Date();
-      log.verbose( 'Checking ended at ' + finish  + ' took ' + ( finish - begin ) + ' milliseconds' );
+      log.verbose( 'Checking completed : ' + finish  + ' took ' + ( finish - begin ) + ' milliseconds' );
 
       // No more Job control records to process in this run - this run is done - so schedule next run
       setTimeout( performPolledProcess, pollInterval );
@@ -198,16 +193,14 @@ function processResultsFromF556110( dbCn,
       log.debug( jobControlRecord );
 
       // Process PDF entry
-      processPdfEntry( dbCn, 
-        rsF556110, begin, jobControlRecord, firstRecord, audit, log, pollInterval, hostname, lastPdf, performPolledProcess );            
+      processPdfEntry( dbCn, rsF556110, begin, jobControlRecord, firstRecord, pollInterval, hostname, lastPdf, performPolledProcess );            
 
     }
   }); 
 }
 
 // Called to handle processing of first and subsequent 'new' PDF Entries detected in JDE Output Queue  
-function processPdfEntry( dbCn,
-  rsF556110, begin, jobControlRecord, firstRecord, audit, log, pollInterval, hostname, lastPdf, performPolledProcess ) {
+function processPdfEntry( dbCn, rsF556110, begin, jobControlRecord, firstRecord, pollInterval, hostname, lastPdf, performPolledProcess ) {
 
   var cb = null,
     currentPdf;
@@ -218,18 +211,12 @@ function processPdfEntry( dbCn,
   // If latest JDE Pdf job name does not match the previous one we have a change so check and process in detail 
   if ( lastPdf !== currentPdf ) {
 
-    log.debug(" Last PDF file : " + lastPdf);
-    log.debug(" Latest PDF file : " + currentPdf);
-//    log.info( " ");
-//    log.info( "          >>>>  CHANGE detected in JDE Output Queue <<<<");
-//    log.info( " ");
+    log.debug(" Last PDF: " + lastPdf + ' Current one: ' + currentPdf );
+    log.info( "          >>>>  CHANGE detected in JDE Output Queue <<<<");
 
     // Before processing recently noticed PDF file(s) first check mount points and re-establish if necessary
-    var cb = function() {
-      processLockedPdfFile( dbCn, jobControlRecord, audit, log, hostname );
-    }
-    lock.gainExclusivity( jobControlRecord, 
-      hostname, dbCn, cb );
+    var cb = function() { processLockedPdfFile( dbCn, jobControlRecord, hostname ); }
+    lock.gainExclusivity( jobControlRecord, hostname, dbCn, cb );
       
   }           
 
@@ -249,35 +236,27 @@ function processPdfEntry( dbCn,
 //      log.info( " ");
 
       // Before processing recently noticed PDF file(s) first check mount points and re-establish if necessary
-      var cb = function() {
-        processLockedPdfFile( dbCn, jobControlRecord, audit, log, hostname );
-      }
-      lock.gainExclusivity( jobControlRecord, 
-        hostname, dbCn, cb );
+      var cb = function() { processLockedPdfFile( dbCn, jobControlRecord, audit, log, hostname ); }
+      lock.gainExclusivity( jobControlRecord, hostname, dbCn, cb );
       
     }           
 
   } else {
 
     // Process second and subsequent records.
-    var cb = function() {
-      processLockedPdfFile( dbCn, jobControlRecord, audit, log, hostname );
-    }
-    lock.gainExclusivity( jobControlRecord, 
-      hostname, dbCn, cb );		
+    var cb = function() { processLockedPdfFile( dbCn, jobControlRecord, audit, log, hostname ); }
+    lock.gainExclusivity( jobControlRecord, hostname, dbCn, cb );		
   }
 */
 
   // Process subsequent PDF entries if any - Read next Job Control record
-  processResultsFromF556110( dbCn, 
-    rsF556110, numRows, audit, begin, firstRecord, log, pollInterval, hostname, 
-    lastPdf, performPolledProcess );
+  processResultsFromF556110( dbCn, rsF556110, numRows, begin, firstRecord, pollInterval, hostname, lastPdf, performPolledProcess );
 
 }
 
 
 // Called when exclusive lock has been successfully placed to process the PDF file
-function processLockedPdfFile(dbCn, record, audit, log, hostname ) {
+function processLockedPdfFile(dbCn, record, hostname ) {
 
     var query,
         countRec,
@@ -312,7 +291,7 @@ function processLockedPdfFile(dbCn, record, audit, log, hostname ) {
              // Last process step creates an audit entry which prevents file being re-processed by future runs 
              // so if error and lock removed - no audit entry therefore file will be re-processed by future run (recovery)	
              
-             processPDF( record, log, audit, hostname ); 
+             processPDF( record, hostname ); 
 
         }
     }); 
@@ -320,7 +299,7 @@ function processLockedPdfFile(dbCn, record, audit, log, hostname ) {
 
 
 // Exclusive use / lock of PDF file established so free to process the file here.
-function processPDF( record, log, audit, hostname ) {
+function processPDF( record, hostname ) {
 
     var jcfndfuf2 = record[ 0 ],
         jcactdate = record[ 1 ],
@@ -330,13 +309,7 @@ function processPDF( record, log, audit, hostname ) {
         parms = null;
 
     // Make parameters available to any function in series
-    parms = { "jcfndfuf2": jcfndfuf2,
-      "record": record,
-      "genkey": genkey,
-      "hostname": hostname,
-      "log": log,
-      "audit": audit
-    };
+    parms = { "jcfndfuf2": jcfndfuf2, "record": record, "genkey": genkey, "hostname": hostname };
 
     async.series([
         function ( cb ) { passParms( parms, cb ) }, 
@@ -355,7 +328,7 @@ function processPDF( record, log, audit, hostname ) {
              if ( err ) {
                log.error("JDE PDF " + prms.jcfndfuf2 + " - Processing failed - check logs in ./logs");
 	     } else {
-               log.info("JDE PDF " + prms.jcfndfuf2 + " - Processing Complete");
+               log.info("JDE PDF " + prms.jcfndfuf2 + " - Processing Complete - Logos added");
              }
            }
     );
@@ -366,8 +339,6 @@ function processPDF( record, log, audit, hostname ) {
 // Need to release lock if PDF file processed okay or failed with errors so it can be picked up and recovered by future runs!
 // For example sshfs dbCn to remote directories on AIX might go down and re-establish later
 function passParms(parms, cb) {
-
-  log = parms.log;
 
   log.debug( 'passParms' + ' : ' + parms );
   cb( null, parms);  
@@ -380,8 +351,6 @@ function passParms(parms, cb) {
 function copyJdePdfToWorkDir( parms, cb ) {
 
   var cmd = "cp /home/pdfdata/" + parms.jcfndfuf2 + " /home/shareddata/wrkdir/" + parms.jcfndfuf2.trim() + "_ORIGINAL";
-
-  log = parms.log;
 
   log.verbose( "JDE PDF " + parms.jcfndfuf2 + " - Make backup copy of original JDE PDF file in work directory" );
   log.debug( cmd );
@@ -402,8 +371,6 @@ function applyLogo( parms, cb ) {
   var pdfInput = "/home/shareddata/wrkdir/" + parms.jcfndfuf2.trim() + "_ORIGINAL",
     pdfOutput = '/home/shareddata/wrkdir/' + parms.jcfndfuf2,
     cmd = "node ./src/pdfaddlogo.js " + pdfInput + " " + pdfOutput ;
-
-  log = parms.log;
 
   log.verbose( "JDE PDF " + parms.jcfndfuf2 + " - Read original creating new PDF in work Directory with logos" );
   log.debug( cmd );
@@ -426,8 +393,6 @@ function replaceJdePdfWithLogoVersion( parms, cb ) {
     jdePrintQueue = "/home/pdfdata/" + parms.jcfndfuf2,
     cmd = "mv " + pdfWithLogos + " " + jdePrintQueue;
 
-  log = parms.log;
-
   log.verbose( "JDE PDF " + parms.jcfndfuf2 + " - Replace JDE output queue PDF with modified Logo version" );
   log.debug( cmd );
   exec( cmd, function( err, stdout, stderr ) {
@@ -442,9 +407,6 @@ function replaceJdePdfWithLogoVersion( parms, cb ) {
 
 
 function createAuditEntry( parms, cb ) {
-
-  log = parms.log;
-  audit = parms.audit;
 
   // Create Audit entry for this Processed record - once created it won't be processed again
   audit.createAuditEntry( parms.jcfndfuf2, parms.genkey, parms.hostname, "PROCESSED - LOGO" );

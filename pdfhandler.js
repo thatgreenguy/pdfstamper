@@ -94,7 +94,7 @@ function performPostRemoteMountChecks( err, data ) {
   } else {
 
     // Remote mounts okay so go ahead and process, checking for new Pdf's etc
-    pdfChecker.performJdePdfProcessing( dbCn, dbCredentials, log, audit, pollInterval, hostname, lastPdf, performPolledProcess );
+    pdfChecker.performJdePdfProcessing( dbCn, dbCredentials, pollInterval, hostname, lastPdf, performPolledProcess );
   }
 
 }
@@ -126,7 +126,7 @@ function performPostEstablishRemoteMounts( err, data ) {
 
     // Remote mounts okay so go ahead and process, checking for new Pdf's etc
     log.verbose( 'Remote mounts to Jde re-established - will continue normally')
-    pdfChecker.performJdePdfProcessing( dbCn, dbCredentials, log, audit, pollInterval, hostname, lastPdf, performPolledProcess );
+    pdfChecker.performJdePdfProcessing( dbCn, dbCredentials, pollInterval, hostname, lastPdf, performPolledProcess );
   }
 
 }
