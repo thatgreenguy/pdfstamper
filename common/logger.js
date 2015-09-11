@@ -2,6 +2,9 @@
 // Description		: Common application logging.
 // Author		: Paul Green
 // Dated		: 2015-09-03
+//
+//
+// 
 
 var winston = require('winston');
 
@@ -11,10 +14,10 @@ var logger = new winston.Logger({
     transports: [
         new winston.transports.File({
             level: 'debug',
-            filename: './src/logs/all-logs.log',
+            filename: './src/logs/pdfhandler.log',
             handleExceptions: true,
             json: true,
-            maxsize: 5242880,
+            maxsize: 54558720,
             maxFiles: 7,
             colorize: false 
         }),

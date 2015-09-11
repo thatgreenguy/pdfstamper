@@ -2,8 +2,11 @@
 // Description		: Common Audit file logging related functions.
 // Author		: Paul Green
 // Dated		: 2015-08-03
-
+//
+// Application maintains a simple audit log file within Jde which is used for informational purposes and by the
+// application itself to determine the last Pdf processed - determines date and time to run query checks from. 
   
+
 var oracledb = require('oracledb'),
   logger = require("./logger"),
   credentials = { user: process.env.DB_USER, password: process.env.DB_PWD, connectString: process.env.DB_NAME };

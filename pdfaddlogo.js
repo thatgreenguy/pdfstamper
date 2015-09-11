@@ -7,13 +7,14 @@
 // Synopsis
 // --------
 // 
- 
-var hummus = require('hummus');
-
 // Expect PDF file to process to be passed in - including path
-var pdfInput = process.argv[2];
-var pdfOutput = process.argv[3];
-var pdfInput = process.argv[2];
+
+ 
+var hummus = require('hummus'),
+  pdfInput = process.argv[ 2 ],
+  pdfOutput = process.argv[ 3 ],
+  pdfInput = process.argv[ 2 ];
+
 
 // Create pdf Writer object to manipulate the PDF file
 ////var pdfWriter = hummus.createWriterToModify('/src/shareddata/R5542565_PJGTST251_179553_PDF',{modifiedFilePath:'/src/shareddata/well.pdf'});
@@ -35,7 +36,6 @@ var cpyCxt = pdfWriter.createPDFCopyingContextForModifiedFile();
 
 // Get maximum number of Pages we are dealing with
 var pageCount = cpyCxt.getSourceDocumentParser().getPagesCount();
-console.log("Pages : " + pageCount);
 
 for ( var i = 0; i < pageCount; i++ ) {
 
@@ -50,8 +50,6 @@ pdfWriter.end();
 
 
 function slapLogoOnPage(whichPage) {
-
-console.log(whichPage);
 
 //var lastPageObjectID = cpyCxt.getSourceDocumentParser().getPageObjectID(cpyCxt.getSourceDocumentParser().getPagesCount()-1);
 //var lastPageDictionaryObject = cpyCxt.getSourceDocumentParser().parsePage(cpyCxt.getSourceDocumentParser().getPagesCount()-1).getDictionary().toJSObject();

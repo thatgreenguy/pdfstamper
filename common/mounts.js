@@ -2,6 +2,11 @@
 // Description		: Check remote mounts in place and establish or re-establish as necessary
 // Author		: Paul Green
 // Dated		: 2015-09-08
+//
+// When docker application starts up remote mounts need to be established and although fairly persistent with
+// combination of serverkeepalive options, reconnect options and workaround options they do occassionaly drop 
+// so main controlling appication tests the connections are okay and reconnects 
+// if necessary before processing any Pdf files.
 
 
 var async = require( 'async' ),
