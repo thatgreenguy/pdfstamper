@@ -7,8 +7,9 @@
 // application itself to determine the last Pdf processed - determines date and time to run query checks from. 
   
 
-var oracledb = require('oracledb'),
-  logger = require("./logger"),
+var oracledb = require( 'oracledb' ),
+  logger = require( './logger' ),
+  moment = require( 'moment' ),
   credentials = { user: process.env.DB_USER, password: process.env.DB_PWD, connectString: process.env.DB_NAME };
 
 
@@ -71,23 +72,22 @@ exports.createTimestamp = function( dt, dateSep, timeSep, padChar ) {
 }
 
 
-// Convert date to weird JDE Julian date - JDE does not use real Julian dates rather some half baked version which only works for dates after 1900
+// Converts date to JDE Julian style date i.e. CYYDDD
 exports.getJdeJulianDate = function( dt ) {
 
-  var yyyy,
-  onejan,
-  ddd,
-  julian;
+  var wkM,
+    wkYYYY,
+    wkDDD;
 
   if ( typeof( dt ) === 'undefined' ) dt = new Date();
 
-  yyyy = dt.getFullYear() - 1900;
-  onejan = new Date( dt.getFullYear(), 0, 1 );	
-  ddd = Math.ceil( ( dt - onejan ) / 86400000 );
-  julian = yyyy.toString() + ( '000' + ddd ).slice( -3 );
-  
-  return julian;
-} 
+  wkM = moment( dt );
+
+  wkYYYY = wkM.year();
+  wkDDD = wkM.dayOfYear();
+  return wkYYYY - 1900 + ( '000' + wkDDD).slice( -3 );
+
+}
 
 
 // Convert date to JDE Audit Time HHMMSS - Return jde Audit time in format HHMMSS with no separators and leading 0's if required.

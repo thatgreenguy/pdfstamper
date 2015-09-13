@@ -9,6 +9,7 @@
     "gal-icu-bidi": "0.1.3-git",
     "hummus": "^1.0.40",
     "icu-bidi": "^0.1.3",
+    "moment": "^2.10.6",
     "nodemailer": "0.7.1",
     "oracledb": "0.7.0",
     "pdf-text-extract": "^1.1.4",

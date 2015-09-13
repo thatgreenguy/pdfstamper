@@ -1,28 +1,71 @@
-var nodemailer = require('nodemailer');
+var audit = require( './common/audit.js' );
 
-// create re-usable transporter object using SMTP transport
-var smtpTransport = nodemailer.createTransport("SMTP", {
-	host: '172.31.3.15',
-	port: 25
-});
 
-// Set-up Email 
-var mailOptions = {
-	from: "no.reply@dlink.com",
-	to: "paul.green@dlink.com",
-	subject: "Hi - this is a test email from Node on Centos",
-	text: "Hello - Testing Testing 1 2 3 ...",
-	html: "<P>Hello - Testing Testing 1 2 3 ..."
+var dt = new Date();
+showTests( dt, ' Now' );
+
+dt.setHours(0, 0, 0, 0);
+showTests( dt, ' Midnight' );
+
+dt.setHours(0, 0, 0, 1);
+showTests( dt, 'Midnight + 1 sec' );
+
+dt.setHours(0, 0, 0, -1);
+showTests( dt, 'Midnight - 1 sec' );
+
+dt.setMonth( 0 );
+dt.setDate( 1 );
+dt.setHours(0, 0, 0, 0);
+showTests( dt, 'Midnight January 1st' );
+
+
+dt.setMonth( 0 );
+dt.setDate( 1 );
+dt.setHours(0, 0, 0, 1);
+showTests( dt, 'Midnight January 1st + 1 sec' );
+
+dt.setMonth( 0 );
+dt.setDate( 1 );
+dt.setHours(0, 0, 0, -1);
+showTests( dt, 'Midnight January 1st - 1 sec' );
+
+dt.setYear(2014)
+dt.setMonth( 0 );
+dt.setDate( 1 );
+dt.setHours(0, 0, 0, -1);
+showTests( dt, 'Midnight January 1st - 1 sec' );
+dt.setYear(2013)
+dt.setMonth( 0 );
+dt.setDate( 1 );
+dt.setHours(0, 0, 0, -1);
+showTests( dt, 'Midnight January 1st - 1 sec' );
+dt.setYear(2012)
+dt.setMonth( 0 );
+dt.setDate( 1 );
+dt.setHours(0, 0, 0, -1);
+showTests( dt, 'Midnight January 1st - 1 sec' );
+dt.setYear(2011)
+dt.setMonth( 0 );
+dt.setDate( 1 );
+dt.setHours(0, 0, 0, -1);
+showTests( dt, 'Midnight January 1st - 1 sec' );
+dt.setYear(2010)
+dt.setMonth( 0 );
+dt.setDate( 1 );
+dt.setHours(0, 0, 0, -1);
+showTests( dt, 'Midnight January 1st - 1 sec' );
+
+
+
+function showTests( dt, dsc ) {
+
+  console.log( '                    : ' );
+  console.log( 'Test                : ' + dsc );
+  console.log( 'Date                : ' + dt );
+  console.log( 'JDE Julian Date     : ' + audit.getJdeJulianDate( dt ) );
+  console.log( 'JDE Julian Date New : ' + audit.getJdeJulianDateNew( dt ) );
+
 }
 
-// Send Email
-smtpTransport.sendMail(mailOptions, function(error, response) {
-	if (error) {
-		console.log(error);
-	} else {
-		console.log("Message sent: " + response.message);
-	}
 
-	// When finished with transport object do following....
-	smtpTransport.close();
-});
+
