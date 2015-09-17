@@ -22,7 +22,9 @@ var oracledb = require( 'oracledb' ),
   dbCredentials = { user: process.env.DB_USER, password: process.env.DB_PWD, connectString: process.env.DB_NAME },
   hostname = process.env.HOSTNAME,
   logLevel = process.env.LOG_LEVEL,
-  lastPdf = null;
+  lastPdf = null,
+  lastDate = null,
+  lastTime = null;
 
 
 // - Initialisation
@@ -56,6 +58,12 @@ if ( typeof( hostname ) === 'undefined' || hostname === '' ) {
 
     // Log process startup in Jde Audit table 
     audit.createAuditEntry( 'pdfhandler', 'pdfhandler.js', hostname, 'Start Jde Pdf Logo handler' );
+
+    // Once on startup Query JDE Audit table to getDate and Time of last processed PDF file by this job
+    // This sets lastDate and lastTime initially.
+    // So if job startups after several days of inactivity first run will take some timebut subsequent runs will be quick
+    // If no Audit entries to set Last Date and Time then startup date and time will be used.
+
 
     // When process start perform the polled processing immediately then it will repeat periodically
     performPolledProcess();
